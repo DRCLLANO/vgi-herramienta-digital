@@ -9,11 +9,8 @@ y pronóstico.
 
 ## Abrir la herramienta
 
-https://USUARIO.github.io/vgi-herramienta-digital/
+https://DRCLLANO.github.io/vgi-herramienta-digital/
 
-(Sustituya `USUARIO` por su nombre de usuario de GitHub una vez publicada la
-página. Mientras tanto, el archivo `index.html` funciona con doble clic en
-cualquier navegador, sin conexión.)
 
 ## Qué es
 
