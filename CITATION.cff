@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+message: "Si utiliza esta herramienta, por favor cítela como se indica a continuación."
+title: "Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral"
+abstract: >-
+  Herramienta digital de acceso libre para el cálculo y la interpretación de 43
+  escalas de la Valoración Geriátrica Integral, organizadas según los cuatro
+  ejes de la evaluación (clínico, funcional, mental y social) y una sección
+  adicional de paliativos y pronóstico, con un conversor de dosis
+  equianalgésicas de opioides. Consiste en un único archivo HTML que se ejecuta
+  por completo en el navegador, sin servidor y sin transmisión ni
+  almacenamiento de datos. Su contenido deriva del manual "Abordaje geriátrico
+  integral: escalas de uso frecuente en geriatría" (Editorial Pontificia
+  Universidad Javeriana, 2024). Desarrollo original de un solo autor,
+  construido mediante trabajo conversacional con un modelo de lenguaje. Uso
+  educativo; no reemplaza el juicio clínico.
+type: software
+version: "2.9"
+date-released: "2026-09-10"
+license: MIT
+repository-code: "https://github.com/USUARIO/vgi-herramienta-digital"
+url: "https://USUARIO.github.io/vgi-herramienta-digital/"
+authors:
+  - family-names: "Llano Ceballos"
+    given-names: "Cristian Camilo"
+    orcid: "https://orcid.org/0000-0001-9745-3863"
+    affiliation: "Unidad de Geriatría, Hospital Universitario San Ignacio; Departamento de Medicina Interna, Facultad de Medicina, Pontificia Universidad Javeriana, Bogotá, Colombia"
+keywords:
+  - "valoración geriátrica integral"
+  - "comprehensive geriatric assessment"
+  - "escalas geriátricas"
+  - "geriatric assessment scales"
+  - "recurso educativo abierto"
+  - "inteligencia artificial generativa"
+languages:
+  - spa
+references:
+  - type: book
+    title: "Abordaje geriátrico integral: escalas de uso frecuente en geriatría"
+    year: 2024
+    publisher:
+      name: "Editorial Pontificia Universidad Javeriana"
+    doi: "10.11144/Javeriana.9789587819304"
+    editors:
+      - family-names: "Chavarro-Carvajal"
+        given-names: "Diego Andrés"
+      - family-names: "Heredia Ramírez"
+        given-names: "Rodrigo Alberto"
+      - family-names: "Cano-Gutiérrez"
+        given-names: "Carlos Alberto"
