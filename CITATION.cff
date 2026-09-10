@@ -17,6 +17,7 @@ type: software
 version: "2.9"
 date-released: "2026-09-10"
 license: MIT
+doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/DRCLLANO/vgi-herramienta-digital"
 url: "https://DRCLLANO.github.io/vgi-herramienta-digital/"
 authors:
