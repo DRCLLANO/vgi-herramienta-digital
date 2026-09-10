@@ -31,8 +31,6 @@ keywords:
   - "geriatric assessment scales"
   - "recurso educativo abierto"
   - "inteligencia artificial generativa"
-languages:
-  - spa
 references:
   - type: book
     title: "Abordaje geriátrico integral: escalas de uso frecuente en geriatría"
@@ -40,7 +38,7 @@ references:
     publisher:
       name: "Editorial Pontificia Universidad Javeriana"
     doi: "10.11144/Javeriana.9789587819304"
-    editors:
+    authors:
       - family-names: "Chavarro-Carvajal"
         given-names: "Diego Andrés"
       - family-names: "Heredia Ramírez"
