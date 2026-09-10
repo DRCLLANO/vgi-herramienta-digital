@@ -17,8 +17,8 @@ type: software
 version: "2.9"
 date-released: "2026-09-10"
 license: MIT
-repository-code: "https://github.com/USUARIO/vgi-herramienta-digital"
-url: "https://USUARIO.github.io/vgi-herramienta-digital/"
+repository-code: "https://github.com/DRCLLANO/vgi-herramienta-digital"
+url: "https://DRCLLANO.github.io/vgi-herramienta-digital/"
 authors:
   - family-names: "Llano Ceballos"
     given-names: "Cristian Camilo"
