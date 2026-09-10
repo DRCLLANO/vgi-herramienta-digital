@@ -13,7 +13,17 @@
 <meta name="description" content="Calculadora de escalas de la valoración geriátrica integral: eje clínico, funcional, mental y social.">
 <title>Escalas de uso frecuente en Geriatría</title>
 
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
 
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icon-120.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1432,38 +1442,6 @@ cam:{
   note:'Aplique el CAM antes de cualquier prueba cognoscitiva: un delirium no reconocido invalida la interpretación del tamizaje cognitivo.'
 },
 
-at4:{
-  eje:'mental', dom:'Delirium',
-  name:'4AT',
-  full:'4AT: prueba rápida de cribado de delirium',
-  blurb:'Cuatro ítems en menos de dos minutos. No requiere entrenamiento y es aplicable en el paciente somnoliento o que no colabora, situación en la que el CAM no puede completarse.',
-  max:12,
-  external:true,
-  ref:'Bellelli G, Morandi A, Davis DHJ, Mazzola P, Turco R, Gentile S, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014;43(4):496-502. Versión española validada: Delgado-Parada E, Morillo-Cuadrado D, Saiz-Ruiz J, Cebollada-Gracia A, Ayuso-Mateos JL, Cruz-Jentoft AJ. Diagnostic accuracy of the Spanish version of the 4AT scale (4AT-ES) for delirium screening in older inpatients. Eur J Psychiatry. 2022. doi:10.1016/j.ejpsy.2022.01.003. Escala complementaria: no forma parte del manual de referencia.',
-  items:[
-    {q:'1. Estado de alerta',
-     hint:'Incluye tanto al paciente muy somnoliento (por ejemplo, difícil de despertar) como al agitado o hiperactivo. Observe al paciente; si está dormido, intente despertarlo hablándole o tocándole suavemente el hombro. Pídale que diga su nombre y su dirección para orientar la valoración.',
-     o:[{l:'Normal: completamente alerta y no agitado durante toda la evaluación',v:0},
-        {l:'Somnolencia leve durante menos de 10 segundos tras despertar, luego normal',v:0},
-        {l:'Claramente anormal: muy somnoliento, estuporoso o agitado e hiperactivo',v:4}]},
-    {q:'2. AMT4 · cuatro preguntas de orientación',
-     hint:'Pregunte por la edad, la fecha de nacimiento, el lugar (nombre del hospital o del edificio) y el año actual.',
-     o:[{l:'Ningún error',v:0},{l:'1 error',v:1},{l:'2 o más errores, o no evaluable',v:2}]},
-    {q:'3. Atención · meses del año en orden inverso',
-     hint:'Diga: "Por favor, dígame los meses del año hacia atrás, empezando por diciembre". Si es necesario, ayude con una indicación: "¿cuál es el mes anterior a diciembre?".',
-     o:[{l:'Enumera 7 meses o más correctamente',v:0},
-        {l:'Comienza pero enumera menos de 7 meses, o rehúsa empezar',v:1},
-        {l:'No evaluable: no puede empezar porque se encuentra mal, somnoliento o desatento',v:2}]},
-    {q:'4. Cambio agudo o curso fluctuante',
-     hint:'Evidencia de cambio significativo o de fluctuación en el estado de alerta, la cognición u otra función mental (por ejemplo, paranoia o alucinaciones) que haya aparecido en las últimas 2 semanas y siga presente en las últimas 24 horas.',
-     o:[{l:'No',v:0},{l:'Sí',v:4}]}
-  ],
-  interpret:s=> s>=4 ? {t:'Posible delirium con o sin deterioro cognitivo',tone:'alert',d:'Un puntaje de 4 o más sugiere delirium, con o sin deterioro cognitivo de base. Confirme con los criterios del DSM 5-TR, busque y trate los factores precipitantes, revise los fármacos, mantenga la seguridad y el confort, y trabaje en restaurar la función.'}
-             : s>=1 ? {t:'Posible deterioro cognitivo',tone:'warn',d:'Un puntaje de 1 a 3 sugiere deterioro cognitivo, habitualmente crónico. El delirium no queda descartado: si el ítem 4 no pudo valorarse con información fiable, revalore en otro momento del día. Complete la valoración cognoscitiva de forma programada.'}
-                    : {t:'Delirium o deterioro cognitivo grave poco probables',tone:'ok',d:'Un puntaje de 0 hace poco probable el delirium o un deterioro cognitivo grave, pero no los descarta: el delirium sigue siendo posible si la información del ítem 4 es incompleta. Repita el cribado ante cualquier cambio clínico.'},
-  note:'A diferencia del CAM, el 4AT no requiere entrenamiento formal y puede completarse en el paciente somnoliento o que no colabora, porque la imposibilidad de evaluar puntúa en lugar de invalidar la prueba. En la validación original mostró sensibilidad del 89,7 % y especificidad del 84,1 %; la versión española alcanzó sensibilidad del 96 % y especificidad del 83,1 %. Es una prueba de cribado: el diagnóstico se confirma con los criterios del DSM 5-TR.'
-},
-
 dsmdelirium:{
   eje:'mental', dom:'Delirium',
   name:'Criterios DSM 5-TR · delirium',
@@ -1972,7 +1950,7 @@ const ORDER = {
     {g:'Participación', ids:['eq5d']}
   ],
   mental:[
-    {g:'Delirium', ids:['cam','at4','dsmdelirium']},
+    {g:'Delirium', ids:['cam','dsmdelirium']},
     {g:'Deterioro cognitivo', ids:['minicog','mmse','memoria']},
     {g:'Estadificación', ids:['cdr','gdsreisberg']},
     {g:'Conducta y afecto', ids:['npi','yesavage','gad7']}
@@ -2368,7 +2346,7 @@ function renderList(){
     + '<div class="cnt">'+n+' instrumentos</div></div>'
     + '<div class="search">'
     + '<svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
-    + '<input id="q" type="search" placeholder="Buscar en las '+(ALL_IDS.length-1)+' escalas" value="'+esc(state.q)+'" autocomplete="off">'
+    + '<input id="q" type="search" placeholder="Buscar en las '+ALL_IDS.length+' escalas" value="'+esc(state.q)+'" autocomplete="off">'
     + (state.q?'<button class="clr" data-act="clearq" aria-label="Limpiar">&times;</button>':'')
     + '</div>'
     + (state.q?'':quickHTML() + domHTML())
@@ -2575,25 +2553,38 @@ function renderOpiRes(){
     .map(id=>OPI_ALERTA[id]?{id,txt:OPI_ALERTA[id]}:null).filter(Boolean);
   const uni = u => u==='mcg/h' ? ' mcg/h' : u==='mcg' ? ' mcg' : ' mg';
   const techo = r.d.techo && r.final>r.d.techo;
+  const mismo = r.o.id===r.d.id;
 
   box.innerHTML =
     '<div class="result" style="margin-top:6px"><div class="band"></div><div class="body">'
-    + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--eje)">Equivalente de morfina oral</span>'
-    + '<div class="score" style="margin-top:8px"><span class="n">'+dfmt(r.emo)+'</span><span class="d">mg al día</span></div>'
-    + '<div class="verdict '+(alta?'v-warn':'v-ok')+'">'
-    + (alta?'90 mg o más de equivalente de morfina':'Menos de 90 mg de equivalente de morfina')+'</div>'
-    + '<p class="detail">'+esc(dfmt(r.dosis)+uni(r.o.u)+' al día de '+opiLabel(r.o)+' equivalen a '+dfmt(r.emo)+' mg de morfina oral al día.'
-      + (alta?' El taller recomienda restringir el inicio de opioides por debajo de 90 mg de equivalentes de morfina; por encima de ese umbral revise indicación, adyuvantes y medidas no farmacológicas antes de escalar.':''))+'</p>'
+    + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--eje)">Dosis de '+esc(opiLabel(r.d))+'</span>'
+    + '<div class="score" style="margin-top:8px"><span class="n'+(dfmt(r.final).length>4?' sm':'')+'">'+dfmt(r.final)+'</span>'
+    + '<span class="d">'+(r.d.parche?'mcg/h':uni(r.d.u).trim()+' al día')+'</span></div>'
+    + (mismo?'<div class="verdict v-warn">Ajuste de dosis, no rotación</div>':'')
+    + '<p class="detail">'+esc(
+        (mismo
+          ? 'El opioide y la vía de origen coinciden con los de destino, de modo que el cálculo no es una rotación sino un ajuste de dosis. '
+          : dfmt(r.dosis)+uni(r.o.u)+(r.o.parche?'':' al día')+' de '+opiLabel(r.o)+' equivalen a '
+             + (r.d.parche ? 'una liberación de '+dfmt(r.final)+' mcg/h de '+opiLabel(r.d)
+                           : dfmt(r.final)+uni(r.d.u)+' al día de '+opiLabel(r.d))
+             + ', una vez aplicada la reducción por tolerancia cruzada incompleta. ')
+        + r.motivo.d)+'</p>'
 
     + '<div class="sub" style="border-top:1px solid var(--line)">'
-    + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600;margin-bottom:8px">Dosis del opioide de destino</div>'
+    + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600;margin-bottom:8px">Cómo se llegó a esa dosis</div>'
     + '<div class="breakdown" style="margin-top:0">'
+    + '<div><span>Dosis de origen en 24 horas</span><span>'+dfmt(r.dosis)+uni(r.o.u)+'</span></div>'
+    + '<div><span>Equivalente de morfina oral</span><span>'+dfmt(r.emo)+' mg</span></div>'
     + '<div><span>Dosis equianalgésica bruta</span><span>'+dfmt(r.bruta)+uni(r.d.u)+'</span></div>'
     + '<div><span>'+esc(r.motivo.l)+'</span><span>'+(r.motivo.r?'−'+r.motivo.r+' %':'sin reducción')+'</span></div>'
-    + '<div style="border-bottom:none;padding-top:7px;font-size:14px;color:var(--ink);font-weight:600"><span>Dosis total en 24 horas</span><span>'+dfmt(r.final)+uni(r.d.u)+'</span></div>'
+    + '<div style="border-bottom:none;padding-top:7px;font-size:14px;color:var(--ink);font-weight:600"><span>'
+    + (r.d.parche?'Velocidad de liberación':'Dosis total en 24 horas')+'</span><span>'+dfmt(r.final)+uni(r.d.u)+'</span></div>'
     + '</div></div>'
 
-    + '<p class="detail">'+esc(r.motivo.d)+'</p>'
+    + '<p class="detail"><strong>Equivalente de morfina oral:</strong> '+dfmt(r.emo)+' mg al día. '
+    + esc(alta
+        ? 'El taller recomienda restringir el inicio de opioides por debajo de 90 mg de equivalentes de morfina; por encima de ese umbral revise indicación, adyuvantes y medidas no farmacológicas antes de escalar.'
+        : 'Por debajo del umbral de 90 mg que el taller señala para revisar la indicación.')+'</p>'
 
     + (r.metaBanda?'<p class="detail">Se aplicó la razón dependiente de la dosis del taller: '+esc(r.metaBanda)+'.</p>':'')
 
@@ -2704,9 +2695,8 @@ function renderAbout(){
   + '<div class="cite">Quintero C V. Taller de opioides. Fellow de Dolor y Cuidados Paliativos, Instituto Nacional de Cancerología – Universidad Militar Nueva Granada.</div>'
 
   + '<h3>Escalas complementarias</h3>'
-  + '<p>Seis instrumentos incluidos aquí no están tabulados en el manual y se citan de forma independiente. El Zarit es mencionado en el capítulo de esfera social. El 4AT complementa al CAM en el cribado de delirium: no requiere entrenamiento formal y puede aplicarse al paciente somnoliento o que no colabora, situación en la que el CAM no puede completarse. El PAINAD cubre la evaluación del dolor en la persona que no puede autorreportarlo, para la que el manual no ofrece herramienta. El PaP Score completa el bloque pronóstico en cuidados paliativos junto al PPS y el PPI. Los índices de Walter y de Lee provienen del repositorio ePrognosis de la Universidad de California en San Francisco y estiman mortalidad a un año tras la hospitalización y a cuatro años en la comunidad, respectivamente; su calibración en población colombiana no ha sido estudiada.</p>'
+  + '<p>Cinco instrumentos incluidos aquí no están tabulados en el manual y se citan de forma independiente. El Zarit es mencionado en el capítulo de esfera social. El PAINAD cubre la evaluación del dolor en la persona que no puede autorreportarlo, para la que el manual no ofrece herramienta. El PaP Score completa el bloque pronóstico en cuidados paliativos junto al PPS y el PPI. Los índices de Walter y de Lee provienen del repositorio ePrognosis de la Universidad de California en San Francisco y estiman mortalidad a un año tras la hospitalización y a cuatro años en la comunidad, respectivamente; su calibración en población colombiana no ha sido estudiada.</p>'
   + '<div class="cite">Zarit SH, Reever KE, Bach-Peterson J. Relatives of the impaired elderly: correlates of feelings of burden. Gerontologist. 1980;20(6):649-55. Versión española: Martín M, et al. Rev Gerontol. 1996;6:338-46. Validación en Colombia: Barreto-Osorio RV, et al. Aquichan. 2015;15(3):368-80.</div>'
-  + '<div class="cite">Bellelli G, Morandi A, Davis DHJ, Mazzola P, Turco R, Gentile S, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014;43(4):496-502. Versión española validada: Delgado-Parada E, Morillo-Cuadrado D, Saiz-Ruiz J, Cebollada-Gracia A, Ayuso-Mateos JL, Cruz-Jentoft AJ. Eur J Psychiatry. 2022. doi:10.1016/j.ejpsy.2022.01.003.</div>'
   + '<div class="cite">Warden V, Hurley AC, Volicer L. Development and psychometric evaluation of the Pain Assessment in Advanced Dementia (PAINAD) scale. J Am Med Dir Assoc. 2003;4(1):9-15. Versión española validada: García-Soler Á, Sánchez-Iglesias I, Buiza C, Alaba J, Navarro AB, Arriola E, et al. Rev Esp Geriatr Gerontol. 2014;49(1):10-4.</div>'
 
   + '<h3>Tamaño de texto</h3>'
@@ -2716,6 +2706,9 @@ function renderAbout(){
   + '<button data-act="tsize" data-t="2" aria-pressed="'+(store.get("tsize",0)===2)+'">A</button>'
   + '</div>'
   + '<p>La preferencia se conserva en este dispositivo.</p>'
+
+  + '<h3>Uso sin conexión</h3>'
+  + '<p>La aplicación se instala en la pantalla de inicio y funciona sin señal. En iPhone, abra el enlace en Safari, toque el botón de compartir y elija "Añadir a pantalla de inicio". En Android, use la opción "Instalar aplicación" del menú del navegador. Después de la primera visita, todo el contenido queda disponible sin conexión.</p>'
 
   + '<h3>Valoración geriátrica integral</h3>'
   + '<p>La pestaña VGI reúne los resultados de varias escalas y produce un resumen de los cuatro ejes listo para copiar en la historia clínica. Esa valoración vive solo en la memoria mientras la aplicación está abierta y se pierde al cerrarla o recargarla.</p>'
@@ -2737,7 +2730,7 @@ function renderAbout(){
   + '</div>'
 
   + '<h3>Historial de versiones</h3>'
-  + '<div class="cite"><strong>2.9</strong> · 4AT, prueba rápida de cribado de delirium, junto al CAM en el eje mental. Aplicable al paciente somnoliento o que no colabora, en quien el CAM no puede completarse.</div>'
+  + '<div class="cite"><strong>2.9</strong> · Conversor de opioides: el resultado ahora encabeza con la dosis del opioide de destino y no con el equivalente de morfina, que pasa al desglose. Se avisa cuando origen y destino coinciden.</div>'
   + '<div class="cite"><strong>2.8</strong> · NECPAL reconstruido sobre la versión 3.1 del instrumento: trece parámetros con sus umbrales explícitos, y los criterios de enfermedad crónica avanzada de las once condiciones del bloque específico, desplegables dentro del ítem.</div>'
   + '<div class="cite"><strong>2.7</strong> · Pestaña propia de Paliativos y pronóstico, que reúne el NECPAL, el PPS, el PPI, el PaP, los índices de Walter y de Lee y el conversor de opioides. Retrato en la ficha de autor.</div>'
   + '<div class="cite"><strong>2.6</strong> · Franja de bandas en el resultado, que sitúa el puntaje entre los puntos de corte.  Encabezado de eje con jerarquía. Los instrumentos de pronóstico quedan separados de los de necesidades paliativas.</div>'
@@ -2946,6 +2939,24 @@ document.addEventListener('input', e=>{
   const b = document.getElementById('bmiOut'); if(b) b.innerHTML = bmiText();
   const w = document.getElementById('wOut');  if(w) w.innerHTML = weightText();
 });
+
+/* ---------- Service Worker (PWA offline) ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(reg=>{
+      reg.addEventListener('updatefound', ()=>{
+        const nuevo = reg.installing;
+        if(!nuevo) return;
+        nuevo.addEventListener('statechange', ()=>{
+          if(nuevo.state==='installed' && navigator.serviceWorker.controller){
+            const t = document.getElementById('toast');
+            if(t){ t.className='toast'; t.textContent='Hay una versión nueva: cierre y vuelva a abrir la aplicación.'; }
+          }
+        });
+      });
+    }).catch(err => console.warn('SW no registrado', err));
+  });
+}
 
 setTamano(store.get('tsize',0));
 render();
