@@ -9,7 +9,7 @@ y pronóstico.
 
 ## Abrir la herramienta
 
-https://DRCLLANO.github.io/vgi-herramienta-digital/
+https://drcllano.github.io/vgi-herramienta-digital/
 
 
 ## Qué es
@@ -72,7 +72,7 @@ Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. Escalas de uso frecuente en Geriatría: herramienta digital
 > para la Valoración Geriátrica Integral (versión 2.9) [software]. Zenodo;
-> 2026. https://doi.org/10.5281/zenodo.XXXXXXX
+> 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
 
