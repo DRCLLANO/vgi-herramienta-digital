@@ -2,7 +2,7 @@
 
 **Desarrollo asistido por inteligencia artificial de una aplicación web de escalas geriátricas**
 
-Documento de respaldo del depósito. Corresponde a la versión 2.10.1 de la
+Documento de respaldo del depósito. Corresponde a la versión 2.10.2 de la
 herramienta.
 
 Autor del desarrollo: Cristian Camilo Llano Ceballos, médico geriatra.
@@ -185,7 +185,7 @@ mantiene en `ui-v3.css`, y el paquete instalable se completa con
 Todo el cálculo ocurre en el dispositivo y no se transmiten respuestas ni
 resultados clínicos a ningún servidor.
 
-La versión 2.10.1 tiene un núcleo HTML de aproximadamente 242 KB y una hoja de
+La versión 2.10.2 tiene un núcleo HTML de aproximadamente 242 KB y una hoja de
 estilos local de aproximadamente 14 KB; no depende de bibliotecas de código
 externas. Google Fonts puede generar una solicitud de red
 para las tipografías, pero la aplicación declara alternativas del sistema y
@@ -216,12 +216,16 @@ puntajes y detectando los cambios de veredicto**. Lo que la ficha de evidencia
 documenta es exactamente lo que el programa calcula, y no puede desincronizarse
 con el tiempo.
 
-### 6.1 Contenido de la versión 2.10.1
+### 6.1 Contenido de la versión 2.10.2
 
-La actualización 2.10.1 modifica exclusivamente la presentación adaptable y
-la accesibilidad de la interfaz. Conserva sin cambios el bloque clínico de la
-versión 2.10: instrumentos, ítems, opciones, reglas de cálculo, puntos de corte,
-interpretaciones y referencias.
+La actualización 2.10.1 modificó exclusivamente la presentación adaptable y la
+accesibilidad de la interfaz. La 2.10.2 amplía los descargos de la aplicación:
+añade una sección propia de derechos y permisos que hace constar la
+autorización de los editores del manual, la existencia de instrumentos con
+titular de derechos propio y la finalidad educativa del uso. Ninguna de las dos
+modifica el bloque clínico de la versión 2.10: instrumentos, ítems, opciones,
+reglas de cálculo, puntos de corte, interpretaciones y referencias se conservan
+sin cambios.
 
 | Elemento | Cantidad |
 |---|---|
@@ -355,6 +359,34 @@ Durante la revisión del manuscrito se detectó que el primer autor de la
 referencia del interRAI Acute Care es Devriendt E, no Wellens NIH
 (BMC Geriatr. 2013;13:90). Corregido.
 
+### 8.5 Divergencia entre la copia depositada y la publicada
+
+**Incidente 5.** Al comparar el archivo depositado con el publicado se
+encontró que ambos se denominaban "versión 2.9" y que ninguno contenía todo el
+trabajo: la copia depositada conservaba el 4AT y la versión anterior del
+conversor de opioides, mientras que la copia publicada incorporaba el conversor
+reescrito y el funcionamiento sin conexión, pero había perdido el 4AT por
+completo (su estructura de datos, su agrupamiento en el eje mental, su cita
+bibliográfica y su mención en el texto de instrumentos complementarios). La
+aplicación en uso ofrecía 42 escalas y no 43, y faltaba justamente el
+instrumento incorporado por criterio experto para el paciente en quien el CAM
+no puede completarse.
+
+Ninguno de los tres niveles de prueba automatizada podía detectarlo: cada copia
+era internamente coherente y pasaba la totalidad de las verificaciones. El
+hallazgo solo fue posible al comparar archivo contra archivo entre el
+repositorio y el depósito.
+
+La corrección consistió en fusionar ambas ramas sin descartar trabajo de
+ninguna (versión 2.10) y en verificar después, mediante suma de comprobación,
+que el archivo publicado y el depositado fueran idénticos.
+
+La consecuencia metodológica es que la verificación de contenido y de
+funcionamiento no cubre la integridad de la distribución. Cuando un desarrollo
+asistido por inteligencia artificial avanza en sesiones sucesivas y sobre más de
+una copia del archivo, hace falta un control explícito de identidad entre lo
+que se publica y lo que se deposita, ejecutado en cada versión.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la
@@ -410,8 +442,19 @@ búsqueda sistemática y debe confirmarse mediante una revisión de alcance form
 antes de la publicación.
 
 La herramienta operativiza el contenido de un manual del que el autor es
-coautor de un capítulo, no de la obra completa. La distribución amplia requiere
-el aval explícito de los editores y de la editorial.
+coautor de un capítulo, no de la obra completa. Los editores del manual
+autorizaron el uso de su contenido en esta herramienta; esa autorización cubre
+la aplicación y no se extiende a quien la reutilice o la redistribuya. Los
+derechos sobre el manual siguen perteneciendo a sus autores y a la Pontificia
+Universidad Javeriana.
+
+Varios de los instrumentos incluidos tienen titular de derechos propio,
+distinto del manual. Se reproducen con finalidad educativa y de apoyo
+asistencial, sin ánimo de lucro, citando en cada caso su fuente primaria. El
+estado de cada titular consta en el archivo `NOTICE.md` del depósito, con los
+instrumentos ya resueltos y los que quedan por verificar antes de cualquier
+redistribución, traducción o incorporación a otro producto. Esa tabla es
+orientativa y no constituye asesoría legal.
 
 ## 11. Autoría y transparencia
 

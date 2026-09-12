@@ -15,7 +15,7 @@ abstract: >-
   original de un solo autor, construido mediante trabajo conversacional con un
   modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
 type: software
-version: "2.10.1"
+version: "2.10.2"
 date-released: "2026-09-12"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"

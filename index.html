@@ -2319,7 +2319,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><span class="brand-mark">V</span><div><strong>VGI Digital</strong><small>Versión 2.10.1</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><span class="brand-mark">V</span><div><strong>VGI Digital</strong><small>Versión 2.10.2</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2770,8 +2770,13 @@ function renderAbout(){
   + '<h3>Privacidad</h3>'
   + '<p>La aplicación no transmite ningún dato a ningún servidor: todo el cálculo ocurre en el dispositivo. Las respuestas de cada escala y la valoración en curso se pierden al cerrar la aplicación. Lo único que se conserva en el dispositivo son sus preferencias de uso: escalas favoritas, escalas recientes y tamaño de texto. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</p>'
 
+  + '<h3>Derechos y permisos</h3>'
+  + '<p>El contenido de las escalas proviene del manual citado arriba. Todos los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, y sus editores autorizaron el uso de ese contenido en esta herramienta. Esa autorización cubre esta aplicación y no se extiende a quien la reutilice o la redistribuya.</p>'
+  + '<p>Varios de los instrumentos incluidos tienen titular de derechos propio, distinto del manual, y condiciones de uso que dependen de ese titular. Esta herramienta los reproduce con finalidad educativa y de apoyo asistencial, sin ánimo de lucro, y cita en cada ficha su fuente primaria. Quien desee reutilizarlos, traducirlos o incorporarlos a otro producto debe verificar sus condiciones con el titular correspondiente; el detalle consta en el archivo NOTICE.md del repositorio.</p>'
+  + '<p>El código de la aplicación se publica bajo licencia MIT, que no cubre el contenido de las escalas.</p>'
+
   + '<h3>Uso previsto</h3>'
-  + '<p>Herramienta de apoyo para el cálculo e interpretación de escalas de tamización. No reemplaza la valoración clínica, el juicio profesional ni los criterios diagnósticos vigentes. Las escalas deben cumplir su función de cuantificar, pero son parte del apoyo a la atención diaria y no elementos que sustituyan el diagnóstico clínico.</p>'
+  + '<p>Herramienta de apoyo educativo para el cálculo e interpretación de escalas de tamización. No reemplaza la valoración clínica, el juicio profesional ni los criterios diagnósticos vigentes. Las escalas deben cumplir su función de cuantificar, pero son parte del apoyo a la atención diaria y no elementos que sustituyan el diagnóstico clínico. El conversor de opioides es material educativo y no constituye una guía de prescripción.</p>'
 
   + '<div class="sig">'
   + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Desarrollo</span>'
@@ -2784,6 +2789,7 @@ function renderAbout(){
   + '</div>'
 
   + '<h3>Historial de versiones</h3>'
+  + '<div class="cite"><strong>2.10.2</strong> · Se amplían los descargos: sección propia de derechos y permisos, con la autorización de los editores del manual, la advertencia de que varios instrumentos tienen titular de derechos propio y la declaración de finalidad educativa. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10.1</strong> · Actualización visual adaptable: navegación lateral y tarjetas en pantallas amplias; barra inferior compacta y estable en navegadores móviles, incluido Microsoft Edge. Se mejoran el foco visible, el acceso por teclado, las áreas táctiles y la jerarquía visual. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10</strong> · Uso sin conexión: la aplicación se instala en la pantalla de inicio y funciona sin señal. Se restituye el 4AT, que una divergencia entre la copia depositada y la publicada había dejado fuera de esta última.</div>'
   + '<div class="cite"><strong>2.9</strong> · Conversor de opioides: el resultado ahora encabeza con la dosis del opioide de destino y no con el equivalente de morfina, que pasa al desglose. Se avisa cuando origen y destino coinciden. 4AT, prueba rápida de cribado de delirium, junto al CAM en el eje mental: aplicable al paciente somnoliento o que no colabora, en quien el CAM no puede completarse.</div>'
@@ -2799,7 +2805,7 @@ function renderAbout(){
   + '<div class="cite"><strong>2.0</strong> · Contenido derivado del manual de 2024: de 9 a 38 escalas, agrupadas por dominio dentro de cada eje, con buscador.</div>'
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
 
-  + '<p class="disclaimer">Versión 2.10.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual de escalas pertenecen a sus autores y a la Pontificia Universidad Javeriana.</p>'
+  + '<p class="disclaimer">Versión 2.10.2 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso educativo; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 

@@ -3,6 +3,21 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.2
+
+Ampliación de los descargos, sin cambios en las escalas, sus reglas de cálculo,
+puntos de corte ni interpretaciones.
+
+- Sección propia de derechos y permisos en "Acerca de": consta la autorización
+  de los editores del manual para usar su contenido en la herramienta, que esa
+  autorización no se extiende a quien reutilice o redistribuya la aplicación, y
+  que varios instrumentos incluidos tienen titular de derechos propio con
+  condiciones que dependen de ese titular, remitiendo a `NOTICE.md`.
+- Se declara la finalidad educativa y de apoyo asistencial, sin ánimo de lucro,
+  y se recuerda que la licencia MIT cubre el código y no el contenido de las
+  escalas.
+- El pie de la aplicación recoge las mismas tres constancias en forma breve.
+
 ## 2.10.1
 
 Actualización menor de interfaz, sin cambios en las escalas, sus reglas de
