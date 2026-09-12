@@ -2,7 +2,7 @@
 
 **Desarrollo asistido por inteligencia artificial de una aplicación web de escalas geriátricas**
 
-Documento de respaldo del depósito. Corresponde a la versión 2.9 de la
+Documento de respaldo del depósito. Corresponde a la versión 2.10 de la
 herramienta.
 
 Autor del desarrollo: Cristian Camilo Llano Ceballos, médico geriatra.
@@ -178,17 +178,22 @@ herramienta, en su sección "Acerca de".
 
 ## 6. Arquitectura
 
-Aplicación web de archivo único, sin servidor ni base de datos. Todo el cálculo
-ocurre en el dispositivo y no se transmite información a ningún servidor.
+Aplicación web progresiva sin servidor de aplicación ni base de datos. El
+núcleo funcional está contenido en `index.html`; el paquete instalable se
+completa con `manifest.json`, el trabajador de servicio (`sw.js`) y los iconos.
+Todo el cálculo ocurre en el dispositivo y no se transmiten respuestas ni
+resultados clínicos a ningún servidor.
 
-La versión 2.9 es un solo archivo HTML de 232 KB, sin dependencias de código
-externas. La única solicitud de red que emite es la de las tipografías alojadas
-en Google Fonts, para la que declara alternativas del sistema: si esa solicitud
-falla, la aplicación carga y funciona igual con las tipografías locales. **Guardado el archivo en el dispositivo, la herramienta
-funciona por completo sin conexión.** Servida desde una URL, requiere conexión
-para la carga inicial: la versión 2.9 no incluye trabajador de servicio
-(*service worker*) ni manifiesto de aplicación web, de modo que el navegador no
-la almacena en caché ni permite instalarla como aplicación nativa.
+La versión 2.10 tiene un núcleo HTML de aproximadamente 240 KB y no depende de
+bibliotecas de código externas. Google Fonts puede generar una solicitud de red
+para las tipografías, pero la aplicación declara alternativas del sistema y
+mantiene su funcionamiento si esa solicitud falla. Tras una primera carga
+correcta desde la URL, el trabajador de servicio almacena los recursos de la
+aplicación en caché y permite el uso posterior sin conexión; los navegadores
+compatibles también pueden ofrecer su instalación como aplicación web
+progresiva. La disponibilidad exacta de la instalación y de la caché depende
+del navegador y de que el registro inicial del trabajador de servicio se haya
+completado correctamente.
 
 Las únicas preferencias que persisten en el dispositivo son escalas favoritas,
 escalas recientes y tamaño de texto; las respuestas de cada escala y la
@@ -209,7 +214,7 @@ puntajes y detectando los cambios de veredicto**. Lo que la ficha de evidencia
 documenta es exactamente lo que el programa calcula, y no puede desincronizarse
 con el tiempo.
 
-### 6.1 Contenido de la versión 2.9
+### 6.1 Contenido de la versión 2.10
 
 | Elemento | Cantidad |
 |---|---|
@@ -385,11 +390,11 @@ estadounidenses cuya calibración en población colombiana no ha sido estudiada.
 La herramienta lo advierte en cada caso, pero la advertencia no sustituye la
 validación local.
 
-Servida desde una URL, la aplicación requiere conexión para la carga inicial, y
-la versión 2.9 no se almacena en caché ni se instala como aplicación nativa.
-Esto limita el uso en escenarios sin cobertura, frecuentes en algunas áreas de
-hospitalización, salvo que el archivo se haya guardado previamente en el
-dispositivo.
+El funcionamiento sin conexión depende de una primera carga satisfactoria y
+del registro del trabajador de servicio. La instalación y la persistencia de
+la caché pueden variar según el navegador, las políticas del dispositivo y la
+eliminación posterior de datos del sitio; por ello no deben asumirse sin una
+prueba específica en el entorno de uso.
 
 El registro de incidentes es retrospectivo, no concurrente.
 
