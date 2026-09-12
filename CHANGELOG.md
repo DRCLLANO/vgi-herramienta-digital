@@ -3,7 +3,22 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10
+
+Uso sin conexión: la aplicación se instala en la pantalla de inicio y funciona
+sin señal tras la primera visita (manifest, iconos y service worker).
+
+Se restituye el 4AT. Dos copias de la versión 2.9 habían divergido: la
+depositada conservaba el 4AT y el conversor anterior, mientras que la publicada
+incorporaba el conversor reescrito pero había perdido la escala. Esta versión
+reúne ambas ramas sin descartar trabajo de ninguna.
+
 ## 2.9
+
+Conversor de opioides: el resultado encabeza con la dosis del opioide de
+destino y no con el equivalente de morfina, que pasa al desglose. Se avisa
+cuando el opioide de origen y el de destino coinciden, porque entonces el
+cálculo es un ajuste de dosis y no una rotación.
 
 4AT, prueba rápida de cribado de delirium, junto al CAM en el eje mental.
 Aplicable al paciente somnoliento o que no colabora, en quien el CAM no puede
