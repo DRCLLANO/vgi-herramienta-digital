@@ -14,8 +14,8 @@ abstract: >-
   original de un solo autor, construido mediante trabajo conversacional con un
   modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
 type: software
-version: "2.9"
-date-released: "2026-09-10"
+version: "2.10"
+date-released: "2026-09-12"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/drcllano/vgi-herramienta-digital"
