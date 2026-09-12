@@ -1,4 +1,8 @@
-# Escalas de uso frecuente en Geriatría
+# Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral
+
+[![DOI](https://img.shields.io/badge/DOI-10.17605%2FOSF.IO%2FKMX8H-blue)](https://doi.org/10.17605/OSF.IO/KMX8H)
+[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-green)](LICENSE)
+[![ORCID](https://img.shields.io/badge/ORCID-0000--0001--9745--3863-a6ce39)](https://orcid.org/0000-0001-9745-3863)
 
 Herramienta digital para el cálculo y la interpretación de las escalas de la
 Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
@@ -10,7 +14,6 @@ y pronóstico.
 ## Abrir la herramienta
 
 https://drcllano.github.io/vgi-herramienta-digital/
-
 
 ## Qué es
 
@@ -45,41 +48,60 @@ Los ítems, puntajes, puntos de corte y la organización por ejes provienen de:
 > 978-958-781-930-4 (digital). DOI 10.11144/Javeriana.9789587819304
 
 Los derechos sobre el manual pertenecen a sus autores y a la Pontificia
-Universidad Javeriana. El papel de quien firma este repositorio fue el
-desarrollo y la compilación de la aplicación, no la autoría del contenido del
-manual. Cada escala conserva además su referencia primaria y, cuando existe, la
-de su validación en población colombiana o latinoamericana; ambas se muestran
-dentro de la ficha de cada instrumento.
+Universidad Javeriana. **Los editores del manual autorizaron el uso de su
+contenido en esta herramienta.** Esa autorización cubre esta aplicación y no se
+extiende a terceros que reutilicen o redistribuyan el repositorio.
+
+El papel de Cristian Camilo Llano Ceballos fue el desarrollo y la compilación de
+la aplicación, no la autoría del contenido del manual. Cada escala conserva
+además su referencia primaria y, cuando existe, la de su validación en población
+colombiana o latinoamericana; ambas se muestran dentro de la ficha de cada
+instrumento.
 
 ## Autoría y desarrollo asistido por inteligencia artificial
 
 Desarrollo original de **Cristian Camilo Llano Ceballos** (ORCID
-[0000-0001-9745-3863](https://orcid.org/0000-0001-9745-3863)), construido
-mediante trabajo conversacional con un modelo de lenguaje (Claude, Anthropic)
-que actuó como asistente de programación, extracción documental y redacción. El
-clínico definió el alcance, aportó las fuentes, tomó todas las decisiones de
-contenido y validó cada resultado. Conforme a las recomendaciones del ICMJE y
-del COPE, la herramienta de inteligencia artificial no cumple los criterios de
-autoría y no figura como autora.
+[0000-0001-9745-3863](https://orcid.org/0000-0001-9745-3863)), autor único del
+software, construido mediante trabajo conversacional con un modelo de lenguaje
+(Claude, Anthropic) que actuó como asistente de programación, extracción
+documental y redacción. El clínico definió el alcance, aportó las fuentes, tomó
+todas las decisiones de contenido y validó cada resultado. Conforme a las
+recomendaciones del ICMJE y del COPE, la herramienta de inteligencia artificial
+no cumple los criterios de autoría y no figura como autora.
 
 El registro del proceso, los ciclos de verificación y los incidentes críticos
 detectados están documentados en
 [`registro-desarrollo.md`](registro-desarrollo.md).
+
+## Depósito y preservación
+
+El archivo fuente, el registro de desarrollo y las condiciones de uso de los
+instrumentos están depositados en el Open Science Framework, que es el
+identificador permanente de este software:
+
+- Proyecto: https://osf.io/kmx8h/
+- DOI: [10.17605/OSF.IO/KMX8H](https://doi.org/10.17605/OSF.IO/KMX8H)
+
+Cada versión publicada se archiva además como *registration* fechada en OSF
+Registries, con su propio DOI de versión. El DOI del proyecto es el que debe
+citarse.
 
 ## Cómo citar
 
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. Escalas de uso frecuente en Geriatría: herramienta digital
-> para la Valoración Geriátrica Integral (versión 2.9) [software]. Zenodo;
-> 2026. https://doi.org/10.17605/OSF.IO/KMX8H
+> para la Valoración Geriátrica Integral (versión 2.9) [software]. Open Science
+> Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
 
 El **código fuente** se publica bajo licencia MIT (archivo `LICENSE`).
 
-El **contenido de las escalas** no está cubierto por esa licencia. Antes de
-reutilizar, redistribuir o traducir esta herramienta, lea
+La **documentación** de este repositorio se publica bajo CC BY 4.0.
+
+El **contenido de las escalas** no está cubierto por ninguna de las dos. Antes
+de reutilizar, redistribuir o traducir esta herramienta, lea
 [`NOTICE.md`](NOTICE.md): varios instrumentos incluidos tienen titular de
 derechos propio y condiciones de uso específicas.
 
@@ -94,4 +116,3 @@ derechos propio y condiciones de uso específicas.
 | `CITATION.cff` | Metadatos de citación |
 | `CHANGELOG.md` | Historial de versiones (1.0 a 2.9) |
 | `registro-desarrollo.md` | Registro del proceso de desarrollo asistido por IA |
-| `.zenodo.json` | Metadatos para el depósito automático en Zenodo |

@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "Si utiliza esta herramienta, por favor cítela como se indica a continuación."
+message: "Si utiliza esta herramienta, por favor cítela como se indica a continuación. Antes de reutilizar o redistribuir el contenido de las escalas, consulte NOTICE.md."
 title: "Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral"
 abstract: >-
   Herramienta digital de acceso libre para el cálculo y la interpretación de 43
@@ -10,15 +10,15 @@ abstract: >-
   por completo en el navegador, sin servidor y sin transmisión ni
   almacenamiento de datos. Su contenido deriva del manual "Abordaje geriátrico
   integral: escalas de uso frecuente en geriatría" (Editorial Pontificia
-  Universidad Javeriana, 2024). Desarrollo original de un solo autor,
-  construido mediante trabajo conversacional con un modelo de lenguaje. Uso
-  educativo; no reemplaza el juicio clínico.
+  Universidad Javeriana, 2024), con autorización de sus editores. Desarrollo
+  original de un solo autor, construido mediante trabajo conversacional con un
+  modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
 type: software
 version: "2.9"
 date-released: "2026-09-10"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"
-repository-code: "https://github.com/DRCLLANO/vgi-herramienta-digital"
+repository-code: "https://github.com/drcllano/vgi-herramienta-digital"
 url: "https://drcllano.github.io/vgi-herramienta-digital/"
 authors:
   - family-names: "Llano Ceballos"
