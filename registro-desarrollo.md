@@ -2,7 +2,7 @@
 
 **Desarrollo asistido por inteligencia artificial de una aplicación web de escalas geriátricas**
 
-Documento de respaldo del depósito. Corresponde a la versión 2.10 de la
+Documento de respaldo del depósito. Corresponde a la versión 2.10.1 de la
 herramienta.
 
 Autor del desarrollo: Cristian Camilo Llano Ceballos, médico geriatra.
@@ -179,13 +179,15 @@ herramienta, en su sección "Acerca de".
 ## 6. Arquitectura
 
 Aplicación web progresiva sin servidor de aplicación ni base de datos. El
-núcleo funcional está contenido en `index.html`; el paquete instalable se
-completa con `manifest.json`, el trabajador de servicio (`sw.js`) y los iconos.
+núcleo funcional está contenido en `index.html`; la presentación adaptable se
+mantiene en `ui-v3.css`, y el paquete instalable se completa con
+`manifest.json`, el trabajador de servicio (`sw.js`) y los iconos.
 Todo el cálculo ocurre en el dispositivo y no se transmiten respuestas ni
 resultados clínicos a ningún servidor.
 
-La versión 2.10 tiene un núcleo HTML de aproximadamente 240 KB y no depende de
-bibliotecas de código externas. Google Fonts puede generar una solicitud de red
+La versión 2.10.1 tiene un núcleo HTML de aproximadamente 242 KB y una hoja de
+estilos local de aproximadamente 14 KB; no depende de bibliotecas de código
+externas. Google Fonts puede generar una solicitud de red
 para las tipografías, pero la aplicación declara alternativas del sistema y
 mantiene su funcionamiento si esa solicitud falla. Tras una primera carga
 correcta desde la URL, el trabajador de servicio almacena los recursos de la
@@ -214,7 +216,12 @@ puntajes y detectando los cambios de veredicto**. Lo que la ficha de evidencia
 documenta es exactamente lo que el programa calcula, y no puede desincronizarse
 con el tiempo.
 
-### 6.1 Contenido de la versión 2.10
+### 6.1 Contenido de la versión 2.10.1
+
+La actualización 2.10.1 modifica exclusivamente la presentación adaptable y
+la accesibilidad de la interfaz. Conserva sin cambios el bloque clínico de la
+versión 2.10: instrumentos, ítems, opciones, reglas de cálculo, puntos de corte,
+interpretaciones y referencias.
 
 | Elemento | Cantidad |
 |---|---|

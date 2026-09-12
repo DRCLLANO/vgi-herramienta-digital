@@ -1,6 +1,6 @@
 {
-  "name": "Escalas de uso frecuente en Geriatría",
-  "short_name": "Escalas VGI",
+  "name": "VGI Digital — Escalas de Geriatría",
+  "short_name": "VGI Digital",
   "description": "Cálculo e interpretación de 43 escalas de la Valoración Geriátrica Integral, con un conversor de dosis equianalgésicas de opioides. Uso educativo.",
   "lang": "es",
   "dir": "ltr",
@@ -8,8 +8,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#EEF1F4",
-  "theme_color": "#EEF1F4",
+  "background_color": "#F4F7FA",
+  "theme_color": "#102238",
   "categories": [
     "medical",
     "education"

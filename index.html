@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Escalas Geriatría">
 <meta name="application-name" content="Escalas Geriatría">
-<meta name="theme-color" content="#EEF1F4">
-<meta name="msapplication-TileColor" content="#EEF1F4">
+<meta name="theme-color" content="#102238">
+<meta name="msapplication-TileColor" content="#102238">
 <meta name="description" content="Calculadora de escalas de la valoración geriátrica integral: eje clínico, funcional, mental y social.">
 <title>Escalas de uso frecuente en Geriatría</title>
 
@@ -505,14 +505,16 @@ body.tg2 .card h2{font-size:20px;}
 
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;}}
 </style>
+<link rel="stylesheet" href="ui-v3.css">
 </head>
 <body>
+<a class="skip-link" href="#view">Saltar al contenido</a>
 <div id="spine"><div class="fill"></div></div>
 <div id="app">
   <header class="top" id="topbar"></header>
   <main id="view"></main>
 </div>
-<div id="scorebar"></div>
+<div id="scorebar" aria-live="polite"></div>
 <nav class="tabs" id="tabs"></nav>
 
 <script>
@@ -2264,6 +2266,8 @@ function fichaEvidencia(s){
 /* ---------------------------- RENDER ---------------------------- */
 function render(){
   setEjeColor(state.view==='vgi' ? 'ink' : state.eje);
+  document.body.dataset.view = state.view;
+  document.body.dataset.eje = state.view==='vgi' ? 'vgi' : state.eje;
   renderTop(); renderTabs();
   if(state.view==='list') renderList();
   else if(state.view==='vgi') renderVGI();
@@ -2280,7 +2284,7 @@ function renderTop(){
     const e = EJES.find(x=>x.id===state.eje);
     t.innerHTML = '<div style="flex:1">'
       + '<span class="eyebrow">'+esc(e.largo || ('Eje '+e.label))+'</span>'
-      + '<h1>Escalas de uso frecuente en Geriatría</h1></div>'
+      + '<h1>Biblioteca de instrumentos</h1></div>'
       + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
   } else if(state.view==='about'){
     t.innerHTML = '<button class="back" data-act="back"><svg viewBox="0 0 9 15" fill="none"><path d="M8 1L1.5 7.5L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Volver</button>'
@@ -2288,7 +2292,7 @@ function renderTop(){
   } else if(state.view==='vgi'){
     t.innerHTML = '<div style="flex:1">'
       + '<span class="eyebrow" style="color:var(--ink-2)">Los cuatro ejes</span>'
-      + '<h1>Valoración geriátrica integral</h1></div>'
+      + '<h1>Resumen multidimensional</h1></div>'
       + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
   } else {
     const s = SCALES[state.id];
@@ -2300,13 +2304,30 @@ function renderTop(){
   }
 }
 
+function tabIcon(id){
+  const icons = {
+    clinico:'<path d="M12 3v18M3 12h18"/>',
+    funcional:'<path d="M8 4.5a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z"/><path d="m10 7.5 3 3 3.5 1.5M10 8l-2 5-4 2M8 13l3 2 1 5M8 13l-1 6"/>',
+    mental:'<path d="M9.5 4.5A3.5 3.5 0 0 0 6 8v.5a3 3 0 0 0-1 5.7A3.5 3.5 0 0 0 9.5 19V4.5ZM14.5 4.5A3.5 3.5 0 0 1 18 8v.5a3 3 0 0 1 1 5.7 3.5 3.5 0 0 1-4.5 4.8V4.5Z"/><path d="M9.5 9H7M14.5 9H17M9.5 14H7.5M14.5 14h2"/>',
+    social:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 19c.5-4 2.5-6 5.5-6s5 2 5.5 6M14 14c3.5-.5 5.5 1.2 6 4"/>',
+    paliativo:'<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/><path d="M12 8v7M9.5 11.5h5"/>',
+    vgi:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'
+  };
+  return '<svg class="tabicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[id]+'</svg>';
+}
+
 function renderTabs(){
   const n = Object.keys(VGI).length;
-  $('#tabs').innerHTML = EJES.map(e=>
-    '<button data-tab="'+e.id+'" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
-    + '<span class="mark"></span>'+esc(e.label)+'</button>').join('')
-    + '<button data-tab="vgi" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
-    + '<span class="mark"></span>VGI'+(n?' ('+n+')':'')+'</button>';
+  const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
+  $('#tabs').innerHTML = '<div class="nav-brand"><span class="brand-mark">V</span><div><strong>VGI Digital</strong><small>Versión 2.10.1</small></div></div>'
+    + '<div class="nav-label">Dominios de valoración</div>'
+    + EJES.map(e=>
+    '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
+    + '<span class="mark"></span>'+tabIcon(e.id)+'<span class="tabtext"><span class="tab-full">'+esc(e.label)+'</span><span class="tab-short">'+shortLabel[e.id]+'</span></span></button>').join('')
+    + '<div class="nav-divider"></div>'
+    + '<button class="vgi-tab" data-tab="vgi" aria-label="Resumen de valoración geriátrica integral" style="--tab:var(--ink)" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
+    + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">VGI</span><span class="tab-short">VGI</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
+    + '<div class="nav-foot">43 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
 }
 
 function cardHTML(id, showEje){
@@ -2763,6 +2784,7 @@ function renderAbout(){
   + '</div>'
 
   + '<h3>Historial de versiones</h3>'
+  + '<div class="cite"><strong>2.10.1</strong> · Actualización visual adaptable: navegación lateral y tarjetas en pantallas amplias; barra inferior compacta y estable en navegadores móviles, incluido Microsoft Edge. Se mejoran el foco visible, el acceso por teclado, las áreas táctiles y la jerarquía visual. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10</strong> · Uso sin conexión: la aplicación se instala en la pantalla de inicio y funciona sin señal. Se restituye el 4AT, que una divergencia entre la copia depositada y la publicada había dejado fuera de esta última.</div>'
   + '<div class="cite"><strong>2.9</strong> · Conversor de opioides: el resultado ahora encabeza con la dosis del opioide de destino y no con el equivalente de morfina, que pasa al desglose. Se avisa cuando origen y destino coinciden. 4AT, prueba rápida de cribado de delirium, junto al CAM en el eje mental: aplicable al paciente somnoliento o que no colabora, en quien el CAM no puede completarse.</div>'
   + '<div class="cite"><strong>2.8</strong> · NECPAL reconstruido sobre la versión 3.1 del instrumento: trece parámetros con sus umbrales explícitos, y los criterios de enfermedad crónica avanzada de las once condiciones del bloque específico, desplegables dentro del ítem.</div>'
@@ -2777,7 +2799,7 @@ function renderAbout(){
   + '<div class="cite"><strong>2.0</strong> · Contenido derivado del manual de 2024: de 9 a 38 escalas, agrupadas por dominio dentro de cada eje, con buscador.</div>'
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
 
-  + '<p class="disclaimer">Versión 2.10 · '+new Date().getFullYear()+'. Los derechos sobre el manual de escalas pertenecen a sus autores y a la Pontificia Universidad Javeriana.</p>'
+  + '<p class="disclaimer">Versión 2.10.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual de escalas pertenecen a sus autores y a la Pontificia Universidad Javeriana.</p>'
   + '</div>';
 }
 

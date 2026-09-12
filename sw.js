@@ -1,17 +1,18 @@
 /* =======================================================================
    Escalas de uso frecuente en Geriatría — service worker
-   Estrategia: la aplicación es un único archivo estático, así que se
-   precarga todo en la instalación y se sirve desde caché. Las fuentes de
+   Estrategia: se precarga el paquete local de la aplicación web progresiva
+   y se sirve desde caché. Las fuentes de
    Google se guardan la primera vez que se usan, para que la aplicación
    conserve su tipografía sin conexión.
    Al cambiar de versión se cambia CACHE y se borran las cachés viejas.
    ======================================================================= */
 
-const CACHE = 'escalas-geriatria-v2.10.0';
+const CACHE = 'escalas-geriatria-v2.10.1';
 
 const PRECARGA = [
   './',
   './index.html',
+  './ui-v3.css',
   './manifest.json',
   './icon-120.png',
   './icon-152.png',

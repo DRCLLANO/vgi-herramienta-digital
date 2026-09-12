@@ -6,15 +6,16 @@ abstract: >-
   escalas de la Valoración Geriátrica Integral, organizadas según los cuatro
   ejes de la evaluación (clínico, funcional, mental y social) y una sección
   adicional de paliativos y pronóstico, con un conversor de dosis
-  equianalgésicas de opioides. Consiste en un único archivo HTML que se ejecuta
-  por completo en el navegador, sin servidor y sin transmisión ni
-  almacenamiento de datos. Su contenido deriva del manual "Abordaje geriátrico
-  integral: escalas de uso frecuente en geriatría" (Editorial Pontificia
+  equianalgésicas de opioides. Es una aplicación web progresiva cuyo cálculo se
+  ejecuta por completo en el navegador, sin servidor de aplicación y sin
+  transmisión ni almacenamiento persistente de datos clínicos. Su contenido
+  deriva del manual "Abordaje geriátrico integral: escalas de uso frecuente en
+  geriatría" (Editorial Pontificia
   Universidad Javeriana, 2024), con autorización de sus editores. Desarrollo
   original de un solo autor, construido mediante trabajo conversacional con un
   modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
 type: software
-version: "2.10"
+version: "2.10.1"
 date-released: "2026-09-12"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"

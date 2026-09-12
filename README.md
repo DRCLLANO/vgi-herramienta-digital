@@ -9,7 +9,7 @@ Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
 evaluación (clínico, funcional, mental y social) más una sección de paliativos
 y pronóstico.
 
-**Versión 2.10** · 43 escalas y un conversor de dosis equianalgésicas de opioides.
+**Versión 2.10.1** · 43 escalas y un conversor de dosis equianalgésicas de opioides.
 
 ## Abrir la herramienta
 
@@ -17,10 +17,11 @@ https://drcllano.github.io/vgi-herramienta-digital/
 
 ## Qué es
 
-Un único archivo HTML que se ejecuta por completo en el navegador. No hay
-servidor, no hay base de datos y no se transmite ningún dato fuera del
-dispositivo. El cálculo de puntajes, la aplicación de puntos de corte y el
-resumen de la valoración ocurren localmente.
+Una aplicación web progresiva cuyo núcleo funcional está en `index.html` y cuya
+capa visual adaptable está en `ui-v3.css`. No hay servidor de aplicación ni
+base de datos y no se transmiten respuestas ni resultados clínicos. El cálculo
+de puntajes, la aplicación de puntos de corte y el resumen de la valoración
+ocurren localmente.
 
 Tras la primera visita la aplicación queda disponible sin conexión y puede
 añadirse a la pantalla de inicio del teléfono.
@@ -94,7 +95,7 @@ citarse.
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. Escalas de uso frecuente en Geriatría: herramienta digital
-> para la Valoración Geriátrica Integral (versión 2.10) [software]. Open Science
+> para la Valoración Geriátrica Integral (versión 2.10.1) [software]. Open Science
 > Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
@@ -112,11 +113,12 @@ derechos propio y condiciones de uso específicas.
 
 | Archivo | Contenido |
 |---|---|
-| `index.html` | La herramienta completa, en un solo archivo |
+| `index.html` | Núcleo funcional y contenido de la herramienta |
+| `ui-v3.css` | Capa visual adaptable para escritorio y dispositivos móviles |
 | `README.md` | Este documento |
 | `LICENSE` | Licencia MIT del código fuente |
 | `NOTICE.md` | Alcance de la licencia y derechos sobre el contenido de las escalas |
 | `CITATION.cff` | Metadatos de citación |
-| `CHANGELOG.md` | Historial de versiones (1.0 a 2.10) |
+| `CHANGELOG.md` | Historial de versiones (1.0 a 2.10.1) |
 | `sw.js` | Service worker: permite el uso sin conexión tras la primera visita |
 | `registro-desarrollo.md` | Registro del proceso de desarrollo asistido por IA |

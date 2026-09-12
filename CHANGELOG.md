@@ -3,6 +3,19 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.1
+
+Actualización menor de interfaz, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones.
+
+- Navegación lateral y cuadrícula de tarjetas en pantallas amplias.
+- Barra inferior móvil estable, con seis columnas fijas, rótulos abreviados y
+  compatibilidad con el área segura del dispositivo; se optimiza también la
+  orientación horizontal y Microsoft Edge para móviles.
+- Mejora de accesibilidad: zoom del navegador habilitado, foco visible, enlace
+  para saltar al contenido y objetivos táctiles de al menos 44 px.
+- Jerarquía visual más clara para encabezados, progreso, resultados y acciones.
+
 ## 2.10
 
 Uso sin conexión: la aplicación se instala en la pantalla de inicio y funciona
