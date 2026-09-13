@@ -1,3 +1,71 @@
+ALCANCE DE ESTA LICENCIA
+
+La licencia MIT que se reproduce más abajo cubre ÚNICAMENTE el código fuente de
+esta aplicación: la estructura del documento HTML, la interfaz, la hoja de
+estilos, el service worker, la lógica de cálculo, la aplicación de los puntos de
+corte y la generación del resumen de la valoración.
+
+NO cubre:
+
+  1. El contenido de las escalas (ítems, opciones de respuesta, puntos de corte
+     e interpretaciones), derivado del manual "Abordaje geriátrico integral:
+     escalas de uso frecuente en geriatría" (Editorial Pontificia Universidad
+     Javeriana, 2024; DOI 10.11144/Javeriana.9789587819304) y usado con
+     autorización de sus editores. Esa autorización cubre esta aplicación y no
+     se extiende a terceros que reutilicen o redistribuyan este repositorio.
+
+  2. Los instrumentos que tienen titular de derechos propio, distinto del
+     manual, con condiciones de uso que dependen de ese titular. Se enumeran en
+     el archivo NOTICE.md.
+
+  3. La documentación del repositorio (README.md, CHANGELOG.md, NOTICE.md y
+     registro-desarrollo.md), ofrecida bajo Creative Commons Atribución 4.0
+     Internacional (CC BY 4.0).
+
+  4. La fotografía del autor embebida en index.html, publicada con su
+     consentimiento.
+
+En consecuencia, los permisos de uso, copia, modificación, distribución,
+sublicencia y venta que concede la licencia MIT se refieren al código. Antes de
+redistribuir, traducir o incorporar esta herramienta a otro producto, lea
+NOTICE.md y verifique las condiciones de cada instrumento con su titular.
+
+
+SCOPE OF THIS LICENSE
+
+The MIT License reproduced below covers ONLY the source code of this
+application: the structure of the HTML document, the user interface, the
+stylesheet, the service worker, the scoring logic, the application of cut-off
+points and the generation of the assessment summary.
+
+It does NOT cover:
+
+  1. The content of the scales (items, response options, cut-off points and
+     interpretations), derived from the manual "Abordaje geriátrico integral:
+     escalas de uso frecuente en geriatría" (Editorial Pontificia Universidad
+     Javeriana, 2024; DOI 10.11144/Javeriana.9789587819304) and used with the
+     permission of its editors. That permission covers this application and
+     does not extend to third parties who reuse or redistribute this
+     repository.
+
+  2. The instruments that have their own rights holder, other than the manual,
+     with conditions of use that depend on that holder. They are listed in the
+     NOTICE.md file.
+
+  3. The repository documentation (README.md, CHANGELOG.md, NOTICE.md and
+     registro-desarrollo.md), offered under Creative Commons Attribution 4.0
+     International (CC BY 4.0).
+
+  4. The author's photograph embedded in index.html, published with his
+     consent.
+
+Accordingly, the permissions to use, copy, modify, distribute, sublicense and
+sell granted by the MIT License refer to the code. Before redistributing,
+translating or incorporating this tool into another product, read NOTICE.md and
+verify the conditions of each instrument with its rights holder.
+
+-------------------------------------------------------------------------------
+
 MIT License
 
 Copyright (c) 2026 Cristian Camilo Llano Ceballos
