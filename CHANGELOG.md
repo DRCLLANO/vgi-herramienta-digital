@@ -3,6 +3,22 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.3
+
+Metadatos de autoría y de citación, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones.
+
+- La página declara ahora su autoría en forma legible por máquina: `author`,
+  etiquetas de citación del esquema Highwire (`citation_*`), Dublin Core y un
+  bloque JSON-LD de tipo `SoftwareApplication` que vincula la herramienta con
+  el ORCID de su autor y con el DOI del depósito. Hasta esta versión el vínculo
+  solo era visible para quien abriera el panel "Acerca de".
+- Sección "Cómo citar" dentro de "Acerca de", con el formato sugerido, el DOI
+  10.17605/OSF.IO/KMX8H y los enlaces al depósito y al código fuente.
+- El ORCID de la ficha de autor pasa a ser un enlace al registro.
+- `link rel="canonical"` y `link rel="license"`, y metadatos Open Graph para
+  que el enlace compartido muestre título, descripción e icono.
+
 ## 2.10.2
 
 Ampliación de los descargos, sin cambios en las escalas, sus reglas de cálculo,
