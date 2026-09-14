@@ -3,6 +3,26 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.4
+
+Actualización de identidad visual, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones clínicas.
+
+- Se incorpora la identidad visual **VGI Digital** en tonos verdes.
+- Se añade el logotipo completo `vgi-digital-logo-verde.png`.
+- Se añade el símbolo independiente `vgi-digital-simbolo-verde.png`.
+- Se regeneran los iconos de la PWA en 120, 152, 167, 180, 192 y 512 px,
+  junto con el icono `maskable` de 512 px.
+- El símbolo se integra en la navegación de escritorio y el logotipo completo
+  se muestra en la sección "Acerca de".
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.4`.
+- Se aclara en la licencia que el logotipo, símbolo e iconos de identidad visual
+  no están cubiertos por la licencia MIT del código.
+- La identidad visual fue desarrollada mediante un proceso asistido por IA
+  generativa y posteriormente seleccionada, adaptada e integrada técnicamente
+  en la aplicación.
+
 ## 2.10.3
 
 Metadatos de autoría y de citación, sin cambios en las escalas, sus reglas de

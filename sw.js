@@ -7,7 +7,7 @@
    Al cambiar de versión se cambia CACHE y se borran las cachés viejas.
    ======================================================================= */
 
-const CACHE = 'escalas-geriatria-v2.10.3';
+const CACHE = 'escalas-geriatria-v2.10.4';
 
 const PRECARGA = [
   './',
@@ -20,7 +20,9 @@ const PRECARGA = [
   './icon-180.png',
   './icon-192.png',
   './icon-512.png',
-  './icon-maskable-512.png'
+  './icon-maskable-512.png',
+  './vgi-digital-logo-verde.png',
+  './vgi-digital-simbolo-verde.png'
 ];
 
 /* Instalación: precargar el núcleo. Se usa addAll tolerante para que un
