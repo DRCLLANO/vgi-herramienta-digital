@@ -2,7 +2,7 @@
 
 **Desarrollo asistido por inteligencia artificial de una aplicación web de escalas geriátricas**
 
-Documento de respaldo del depósito. Corresponde a la versión 2.10.2 de la
+Documento de respaldo del depósito. Corresponde a la versión 2.10.6 de la
 herramienta.
 
 Autor del desarrollo: Cristian Camilo Llano Ceballos, médico geriatra.
@@ -21,8 +21,10 @@ y validó cada resultado; el modelo implementó, verificó parámetros contra
 fuentes primarias y construyó las pruebas automatizadas.
 
 El proceso no siguió una especificación cerrada. Fue **iterativo**, en dos
-ciclos separados por tres semanas y en dos interfaces distintas del mismo
-asistente; **reactivo**, en tanto cada incorporación surgió de una necesidad
+ciclos de desarrollo de contenido separados por tres semanas y en dos
+interfaces distintas del mismo asistente, seguidos de un tercer ciclo dedicado
+al depósito, a la identidad visual y a los archivos de derechos, sin cambios en
+el contenido clínico; **reactivo**, en tanto cada incorporación surgió de una necesidad
 clínica identificada durante el uso y no de un plan trazado de antemano; y con
 **captación explícita de errores**, tanto de contenido, mediante verificación
 bibliográfica dirigida y confrontación entre fuentes discordantes, como de
@@ -157,6 +159,14 @@ Fuente:
 Producto: expansión a 43 escalas y una calculadora de conversión de opioides,
 más las funciones de trazabilidad de evidencia y de valoración integral.
 
+### Iteración 3 · 10 a 14 de septiembre de 2026 · depósito y presentación
+
+Producto: depósito en el Open Science Framework con DOI persistente y
+vinculación con el registro ORCID del autor (2.10.3), identidad visual propia
+(2.10.4), corrección de esa identidad (2.10.5) y restitución de los archivos de
+derechos (2.10.6). Ninguna de estas versiones modifica instrumentos, ítems,
+opciones de respuesta, reglas de cálculo, puntos de corte ni interpretaciones.
+
 El historial completo de versiones, con el cambio introducido en cada una, está
 en [`CHANGELOG.md`](CHANGELOG.md) y se reproduce dentro de la propia
 herramienta, en su sección "Acerca de".
@@ -185,7 +195,7 @@ mantiene en `ui-v3.css`, y el paquete instalable se completa con
 Todo el cálculo ocurre en el dispositivo y no se transmiten respuestas ni
 resultados clínicos a ningún servidor.
 
-La versión 2.10.2 tiene un núcleo HTML de aproximadamente 242 KB y una hoja de
+La versión 2.10.6 tiene un núcleo HTML de aproximadamente 252 KB y una hoja de
 estilos local de aproximadamente 14 KB; no depende de bibliotecas de código
 externas. Google Fonts puede generar una solicitud de red
 para las tipografías, pero la aplicación declara alternativas del sistema y
@@ -216,7 +226,7 @@ puntajes y detectando los cambios de veredicto**. Lo que la ficha de evidencia
 documenta es exactamente lo que el programa calcula, y no puede desincronizarse
 con el tiempo.
 
-### 6.1 Contenido de la versión 2.10.2
+### 6.1 Contenido clínico y versiones posteriores
 
 La actualización 2.10.1 modificó exclusivamente la presentación adaptable y la
 accesibilidad de la interfaz. La 2.10.2 amplía los descargos de la aplicación:
@@ -241,6 +251,14 @@ sin cambios.
 Distribución por eje: clínico 10, funcional 11, mental 11, social 5,
 paliativos y pronóstico 7 (el conversor de opioides se contabiliza en este
 último).
+
+Las versiones 2.10.3 a 2.10.6 conservan ese bloque clínico sin cambios. La
+2.10.3 añadió metadatos de autoría legibles por máquina y la forma sugerida de
+citación dentro de la aplicación; la 2.10.4 incorporó la identidad visual "VGI
+Digital"; la 2.10.5 corrigió los defectos de presentación que esa identidad
+introdujo; la 2.10.6 restituyó los archivos de derechos y retiró de la ficha del
+Mini-Cog una afirmación de permiso que no consta documentada. Las cifras de la
+tabla anterior siguen siendo válidas para todas ellas.
 
 ## 7. Atribución bibliográfica de los instrumentos
 
@@ -387,6 +405,41 @@ asistido por inteligencia artificial avanza en sesiones sucesivas y sobre más d
 una copia del archivo, hace falta un control explícito de identidad entre lo
 que se publica y lo que se deposita, ejecutado en cada versión.
 
+### 8.6 Pérdida de contenido en los archivos de derechos
+
+**Incidente 6.** La versión 2.10.4, declarada y verificada como un cambio
+únicamente visual, había modificado además los dos archivos que delimitan los
+derechos sobre el contenido. El archivo `LICENSE` pasó de 4 282 a 1 462 bytes:
+perdió las cuatro exclusiones numeradas (contenido de las escalas y alcance de
+la autorización de los editores, instrumentos con titular propio, documentación
+bajo CC BY 4.0 y fotografía del autor) y su versión completa en inglés,
+reducidas a un párrafo de remisión. El archivo `NOTICE.md` pasó de 3 956 a
+3 021 bytes: la relación de instrumentos con titular externo quedó convertida en
+una lista sin titulares, desapareció la sección sobre qué publicar si un titular
+no autoriza la reproducción abierta de sus ítems y la numeración de secciones
+saltó de la 3 a la 6. El historial de esa versión afirmaba, además, haber
+aclarado en la licencia el alcance de la identidad visual, aclaración que solo
+llegó a constar en `NOTICE.md`.
+
+Ninguna de las capas de verificación podía detectarlo. Las pruebas comprueban
+instrumentos, ítems, puntajes, puntos de corte, ausencia de errores de consola y
+respuestas del servidor, es decir, el comportamiento del código. Los archivos de
+derechos no son código y no participan en ninguna de esas comprobaciones. El
+hallazgo se produjo al diferenciar, archivo por archivo, el estado depositado
+contra el estado publicado, el mismo control que había originado el incidente
+anterior.
+
+La corrección (versión 2.10.6) consistió en restituir ambos archivos desde la
+última versión íntegra y en incorporar de forma explícita la cláusula sobre la
+identidad visual.
+
+La consecuencia metodológica es doble. Primero, un cambio declarado como
+cosmético puede alcanzar archivos ajenos a la interfaz, de modo que el alcance
+declarado de una modificación no sustituye a la comparación efectiva. Segundo,
+los archivos de licencia y de aviso legal necesitan un control de integridad
+propio, porque quedan fuera del perímetro que cubren las pruebas de
+funcionamiento.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la
@@ -450,11 +503,22 @@ Universidad Javeriana.
 
 Varios de los instrumentos incluidos tienen titular de derechos propio,
 distinto del manual. Se reproducen con finalidad educativa y de apoyo
-asistencial, sin ánimo de lucro, citando en cada caso su fuente primaria. El
-estado de cada titular consta en el archivo `NOTICE.md` del depósito, con los
-instrumentos ya resueltos y los que quedan por verificar antes de cualquier
-redistribución, traducción o incorporación a otro producto. Esa tabla es
+asistencial, sin ánimo de lucro, citando en cada caso su fuente primaria. Los
+titulares identificados constan en el archivo `NOTICE.md` del depósito. Esa
+relación identifica al titular de cada instrumento y no afirma que se haya
+obtenido autorización de ninguno de ellos: la verificación de las condiciones de
+uso con cada titular está pendiente y debe completarse antes de cualquier
+redistribución, traducción o incorporación a otro producto. La relación es
 orientativa y no constituye asesoría legal.
+
+Hasta la versión 2.10.5, tanto `NOTICE.md` como la ficha del Mini-Cog dentro de
+la aplicación afirmaban que ese instrumento se reimprimía con permiso de su
+autor. No existe constancia documentada de esa autorización y la afirmación se
+retiró en la 2.10.6. El episodio deja una advertencia de método: al restituir
+contenido perdido se reintrodujo sin examinarlo, y restituir no equivale a
+verificar. Todo texto recuperado de una versión anterior debe revisarse como si
+se redactara por primera vez, en particular cuando afirma hechos sobre
+terceros.
 
 ## 11. Autoría y transparencia
 

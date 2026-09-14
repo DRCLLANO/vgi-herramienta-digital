@@ -3,6 +3,36 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.6
+
+Restitución de los archivos de derechos, sin cambios en las escalas, sus reglas
+de cálculo, puntos de corte ni interpretaciones clínicas.
+
+- `LICENSE` recupera las cuatro exclusiones numeradas (contenido de las escalas
+  y alcance de la autorización de los editores, instrumentos con titular propio,
+  documentación bajo CC BY 4.0 y fotografía del autor) y su versión completa en
+  inglés. La reescritura de 2.10.4 las había reducido a un párrafo de remisión y
+  había eliminado el texto en inglés.
+- `NOTICE.md` recupera la tabla de instrumentos con su titular y su situación
+  (Mini-Cog, MNA-SF, EAT-10, NECPAL CCOMS-ICO, MMSE, EuroQol-5D-5L, Clinical
+  Frailty Scale, NPI y Zarit), que había quedado convertida en una lista sin
+  titulares, y la sección sobre qué publicar si un titular no autoriza la
+  reproducción abierta de sus ítems. Se corrige la numeración de secciones, que
+  saltaba de la 3 a la 6.
+- Se añade en `LICENSE` y en `NOTICE.md` la cláusula sobre el logotipo, el
+  símbolo y los iconos de la identidad visual VGI Digital, no cubiertos por la
+  licencia MIT. El historial de 2.10.4 daba por hecha esa aclaración en la
+  licencia, donde no llegó a constar.
+- Se retira la afirmación de que el Mini-Cog se reimprime con permiso de su
+  autor. Constaba en `NOTICE.md` y en la ficha del instrumento dentro de la
+  aplicación, y no hay constancia documentada de esa autorización. Se conserva
+  la identificación del titular y la advertencia de verificar sus condiciones.
+- La relación de instrumentos con titular propio deja de declarar el estado de
+  las gestiones con cada titular ("resuelto", "por verificar") y se limita a
+  identificar al titular, que es lo que consta.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.6`.
+
 ## 2.10.5
 
 Corrección de la identidad visual introducida en 2.10.4, sin cambios en las
