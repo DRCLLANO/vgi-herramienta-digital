@@ -3,6 +3,23 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.5
+
+Corrección de la identidad visual introducida en 2.10.4, sin cambios en las
+escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.
+
+- Se limita el tamaño del logotipo completo en la sección "Acerca de". El
+  archivo `vgi-digital-logo-verde.png` mide 1580x877 px y la clase
+  `.brand-showcase` no tenía ninguna regla de estilo, de modo que el navegador
+  lo pintaba a tamaño natural y desbordaba la columna de texto tanto en
+  escritorio como en móvil.
+- Se muestra el símbolo de marca en la cabecera de las pantallas pequeñas. El
+  bloque `.nav-brand` solo se despliega en la navegación lateral de escritorio
+  (a partir de 960 px), así que en móvil la marca no aparecía en ningún sitio.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.5`, y se ponen al día `README.md` y `CITATION.cff`, que habían quedado
+  declarando la versión 2.10.3.
+
 ## 2.10.4
 
 Actualización de identidad visual, sin cambios en las escalas, sus reglas de
