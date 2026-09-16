@@ -58,9 +58,10 @@ extiende a terceros que reutilicen o redistribuyan el repositorio.
 
 El papel de Cristian Camilo Llano Ceballos fue el desarrollo y la compilación de
 la aplicación, no la autoría del contenido del manual. Cada escala conserva
-además su referencia primaria y, cuando existe, la de su validación en población
-colombiana o latinoamericana; ambas se muestran dentro de la ficha de cada
-instrumento.
+además la referencia de su publicación original o de la adaptación que sigue y,
+cuando existe, la de su validación en población colombiana o latinoamericana;
+se muestran dentro de la ficha de cada instrumento y se reúnen en
+[`trazabilidad-instrumentos.csv`](trazabilidad-instrumentos.csv).
 
 ## Autoría y desarrollo asistido por inteligencia artificial
 
@@ -68,10 +69,11 @@ Desarrollo original de **Cristian Camilo Llano Ceballos** (ORCID
 [0000-0001-9745-3863](https://orcid.org/0000-0001-9745-3863)), autor único del
 software, construido mediante trabajo conversacional con un modelo de lenguaje
 (Claude, Anthropic) que actuó como asistente de programación, extracción
-documental y redacción. El clínico definió el alcance, aportó las fuentes, tomó
+documental y redacción. Las versiones 2.10.1 y 2.10.4, limitadas a la interfaz
+visual, se elaboraron con ChatGPT (OpenAI). El clínico definió el alcance, aportó las fuentes, tomó
 todas las decisiones de contenido y validó cada resultado. Conforme a las
-recomendaciones del ICMJE y del COPE, la herramienta de inteligencia artificial
-no cumple los criterios de autoría y no figura como autora.
+recomendaciones del ICMJE y del COPE, ninguna herramienta de inteligencia artificial
+cumple los criterios de autoría ni figura como autora.
 
 El registro del proceso, los ciclos de verificación y los incidentes críticos
 detectados están documentados en
@@ -89,6 +91,14 @@ identificador permanente de este software:
 Cada versión publicada se archiva además como *registration* fechada en OSF
 Registries, con su propio DOI de versión. El DOI del proyecto es el que debe
 citarse.
+
+## Verificación reproducible
+
+La carpeta [`verificacion/`](verificacion/) contiene el script que ejecuta las
+tres pruebas automatizadas sobre `index.html` y el resultado fechado de la
+versión 2.10.6. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
+cada archivo, para comprobar que el repositorio y el depósito de OSF contienen
+exactamente la misma versión.
 
 ## Cómo citar
 
@@ -130,3 +140,8 @@ derechos propio y condiciones de uso específicas.
 | `vgi-digital-logo-verde.png` | Logotipo completo de la identidad visual |
 | `vgi-digital-simbolo-verde.png` | Símbolo independiente de la identidad visual |
 | `registro-desarrollo.md` | Registro del proceso de desarrollo asistido por IA |
+| `trazabilidad-instrumentos.csv` | Relación completa de las 44 fichas: tipo, ítems, umbrales, referencias y titular de derechos |
+| `verificacion/verificar-escalas.mjs` | Script que reproduce las tres pruebas automatizadas |
+| `verificacion/resultado-2.10.6.json` | Resultado fechado de esas pruebas sobre la versión 2.10.6 |
+| `verificacion/LEEME.md` | Instrucciones para ejecutar la verificación |
+| `SHA256SUMS.txt` | Sumas SHA-256 de todos los archivos del depósito |

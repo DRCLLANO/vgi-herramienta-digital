@@ -20,6 +20,11 @@ definió el alcance, aportó las fuentes, tomó todas las decisiones de contenid
 y validó cada resultado; el modelo implementó, verificó parámetros contra
 fuentes primarias y construyó las pruebas automatizadas.
 
+Las versiones 2.10.1 y 2.10.4, limitadas a la interfaz visual, se elaboraron
+con otro modelo de lenguaje de propósito general (ChatGPT, OpenAI). Ninguna de
+las dos modificó el contenido clínico, aunque la 2.10.4 originó el incidente 6
+(sección 8.6).
+
 El proceso no siguió una especificación cerrada. Fue **iterativo**, en dos
 ciclos de desarrollo de contenido separados por tres semanas y en dos
 interfaces distintas del mismo asistente, seguidos de un tercer ciclo dedicado
@@ -80,18 +85,19 @@ de la Salud dispone de la aplicación asociada al manual ICOPE.
 
 ### 2.1 Qué distingue a este desarrollo
 
-Las herramientas anteriores fueron concebidas como instrumentos de difusión de
-escalas y de apoyo al cálculo en la práctica asistencial. Ninguna fue diseñada
-como intervención educativa ni ha sido evaluada mediante desenlaces de
-aprendizaje: la única evaluación publicada en el contexto colombiano midió
-percepción de utilidad entre usuarios en ejercicio.
+Reunir escalas y automatizar sus cálculos no es, por sí mismo, una aportación
+original: existen aplicaciones de cálculo en el punto de atención, algunas con
+finalidad formativa (por ejemplo, GeriKit), y sistemas estandarizados de
+evaluación multidimensional. La única evaluación publicada en el contexto
+colombiano midió percepción de utilidad entre usuarios en ejercicio.
 
-**La intersección entre el desarrollo de software mediante inteligencia
-artificial, la enseñanza de la geriatría y la optimización de los resultados de
-aprendizaje constituye la contribución original de este trabajo.** La
-herramienta no se construyó como un repositorio de calculadoras sino como el
-soporte de una actividad de aprendizaje, y tres decisiones de diseño responden
-a ese propósito: la atribución de cada escala a sus autores originales, con la
+La aportación de este desarrollo está en la combinación de una herramienta
+multidominio, la trazabilidad bibliográfica instrumento por instrumento, la
+supervisión clínica durante la implementación y la documentación de los modos
+de fallo detectados al convertir conocimiento geriátrico en software con
+asistencia de inteligencia artificial. Su utilidad educativa no ha sido
+evaluada todavía. Tres decisiones de diseño responden a ese propósito
+formativo: la atribución de cada escala a sus autores originales, con la
 referencia primaria y las validaciones locales visibles en la propia
 herramienta, que permite al aprendiz auditar el umbral que se le aplica; la
 representación gráfica de la posición del puntaje entre los puntos de corte,
@@ -100,15 +106,13 @@ entre los instrumentos que provienen del manual de referencia y los
 complementarios.
 
 Se añaden dos diferencias de orden técnico. La primera es de plataforma: al ser
-una aplicación web, funciona en cualquier dispositivo con navegador, con
-independencia de la marca y del sistema operativo, mientras que las
-herramientas citadas se distribuyen para Android. La segunda es de método de
-construcción: no hemos identificado en la literatura el reporte de una
-aplicación completa de valoración geriátrica integral desarrollada mediante
-trabajo conversacional con un modelo de lenguaje, con documentación del proceso
-y de sus procedimientos de verificación. Esta afirmación requiere confirmación
-mediante una búsqueda de alcance formal antes de la publicación, y así se
-declara.
+una aplicación web, funciona en cualquier dispositivo con navegador. La segunda
+es de método de construcción: una búsqueda no sistemática en PubMed, Scopus y
+Google Scholar, hasta septiembre de 2026, no identificó el reporte de una
+herramienta multidominio de valoración geriátrica integral desarrollada
+mediante trabajo conversacional con un modelo de lenguaje, con documentación de
+sus incidentes. Esa búsqueda no equivale a una revisión sistemática ni de
+alcance, y así se declara.
 
 ## 3. Roles y responsabilidad
 
@@ -161,10 +165,13 @@ más las funciones de trazabilidad de evidencia y de valoración integral.
 
 ### Iteración 3 · 10 a 14 de septiembre de 2026 · depósito y presentación
 
-Producto: depósito en el Open Science Framework con DOI persistente y
+Producto: fusión de las dos copias divergentes denominadas 2.9 (2.10), capa
+visual adaptable (2.10.1, elaborada con ChatGPT), descargos de derechos
+(2.10.2), depósito en el Open Science Framework con DOI persistente y
 vinculación con el registro ORCID del autor (2.10.3), identidad visual propia
-(2.10.4), corrección de esa identidad (2.10.5) y restitución de los archivos de
-derechos (2.10.6). Ninguna de estas versiones modifica instrumentos, ítems,
+(2.10.4, elaborada con ChatGPT), corrección de esa identidad (2.10.5) y
+restitución de los archivos de derechos (2.10.6). La versión 2.10.6 es la que
+analiza el manuscrito. Ninguna de estas versiones modifica instrumentos, ítems,
 opciones de respuesta, reglas de cálculo, puntos de corte ni interpretaciones.
 
 El historial completo de versiones, con el cambio introducido en cada una, está
@@ -267,10 +274,12 @@ El manual de la Pontificia Universidad Javeriana fue la fuente de organización
 y de los umbrales adoptados, no el origen de los instrumentos: cada escala
 pertenece a quienes la desarrollaron, y así se declara en la aplicación.
 
-Cada ficha contiene la referencia primaria completa; cuando existe, la de la
-adaptación o traducción al español; y cuando existe, la de la validación en
-población colombiana o latinoamericana. Doce de los instrumentos incorporados
-citan una validación local. Algunos ejemplos:
+Cada ficha contiene la referencia de la publicación original o, cuando la
+herramienta sigue una adaptación, la de esa adaptación; y, cuando existe, la de
+la validación, adaptación o valores de referencia en población colombiana o
+latinoamericana. La relación completa de las 44 fichas, con su tipo, número de
+ítems, umbrales derivados, referencias y titular de derechos cuando existe,
+está en `trazabilidad-instrumentos.csv`. Algunos ejemplos:
 
 | Instrumento | Referencia primaria | Adaptación o validación citada |
 |---|---|---|
@@ -303,6 +312,12 @@ archivo [`NOTICE.md`](NOTICE.md) de este depósito.
 
 ## 8. Captación de errores
 
+Los seis incidentes descritos en esta sección corresponden a los cinco modos de
+fallo que analiza el manuscrito: fidelidad de la extracción (incidente 1),
+conflicto entre fuentes (2), vigencia documental (3), integración funcional (4)
+y divergencia entre copias (5 y 6). Las fuentes de los tres primeros se
+detallan en la tabla suplementaria S3 del manuscrito.
+
 Los hallazgos se registraron siguiendo la técnica de incidentes críticos de
 Flanagan. El registro fue **retrospectivo**: los incidentes se reconstruyeron a
 partir del historial de trabajo, no se documentaron en el momento en que
@@ -311,8 +326,9 @@ ocurrieron. Denominador de referencia: 337 ítems, 1 193 opciones de respuesta y
 
 ### 8.1 Errores de contenido
 
-Cada parámetro numérico se contrastó con la fuente primaria antes de
-implementarse. Cuando la fuente aportada no contenía el dato con suficiente
+Cada parámetro numérico se contrastó con la publicación original del
+instrumento, o con la adaptación que la herramienta sigue, antes de
+implementarse. El modelo hizo el primer cotejo y el clínico lo revisó. Cuando la fuente aportada no contenía el dato con suficiente
 precisión, se realizó búsqueda bibliográfica dirigida y se verificó contra la
 publicación original. Tres casos ilustran el procedimiento.
 
@@ -407,8 +423,8 @@ que se publica y lo que se deposita, ejecutado en cada versión.
 
 ### 8.6 Pérdida de contenido en los archivos de derechos
 
-**Incidente 6.** La versión 2.10.4, declarada y verificada como un cambio
-únicamente visual, había modificado además los dos archivos que delimitan los
+**Incidente 6.** La versión 2.10.4, elaborada con ChatGPT y declarada y
+verificada como un cambio únicamente visual, había modificado además los dos archivos que delimitan los
 derechos sobre el contenido. El archivo `LICENSE` pasó de 4 282 a 1 462 bytes:
 perdió las cuatro exclusiones numeradas (contenido de las escalas y alcance de
 la autorización de los editores, instrumentos con titular propio, documentación
@@ -439,6 +455,30 @@ declarado de una modificación no sustituye a la comparación efectiva. Segundo,
 los archivos de licencia y de aviso legal necesitan un control de integridad
 propio, porque quedan fuera del perímetro que cubren las pruebas de
 funcionamiento.
+
+### 8.7 Verificación reproducible de la versión analizada
+
+Para que un tercero pueda repetir las tres pruebas sin depender de la sesión de
+desarrollo, la carpeta `verificacion/` contiene un script
+(`verificar-escalas.mjs`) que abre el archivo `index.html` en un navegador sin
+conexión a red y comprueba: la clasificación de cada instrumento y la
+coincidencia entre el máximo declarado y la suma de sus ítems; que toda
+puntuación posible produzca un veredicto; y que cada instrumento pueda abrirse,
+responderse, mostrar su resultado e incorporarse al resumen por esferas sin
+errores. Si se le indica `trazabilidad-instrumentos.csv`, comprueba además que
+los tramos derivados de cada escala coinciden con los registrados, lo que
+permite advertir un cambio silencioso de umbrales entre versiones. El script
+registra la suma SHA-256 del archivo evaluado y los recuentos
+de escalas, ítems, opciones y umbrales. El resultado de la versión 2.10.6 está
+en `verificacion/resultado-2.10.6.json`: 43 escalas y un conversor, 337 ítems,
+1 193 opciones de respuesta, 60 umbrales derivados, 31 escalas sumativas, 12
+algorítmicas, ningún fallo y ningún error de JavaScript. El script se escribió
+también con asistencia del modelo de lenguaje; por eso reproduce las pruebas,
+pero no sustituye una auditoría independiente.
+
+La suma SHA-256 de cada archivo del depósito consta en `SHA256SUMS.txt`, que
+permite comprobar que la copia del repositorio y la del Open Science Framework
+son idénticas.
 
 ## 9. Decisiones de contenido tomadas por el clínico
 
@@ -490,9 +530,9 @@ prueba específica en el entorno de uso.
 
 El registro de incidentes es retrospectivo, no concurrente.
 
-La afirmación de novedad respecto del método de desarrollo no proviene de una
-búsqueda sistemática y debe confirmarse mediante una revisión de alcance formal
-antes de la publicación.
+La delimitación de la aportación respecto del método de desarrollo proviene de
+una búsqueda no sistemática, cuyas cadenas constan en el anexo 1 del
+manuscrito.
 
 La herramienta operativiza el contenido de un manual del que el autor es
 coautor de un capítulo, no de la obra completa. Los editores del manual
@@ -522,8 +562,10 @@ terceros.
 
 ## 11. Autoría y transparencia
 
-El desarrollo es original del autor. Conforme a las recomendaciones del ICMJE y
-del COPE, la herramienta de inteligencia artificial no cumple los criterios de
+El desarrollo es original del autor. Se usaron dos modelos de lenguaje: Claude
+(Anthropic) en todo el desarrollo de contenido y ChatGPT (OpenAI) en las
+versiones 2.10.1 y 2.10.4. Conforme a las recomendaciones del ICMJE y del COPE,
+ninguna herramienta de inteligencia artificial cumple los criterios de
 autoría, dado que no puede asumir responsabilidad por el contenido ni aprobar
 la versión final; su uso se declara en la sección de métodos del manuscrito y
 se detalla en este documento.
