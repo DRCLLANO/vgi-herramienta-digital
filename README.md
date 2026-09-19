@@ -104,7 +104,7 @@ exactamente la misma versión.
 
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
-> Llano Ceballos CC. Escalas de uso frecuente en Geriatría: herramienta digital
+> Llano Ceballos CC. VGI DIGITAL: herramienta digital
 > para la Valoración Geriátrica Integral (versión 2.10.6) [software]. Open Science
 > Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
