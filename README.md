@@ -1,4 +1,4 @@
-# Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral
+# VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral
 
 [![DOI](https://img.shields.io/badge/DOI-10.17605%2FOSF.IO%2FKMX8H-blue)](https://doi.org/10.17605/OSF.IO/KMX8H)
 [![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-green)](LICENSE)
