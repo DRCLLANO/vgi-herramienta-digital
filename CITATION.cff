@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Si utiliza esta herramienta, por favor cítela como se indica a continuación. Antes de reutilizar o redistribuir el contenido de las escalas, consulte NOTICE.md."
-title: "Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral"
+title: "VGI Digital: herramienta digital para la Valoración Geriátrica Integral"
 abstract: >-
   Herramienta digital de acceso libre para el cálculo y la interpretación de 43
   escalas de la Valoración Geriátrica Integral, organizadas según los cuatro
@@ -15,8 +15,8 @@ abstract: >-
   original de un solo autor, construido mediante trabajo conversacional con un
   modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
 type: software
-version: "2.10.6"
-date-released: "2026-09-14"
+version: "2.10.7"
+date-released: "2026-09-20"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/drcllano/vgi-herramienta-digital"
@@ -25,7 +25,7 @@ authors:
   - family-names: "Llano Ceballos"
     given-names: "Cristian Camilo"
     orcid: "https://orcid.org/0000-0001-9745-3863"
-    affiliation: "Unidad de Geriatría, Hospital Universitario San Ignacio; Departamento de Medicina Interna, Facultad de Medicina, Pontificia Universidad Javeriana, Bogotá, Colombia"
+    affiliation: "Facultad de Medicina, Pontificia Universidad Javeriana; Unidad de Geriatría, Hospital Universitario San Ignacio, Bogotá, Colombia"
 keywords:
   - "valoración geriátrica integral"
   - "comprehensive geriatric assessment"

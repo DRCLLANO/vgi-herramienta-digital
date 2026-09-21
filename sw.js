@@ -1,5 +1,5 @@
 /* =======================================================================
-   Escalas de uso frecuente en Geriatría — service worker
+   VGI Digital: service worker
    Estrategia: se precarga el paquete local de la aplicación web progresiva
    y se sirve desde caché. Las fuentes de
    Google se guardan la primera vez que se usan, para que la aplicación
@@ -7,7 +7,7 @@
    Al cambiar de versión se cambia CACHE y se borran las cachés viejas.
    ======================================================================= */
 
-const CACHE = 'escalas-geriatria-v2.10.6';
+const CACHE = 'escalas-geriatria-v2.10.7';
 
 const PRECARGA = [
   './',

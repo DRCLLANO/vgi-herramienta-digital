@@ -3,6 +3,26 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.7
+
+Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo,
+puntos de corte ni interpretaciones clínicas.
+
+- El título de citación (`citation_title`, `DC.title`, `og:title`, metadatos
+  estructurados y `CITATION.cff`) pasa a ser "VGI Digital: herramienta digital
+  para la Valoración Geriátrica Integral", para no confundirse con el título del
+  manual de 2020.
+- Se corrige la filiación institucional del autor en los metadatos de citación
+  y en `CITATION.cff`.
+- Se unifica el título de la pestaña del navegador y del manifiesto.
+- Se documentan tres ajustes introducidos en la rama principal después de la
+  2.10.6 sin cambio de versión: estilo de los párrafos de la sección Acerca de,
+  orden de la filiación en la ficha del autor y título en la cita sugerida.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.7`.
+- La versión 2.10.6, analizada en el manuscrito, se conserva sin cambios en la
+  etiqueta `v2.10.6` del repositorio y en el depósito de OSF.
+
 ## 2.10.6
 
 Restitución de los archivos de derechos, sin cambios en las escalas, sus reglas

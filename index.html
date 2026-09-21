@@ -18,11 +18,11 @@
 
 <!-- Metadatos de citación: los leen Zotero, Mendeley y los rastreadores
      académicos que siguen el esquema Highwire/Google Scholar. -->
-<meta name="citation_title" content="Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral">
+<meta name="citation_title" content="VGI Digital: herramienta digital para la Valoración Geriátrica Integral">
 <meta name="citation_author" content="Llano Ceballos, Cristian Camilo">
 <meta name="citation_author_orcid" content="https://orcid.org/0000-0001-9745-3863">
+<meta name="citation_author_institution" content="Facultad de Medicina, Pontificia Universidad Javeriana, Bogotá, Colombia">
 <meta name="citation_author_institution" content="Unidad de Geriatría, Hospital Universitario San Ignacio, Bogotá, Colombia">
-<meta name="citation_author_institution" content="Departamento de Medicina Interna, Facultad de Medicina, Pontificia Universidad Javeriana, Bogotá, Colombia">
 <meta name="citation_publication_date" content="2026/09/14">
 <meta name="citation_doi" content="10.17605/OSF.IO/KMX8H">
 <meta name="citation_public_url" content="https://drcllano.github.io/vgi-herramienta-digital/">
@@ -31,7 +31,7 @@
 <meta name="citation_language" content="es">
 
 <!-- Dublin Core -->
-<meta name="DC.title" content="Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral">
+<meta name="DC.title" content="VGI Digital: herramienta digital para la Valoración Geriátrica Integral">
 <meta name="DC.creator" content="Llano Ceballos, Cristian Camilo">
 <meta name="DC.publisher" content="Open Science Framework">
 <meta name="DC.identifier" content="https://doi.org/10.17605/OSF.IO/KMX8H">
@@ -42,7 +42,7 @@
 
 <!-- Redes sociales -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral">
+<meta property="og:title" content="VGI Digital: herramienta digital para la Valoración Geriátrica Integral">
 <meta property="og:description" content="Herramienta digital de acceso libre para el cálculo y la interpretación de 43 escalas de la Valoración Geriátrica Integral, organizadas según los cuatro ejes de la evaluación (clínico, funcional, mental y social) y una sección adicional de paliativos y pronóstico, con un conversor de dosis equianalgésicas de opioides. Se ejecuta por completo en el navegador, sin servidor y sin transmisión de datos clínicos.">
 <meta property="og:url" content="https://drcllano.github.io/vgi-herramienta-digital/">
 <meta property="og:image" content="https://drcllano.github.io/vgi-herramienta-digital/vgi-digital-logo-verde.png">
@@ -55,14 +55,14 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Escalas de uso frecuente en Geriatría: herramienta digital para la Valoración Geriátrica Integral",
+  "name": "VGI Digital: herramienta digital para la Valoración Geriátrica Integral",
   "alternateName": "VGI Digital",
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.10.6",
+  "softwareVersion": "2.10.7",
   "datePublished": "2026-09-13",
-  "dateModified": "2026-09-14",
+  "dateModified": "2026-09-20",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -79,8 +79,8 @@
     "identifier": "https://orcid.org/0000-0001-9745-3863",
     "sameAs": "https://orcid.org/0000-0001-9745-3863",
     "affiliation": [
-      {"@type": "Organization", "name": "Hospital Universitario San Ignacio, Unidad de Geriatría"},
-      {"@type": "Organization", "name": "Pontificia Universidad Javeriana, Facultad de Medicina"}
+      {"@type": "Organization", "name": "Pontificia Universidad Javeriana, Facultad de Medicina"},
+      {"@type": "Organization", "name": "Hospital Universitario San Ignacio, Unidad de Geriatría"}
     ]
   },
   "publisher": {"@type": "Organization", "name": "Open Science Framework"},
@@ -94,7 +94,7 @@
   }
 }
 </script>
-<title>VGI Digital — Valoración Geriátrica Integral</title>
+<title>VGI Digital: Valoración Geriátrica Integral</title>
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -607,7 +607,7 @@ body.tg2 .card h2{font-size:20px;}
 
 <script>
 /* =======================================================================
-   Escalas de uso frecuente en Geriatría — calculadora clínica
+   VGI Digital: calculadora clínica
    Contenido derivado de: Chavarro-Carvajal DA, Heredia Ramírez RA,
    Cano-Gutiérrez CA (eds.). Abordaje geriátrico integral: escalas de uso
    frecuente en geriatría. Bogotá: Editorial Pontificia Universidad
@@ -2406,7 +2406,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.6</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.7</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2878,10 +2878,11 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.6) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.7) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Historial de versiones</h3>'
+  + '<div class="cite"><strong>2.10.7</strong> · Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. El título de citación pasa a ser "VGI Digital: herramienta digital para la Valoración Geriátrica Integral", para no confundirse con el título del manual de 2020; se corrige la filiación institucional del autor en los metadatos de citación; se incorporan tres ajustes hechos después de la 2.10.6 sin cambio de versión (estilo de los párrafos de la sección Acerca de, orden de la filiación en la ficha del autor y título en la cita sugerida), y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.6</strong> · Restitución de los archivos de derechos. En la 2.10.4 los archivos LICENSE y NOTICE.md habían perdido contenido: las cuatro exclusiones numeradas de la licencia y su versión en inglés, la tabla de instrumentos con su titular y su situación, y la sección sobre distribución restringida. Se restituyen íntegros y se añade en ambos la cláusula de la identidad visual, que hasta ahora solo constaba en el historial. Se retira además la afirmación de que el Mini-Cog se reimprime con permiso de su autor, aquí y en la ficha del instrumento, por no existir constancia documentada de esa autorización: se conserva la identificación del titular y la advertencia de verificar sus condiciones. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10.5</strong> · Corrección de la identidad visual introducida en 2.10.4: el logotipo de esta sección se mostraba a tamaño natural y desbordaba la columna de texto, y el símbolo de marca no aparecía en la versión móvil porque el bloque de marca solo existe en la navegación lateral de escritorio. Se limita el tamaño del logotipo y se lleva el símbolo a la cabecera en pantallas pequeñas. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10.4</strong> · Se incorpora la identidad visual VGI Digital en tonos verdes: logotipo en la sección Acerca de, símbolo de marca en la navegación de escritorio y nuevos iconos PWA derivados del mismo signo. Se actualizan metadatos de versión y caché sin modificar escalas, puntajes, puntos de corte ni interpretaciones.</div>'
@@ -2902,7 +2903,7 @@ function renderAbout(){
   + '<div class="cite"><strong>2.0</strong> · Contenido derivado del manual de 2024: de 9 a 38 escalas, agrupadas por dominio dentro de cada eje, con buscador.</div>'
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
 
-  + '<p class="disclaimer">Versión 2.10.6 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso educativo; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.10.7 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso educativo; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 
