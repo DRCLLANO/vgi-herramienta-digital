@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.10.7",
+  "softwareVersion": "2.10.8",
   "datePublished": "2026-09-13",
-  "dateModified": "2026-09-20",
+  "dateModified": "2026-09-22",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -2406,7 +2406,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.7</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.8</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2858,13 +2858,13 @@ function renderAbout(){
   + '<h3>Privacidad</h3>'
   + '<p>La aplicación no transmite ningún dato a ningún servidor: todo el cálculo ocurre en el dispositivo. Las respuestas de cada escala y la valoración en curso se pierden al cerrar la aplicación. Lo único que se conserva en el dispositivo son sus preferencias de uso: escalas favoritas, escalas recientes y tamaño de texto. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</p>'
 
+  + '<h3>Finalidad y condiciones de uso</h3>'
+  + '<p>VGI Digital es una herramienta con fines exclusivamente educativos y de investigación, sin finalidad comercial. Facilita el cálculo y la interpretación de instrumentos de la Valoración Geriátrica Integral como apoyo a la formación y a la práctica clínica. No reemplaza la valoración clínica, el juicio profesional ni los criterios diagnósticos vigentes. Las escalas deben cumplir su función de cuantificar, pero son parte del apoyo a la atención diaria y no elementos que sustituyan el diagnóstico clínico. El conversor de opioides es material educativo y no constituye una guía de prescripción.</p>'
+
   + '<h3>Derechos y permisos</h3>'
   + '<p>El contenido de las escalas proviene del manual citado arriba. Todos los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, y sus editores autorizaron el uso de ese contenido en esta herramienta. Esa autorización cubre esta aplicación y no se extiende a quien la reutilice o la redistribuya.</p>'
-  + '<p>Varios de los instrumentos incluidos tienen titular de derechos propio, distinto del manual, y condiciones de uso que dependen de ese titular. Esta herramienta los reproduce con finalidad educativa y de apoyo asistencial, sin ánimo de lucro, y cita en cada ficha su fuente primaria. Quien desee reutilizarlos, traducirlos o incorporarlos a otro producto debe verificar sus condiciones con el titular correspondiente; el detalle consta en el archivo NOTICE.md del repositorio.</p>'
+  + '<p>Varios de los instrumentos incluidos tienen titular de derechos propio, distinto del manual, y condiciones de uso que dependen de ese titular. Esta herramienta los reproduce con fines exclusivamente educativos y de investigación, sin finalidad comercial, y cita en cada ficha su fuente primaria. Quien desee reutilizarlos, traducirlos o incorporarlos a otro producto debe verificar sus condiciones con el titular correspondiente; el detalle consta en el archivo NOTICE.md del repositorio.</p>'
   + '<p>El código de la aplicación se publica bajo licencia MIT, que no cubre el contenido de las escalas.</p>'
-
-  + '<h3>Uso previsto</h3>'
-  + '<p>Herramienta de apoyo educativo para el cálculo e interpretación de escalas de tamización. No reemplaza la valoración clínica, el juicio profesional ni los criterios diagnósticos vigentes. Las escalas deben cumplir su función de cuantificar, pero son parte del apoyo a la atención diaria y no elementos que sustituyan el diagnóstico clínico. El conversor de opioides es material educativo y no constituye una guía de prescripción.</p>'
 
   + '<div class="sig">'
   + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Desarrollo</span>'
@@ -2873,15 +2873,16 @@ function renderAbout(){
   + '<div><div class="name">Cristian Camilo Llano Ceballos</div>'
   + '<div class="orcid"><a href="https://orcid.org/0000-0001-9745-3863" target="_blank" rel="noopener noreferrer">ORCID 0000-0001-9745-3863</a></div></div></div>'
   + '<div class="role">Médico geriatra. Profesor clínico adjunto, Facultad de Medicina, Pontificia Universidad Javeriana y Hospital Universitario San Ignacio. Coautor del capítulo de valoración geriátrica integral del manual de referencia.</div>'
-  + '<div class="role" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">Desarrollado con el apoyo de Claude (Anthropic).</div>'
+  + '<div class="role" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">El desarrollo tecnológico se realizó con el apoyo de herramientas de inteligencia artificial generativa: Claude (Anthropic) en la construcción de la herramienta y ChatGPT (OpenAI) en dos versiones limitadas a la interfaz visual. El alcance, la selección de las fuentes, las decisiones clínicas y la verificación de cada escala estuvieron a cargo del autor. El uso de inteligencia artificial se declara expresamente por transparencia.</div>'
   + '</div>'
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.7) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.8) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Historial de versiones</h3>'
+  + '<div class="cite"><strong>2.10.8</strong> · Avisos de finalidad y de desarrollo, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La sección Uso previsto pasa a llamarse Finalidad y condiciones de uso, se ubica antes de Derechos y permisos y declara fines exclusivamente educativos y de investigación, sin finalidad comercial; la misma formulación se aplica en Derechos y permisos, en el pie de esta sección, en el README y en CITATION.cff. La ficha de desarrollo declara el apoyo de Claude (Anthropic) y de ChatGPT (OpenAI) y las funciones que asumió el autor. Se incorpora el ajuste de redacción del historial de la 2.10.7 hecho después de publicarla, y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.7</strong> · Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. El título de citación pasa a ser "VGI Digital: herramienta digital para la Valoración Geriátrica Integral", para no confundirse con otros títulos; se corrige la filiación institucional del autor en los metadatos de citación; se incorporan tres ajustes hechos después de la 2.10.6 sin cambio de versión (estilo de los párrafos de la sección Acerca de, orden de la filiación en la ficha del autor y título en la cita sugerida), y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.6</strong> · Restitución de los archivos de derechos. En la 2.10.4 los archivos LICENSE y NOTICE.md habían perdido contenido: las cuatro exclusiones numeradas de la licencia y su versión en inglés, la tabla de instrumentos con su titular y su situación, y la sección sobre distribución restringida. Se restituyen íntegros y se añade en ambos la cláusula de la identidad visual, que hasta ahora solo constaba en el historial. Se retira además la afirmación de que el Mini-Cog se reimprime con permiso de su autor, aquí y en la ficha del instrumento, por no existir constancia documentada de esa autorización: se conserva la identificación del titular y la advertencia de verificar sus condiciones. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
   + '<div class="cite"><strong>2.10.5</strong> · Corrección de la identidad visual introducida en 2.10.4: el logotipo de esta sección se mostraba a tamaño natural y desbordaba la columna de texto, y el símbolo de marca no aparecía en la versión móvil porque el bloque de marca solo existe en la navegación lateral de escritorio. Se limita el tamaño del logotipo y se lleva el símbolo a la cabecera en pantallas pequeñas. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
@@ -2903,7 +2904,7 @@ function renderAbout(){
   + '<div class="cite"><strong>2.0</strong> · Contenido derivado del manual de 2024: de 9 a 38 escalas, agrupadas por dominio dentro de cada eje, con buscador.</div>'
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
 
-  + '<p class="disclaimer">Versión 2.10.7 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso educativo; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.10.8 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 

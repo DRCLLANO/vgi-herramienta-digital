@@ -13,10 +13,11 @@ abstract: >-
   geriatría" (Editorial Pontificia
   Universidad Javeriana, 2024), con autorización de sus editores. Desarrollo
   original de un solo autor, construido mediante trabajo conversacional con un
-  modelo de lenguaje. Uso educativo; no reemplaza el juicio clínico.
+  modelo de lenguaje. Uso exclusivamente educativo y de investigación,
+  sin finalidad comercial; no reemplaza el juicio clínico.
 type: software
-version: "2.10.7"
-date-released: "2026-09-20"
+version: "2.10.8"
+date-released: "2026-09-22"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/drcllano/vgi-herramienta-digital"

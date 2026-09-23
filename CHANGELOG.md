@@ -3,6 +3,28 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.8
+
+Avisos de finalidad y de desarrollo, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones clínicas.
+
+- La sección "Uso previsto" de Acerca de pasa a llamarse "Finalidad y
+  condiciones de uso", se ubica antes de "Derechos y permisos" y declara fines
+  exclusivamente educativos y de investigación, sin finalidad comercial.
+- La misma formulación sustituye a "finalidad educativa y de apoyo asistencial,
+  sin ánimo de lucro" en "Derechos y permisos", y a "Uso educativo" en el pie de
+  la sección, en este README y en `CITATION.cff`.
+- La ficha de desarrollo declara el apoyo de herramientas de inteligencia
+  artificial generativa, Claude (Anthropic) y ChatGPT (OpenAI), y las funciones
+  que asumió el autor: alcance, selección de fuentes, decisiones clínicas y
+  verificación.
+- Se incorpora el ajuste de redacción del historial de la 2.10.7 hecho en la
+  rama principal después de publicarla, sin cambio de versión.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.8`.
+- La versión 2.10.6, analizada en el manuscrito, se conserva sin cambios en la
+  etiqueta `v2.10.6` del repositorio y en el depósito de OSF.
+
 ## 2.10.7
 
 Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo,
