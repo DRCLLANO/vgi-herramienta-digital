@@ -9,7 +9,7 @@ Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
 evaluación (clínico, funcional, mental y social) más una sección de paliativos
 y pronóstico.
 
-**Versión 2.10.8** · 43 escalas y un conversor de dosis equianalgésicas de opioides.
+**Versión 2.10.9** · 43 escalas y un conversor de dosis equianalgésicas de opioides.
 
 ## Abrir la herramienta
 
@@ -97,7 +97,7 @@ citarse.
 
 La carpeta [`verificacion/`](verificacion/) contiene el script que ejecuta las
 tres pruebas automatizadas sobre `index.html` y el resultado fechado de las
-versiones 2.10.6, 2.10.7 y 2.10.8. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
+versiones 2.10.6 a 2.10.9. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
 cada archivo, para comprobar que el repositorio y el depósito de OSF contienen
 exactamente la misma versión.
 
@@ -106,7 +106,7 @@ exactamente la misma versión.
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. VGI DIGITAL: herramienta digital
-> para la Valoración Geriátrica Integral (versión 2.10.8) [software]. Open Science
+> para la Valoración Geriátrica Integral (versión 2.10.9) [software]. Open Science
 > Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
@@ -134,7 +134,7 @@ derechos propio y condiciones de uso específicas.
 | `LICENSE` | Licencia MIT del código fuente |
 | `NOTICE.md` | Alcance de la licencia y derechos sobre el contenido de las escalas |
 | `CITATION.cff` | Metadatos de citación |
-| `CHANGELOG.md` | Historial de versiones (1.0 a 2.10.8) |
+| `CHANGELOG.md` | Historial de versiones (1.0 a 2.10.9) |
 | `sw.js` | Service worker: permite el uso sin conexión tras la primera visita |
 | `manifest.json` | Manifiesto de la aplicación web progresiva |
 | `icon-*.png` | Iconos de la aplicación (120, 152, 167, 180, 192 y 512 px, más el icono *maskable*) |
@@ -146,5 +146,6 @@ derechos propio y condiciones de uso específicas.
 | `verificacion/resultado-2.10.6.json` | Resultado fechado de esas pruebas sobre la versión 2.10.6 |
 | `verificacion/resultado-2.10.7.json` | Resultado fechado de esas pruebas sobre la versión 2.10.7 |
 | `verificacion/resultado-2.10.8.json` | Resultado fechado de esas pruebas sobre la versión 2.10.8 |
+| `verificacion/resultado-2.10.9.json` | Resultado fechado de esas pruebas sobre la versión 2.10.9 |
 | `verificacion/LEEME.md` | Instrucciones para ejecutar la verificación |
 | `SHA256SUMS.txt` | Sumas SHA-256 de todos los archivos del depósito |

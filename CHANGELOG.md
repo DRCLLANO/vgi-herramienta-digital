@@ -3,6 +3,37 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.9
+
+Ajustes de coherencia y de interfaz, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones clínicas.
+
+- La descripción del Charlson aclara que sus diecinueve condiciones se agrupan
+  en dieciséis preguntas, más la edad, y así explica sus 17 ítems.
+- En "Organización por ejes" se corrige la frase que situaba los instrumentos de
+  cuidados paliativos en el eje clínico: permanecen allí los de oncogeriatría
+  (G8 y VES-13) y los paliativos se reúnen en su propia pestaña.
+- La barra de puntaje muestra "Sin iniciar" mientras no haya respuestas y rotula
+  como parcial el puntaje de una escala incompleta.
+- La pestaña VGI pasa a llamarse "Resumen VGI" ("Resumen" en móvil).
+- En Acerca de, las secciones "Organización por ejes", "Conversor de opioides",
+  "Escalas complementarias" e "Historial de versiones" se vuelven desplegables.
+  Finalidad, derechos, desarrollo y cita siguen siempre visibles.
+- En escritorio se reduce la altura del encabezado de cada eje, se retira el
+  rótulo "VGI DIGITAL" de la cabecera (redundante con la barra lateral), el
+  símbolo de la barra lateral se muestra sobre fondo blanco para ganar contraste
+  y las etiquetas pequeñas ganan tamaño y contraste. Las tarjetas de la
+  biblioteca alinean su contenido arriba.
+- Los iconos de la navegación declaran su tamaño en el propio `index.html`
+  (atributos y una base mínima de estilos), de modo que conservan la proporción
+  aunque `ui-v3.css` no cargue, por ejemplo al abrir el archivo suelto o con una
+  copia antigua en caché. Sin esa base, los iconos se dibujaban a más de 100 px.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.9`. El script de verificación se ejecutó sobre esta versión con los
+  mismos recuentos y sin fallos (`verificacion/resultado-2.10.9.json`).
+- La versión 2.10.6, analizada en el manuscrito, se conserva sin cambios en la
+  etiqueta `v2.10.6` del repositorio y en el depósito de OSF.
+
 ## 2.10.8
 
 Avisos de finalidad y de desarrollo, sin cambios en las escalas, sus reglas de

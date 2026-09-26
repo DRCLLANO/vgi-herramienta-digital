@@ -16,8 +16,8 @@ abstract: >-
   modelo de lenguaje. Uso exclusivamente educativo y de investigación,
   sin finalidad comercial; no reemplaza el juicio clínico.
 type: software
-version: "2.10.8"
-date-released: "2026-09-22"
+version: "2.10.9"
+date-released: "2026-09-26"
 license: MIT
 doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/drcllano/vgi-herramienta-digital"

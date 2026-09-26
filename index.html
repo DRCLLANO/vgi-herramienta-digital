@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.10.8",
+  "softwareVersion": "2.10.9",
   "datePublished": "2026-09-13",
-  "dateModified": "2026-09-22",
+  "dateModified": "2026-09-26",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -592,6 +592,10 @@ body.tg2 .card h2{font-size:20px;}
 .sizer button:nth-child(3){font-size:18px;}
 
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;}}
+/* Base mínima de la navegación: mantiene la proporción aunque ui-v3.css no cargue */
+.tabicon{width:20px;height:20px;flex:none;}
+.tab-short,.nav-brand,.nav-label,.nav-divider,.nav-foot{display:none;}
+.brand-logo-mark{width:42px;height:42px;object-fit:contain;}
 </style>
 <link rel="stylesheet" href="ui-v3.css">
 </head>
@@ -644,7 +648,7 @@ charlson:{
   eje:'clinico', dom:'Comorbilidad',
   name:'Charlson',
   full:'Índice de Comorbilidad de Charlson',
-  blurb:'Diecinueve situaciones médicas ponderadas. El instrumento más utilizado en la evaluación pronóstica del paciente con comorbilidad.',
+  blurb:'Diecinueve condiciones médicas ponderadas, agrupadas en dieciséis preguntas, más la edad. El instrumento más utilizado en la evaluación pronóstica del paciente con comorbilidad.',
   max:38,
   ref:'Charlson M, Szatrowski TP, Peterson J, Gold J. Validation of a combined comorbidity index. J Clin Epidemiol. 1994;47(11):1245-51.',
   items:[
@@ -2400,20 +2404,20 @@ function tabIcon(id){
     paliativo:'<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/><path d="M12 8v7M9.5 11.5h5"/>',
     vgi:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'
   };
-  return '<svg class="tabicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[id]+'</svg>';
+  return '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[id]+'</svg>';
 }
 
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.8</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.9</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon(e.id)+'<span class="tabtext"><span class="tab-full">'+esc(e.label)+'</span><span class="tab-short">'+shortLabel[e.id]+'</span></span></button>').join('')
     + '<div class="nav-divider"></div>'
     + '<button class="vgi-tab" data-tab="vgi" aria-label="Resumen de valoración geriátrica integral" style="--tab:var(--ink)" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
-    + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">VGI</span><span class="tab-short">VGI</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
+    + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">Resumen VGI</span><span class="tab-short">Resumen</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
     + '<div class="nav-foot">43 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
 }
 
@@ -2614,8 +2618,9 @@ function renderScorebar(){
   const falta = s.items.length - answered();
   bar.className = 'scorebar';
   bar.innerHTML = '<div class="inner"><div>'
-    + '<div class="lbl">'+(s.max?'Puntaje':'Criterios')+'</div>'
-    + '<div class="val">'+(s.max?fmt(total()):answered())+'<span> / '+(s.max?fmt(s.max):s.items.length)+'</span></div></div>'
+    + '<div class="lbl">'+(answered()>0 && falta ? (s.max?'Puntaje parcial':'Criterios parciales') : (s.max?'Puntaje':'Criterios'))+'</div>'
+    + (answered()===0 ? '<div class="val val-empty">Sin iniciar</div></div>'
+       : '<div class="val">'+(s.max?fmt(total()):answered())+'<span> / '+(s.max?fmt(s.max):s.items.length)+'</span></div></div>')
     + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;opacity:.6">'
     + (falta ? 'faltan '+falta+'<br>ítem'+(falta===1?'':'s')+' por responder' : 'todos los ítems<br>respondidos')
     + '</div>'
@@ -2826,20 +2831,23 @@ function renderAbout(){
   + '<div class="cite">Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, editores. <em>Abordaje geriátrico integral: escalas de uso frecuente en geriatría</em>. Primera edición. Bogotá: Editorial Pontificia Universidad Javeriana, Facultad de Medicina; 2024. ISBN 978-958-781-931-1 (impreso), 978-958-781-930-4 (digital). DOI 10.11144/Javeriana.9789587819304.</div>'
   + '<p>Cada escala conserva además su referencia primaria y, cuando existe, la de su validación en población colombiana o latinoamericana. Se indican en la ficha de cada instrumento.</p>'
 
-  + '<h3>Organización por ejes</h3>'
+  + '<details class="acc"><summary>Organización por ejes</summary>'
   + '<p>A los cuatro ejes del manual se añadió una quinta pestaña, Paliativos y pronóstico, que no forma parte de su estructura pero responde a un uso clínico distinto. Allí los instrumentos que identifican necesidades paliativas (NECPAL y PPS) están separados de los que estiman pronóstico (PPI, PaP, Walter y Lee): reconocer a quien se beneficia de un abordaje paliativo y calcular cuánto tiempo de vida le queda son preguntas diferentes, y confundirlas lleva a decisiones equivocadas. El conversor de dosis equianalgésicas acompaña a ese grupo.</p>'
-  + '<p>La ubicación de cada escala sigue la del manual. Por eso la fragilidad y la sarcopenia aparecen en el eje funcional, dentro de los síndromes geriátricos, y no en el clínico. Los instrumentos de los capítulos de oncogeriatría y cuidados paliativos se agrupan en el eje clínico.</p>'
+  + '<p>La ubicación de cada escala sigue la del manual. Por eso la fragilidad y la sarcopenia aparecen en el eje funcional, dentro de los síndromes geriátricos, y no en el clínico. Los instrumentos del capítulo de oncogeriatría (G8 y VES-13) permanecen en el eje clínico; los de cuidados paliativos y pronóstico se reunieron en la quinta pestaña descrita arriba.</p>'
+  + '</details>'
 
-  + '<h3>Conversor de opioides</h3>'
+  + '<details class="acc"><summary>Conversor de opioides</summary>'
   + '<p>La herramienta de cálculo de dosis equianalgésicas combina dos fuentes que no siempre coinciden. Cuando difieren, la ficha de cada conversión indica el factor usado y el valor alternativo, porque la variabilidad entre tablas de equianalgesia es real y conviene tenerla a la vista al prescribir.</p>'
   + '<div class="cite">Hernández-Ortiz A. Construcción de un nomograma para facilitar el cálculo de dosis equianalgésicas para la rotación de opioides. Rev Mex Anest. 2016;39(4):251-60.</div>'
   + '<div class="cite">Quintero C V. Taller de opioides. Fellow de Dolor y Cuidados Paliativos, Instituto Nacional de Cancerología – Universidad Militar Nueva Granada.</div>'
+  + '</details>'
 
-  + '<h3>Escalas complementarias</h3>'
+  + '<details class="acc"><summary>Escalas complementarias</summary>'
   + '<p>Seis instrumentos incluidos aquí no están tabulados en el manual y se citan de forma independiente. El Zarit es mencionado en el capítulo de esfera social. El 4AT complementa al CAM en el cribado de delirium: no requiere entrenamiento formal y puede aplicarse al paciente somnoliento o que no colabora, situación en la que el CAM no puede completarse. El PAINAD cubre la evaluación del dolor en la persona que no puede autorreportarlo, para la que el manual no ofrece herramienta. El PaP Score completa el bloque pronóstico en cuidados paliativos junto al PPS y el PPI. Los índices de Walter y de Lee provienen del repositorio ePrognosis de la Universidad de California en San Francisco y estiman mortalidad a un año tras la hospitalización y a cuatro años en la comunidad, respectivamente; su calibración en población colombiana no ha sido estudiada.</p>'
   + '<div class="cite">Zarit SH, Reever KE, Bach-Peterson J. Relatives of the impaired elderly: correlates of feelings of burden. Gerontologist. 1980;20(6):649-55. Versión española: Martín M, et al. Rev Gerontol. 1996;6:338-46. Validación en Colombia: Barreto-Osorio RV, et al. Aquichan. 2015;15(3):368-80.</div>'
   + '<div class="cite">Bellelli G, Morandi A, Davis DHJ, Mazzola P, Turco R, Gentile S, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014;43(4):496-502. Versión española validada: Delgado-Parada E, Morillo-Cuadrado D, Saiz-Ruiz J, Cebollada-Gracia A, Ayuso-Mateos JL, Cruz-Jentoft AJ. Eur J Psychiatry. 2022. doi:10.1016/j.ejpsy.2022.01.003.</div>'
   + '<div class="cite">Warden V, Hurley AC, Volicer L. Development and psychometric evaluation of the Pain Assessment in Advanced Dementia (PAINAD) scale. J Am Med Dir Assoc. 2003;4(1):9-15. Versión española validada: García-Soler Á, Sánchez-Iglesias I, Buiza C, Alaba J, Navarro AB, Arriola E, et al. Rev Esp Geriatr Gerontol. 2014;49(1):10-4.</div>'
+  + '</details>'
 
   + '<h3>Tamaño de texto</h3>'
   + '<div class="sizer">'
@@ -2853,7 +2861,7 @@ function renderAbout(){
   + '<p>La aplicación se instala en la pantalla de inicio y funciona sin señal. En iPhone, abra el enlace en Safari, toque el botón de compartir y elija "Añadir a pantalla de inicio". En Android, use la opción "Instalar aplicación" del menú del navegador. Después de la primera visita, todo el contenido queda disponible sin conexión.</p>'
 
   + '<h3>Valoración geriátrica integral</h3>'
-  + '<p>La pestaña VGI reúne los resultados de varias escalas y produce un resumen de los cuatro ejes listo para copiar en la historia clínica. Esa valoración vive solo en la memoria mientras la aplicación está abierta y se pierde al cerrarla o recargarla.</p>'
+  + '<p>La pestaña Resumen VGI reúne los resultados de varias escalas y produce un resumen de los cuatro ejes listo para copiar en la historia clínica. Esa valoración vive solo en la memoria mientras la aplicación está abierta y se pierde al cerrarla o recargarla.</p>'
 
   + '<h3>Privacidad</h3>'
   + '<p>La aplicación no transmite ningún dato a ningún servidor: todo el cálculo ocurre en el dispositivo. Las respuestas de cada escala y la valoración en curso se pierden al cerrar la aplicación. Lo único que se conserva en el dispositivo son sus preferencias de uso: escalas favoritas, escalas recientes y tamaño de texto. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</p>'
@@ -2878,10 +2886,11 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.8) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.9) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
-  + '<h3>Historial de versiones</h3>'
+  + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.10.9</strong> · Ajustes de coherencia y de interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La descripción del Charlson aclara que sus diecinueve condiciones se agrupan en dieciséis preguntas, más la edad. En Organización por ejes se corrige la frase que situaba los instrumentos paliativos en el eje clínico. La barra de puntaje muestra "Sin iniciar" mientras no haya respuestas y rotula como parcial el puntaje de una escala incompleta. La pestaña VGI pasa a llamarse Resumen VGI. Las secciones extensas de Acerca de se vuelven desplegables. En escritorio se reduce la altura del encabezado de cada eje y se retira el rótulo VGI DIGITAL de la cabecera, redundante con la barra lateral; el símbolo de la barra lateral gana contraste y las etiquetas pequeñas, legibilidad. Las tarjetas alinean su contenido arriba. Los iconos de navegación declaran su tamaño en el propio HTML, de modo que conservan la proporción aunque la hoja de estilos no cargue.</div>'
   + '<div class="cite"><strong>2.10.8</strong> · Avisos de finalidad y de desarrollo, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La sección Uso previsto pasa a llamarse Finalidad y condiciones de uso, se ubica antes de Derechos y permisos y declara fines exclusivamente educativos y de investigación, sin finalidad comercial; la misma formulación se aplica en Derechos y permisos, en el pie de esta sección, en el README y en CITATION.cff. La ficha de desarrollo declara el apoyo de Claude (Anthropic) y de ChatGPT (OpenAI) y las funciones que asumió el autor. Se incorpora el ajuste de redacción del historial de la 2.10.7 hecho después de publicarla, y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.7</strong> · Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. El título de citación pasa a ser "VGI Digital: herramienta digital para la Valoración Geriátrica Integral", para no confundirse con otros títulos; se corrige la filiación institucional del autor en los metadatos de citación; se incorporan tres ajustes hechos después de la 2.10.6 sin cambio de versión (estilo de los párrafos de la sección Acerca de, orden de la filiación en la ficha del autor y título en la cita sugerida), y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.6</strong> · Restitución de los archivos de derechos. En la 2.10.4 los archivos LICENSE y NOTICE.md habían perdido contenido: las cuatro exclusiones numeradas de la licencia y su versión en inglés, la tabla de instrumentos con su titular y su situación, y la sección sobre distribución restringida. Se restituyen íntegros y se añade en ambos la cláusula de la identidad visual, que hasta ahora solo constaba en el historial. Se retira además la afirmación de que el Mini-Cog se reimprime con permiso de su autor, aquí y en la ficha del instrumento, por no existir constancia documentada de esa autorización: se conserva la identificación del titular y la advertencia de verificar sus condiciones. No se modifican escalas, puntajes, puntos de corte ni interpretaciones.</div>'
@@ -2903,8 +2912,9 @@ function renderAbout(){
   + '<div class="cite"><strong>2.1</strong> · PAINAD. Copiar resumen del resultado. Señalización de ítems sin responder.</div>'
   + '<div class="cite"><strong>2.0</strong> · Contenido derivado del manual de 2024: de 9 a 38 escalas, agrupadas por dominio dentro de cada eje, con buscador.</div>'
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
+  + '</details>'
 
-  + '<p class="disclaimer">Versión 2.10.8 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.10.9 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 
