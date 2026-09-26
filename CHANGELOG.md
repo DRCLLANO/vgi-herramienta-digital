@@ -28,6 +28,10 @@ cálculo, puntos de corte ni interpretaciones clínicas.
   (atributos y una base mínima de estilos), de modo que conservan la proporción
   aunque `ui-v3.css` no cargue, por ejemplo al abrir el archivo suelto o con una
   copia antigua en caché. Sin esa base, los iconos se dibujaban a más de 100 px.
+- El service worker pide primero a la red los archivos propios (página,
+  estilos e iconos) y deja la caché como respaldo sin conexión. Antes servía
+  los estilos desde caché, de modo que una visita podía recibir la página nueva
+  con la apariencia anterior si no se cambiaba el nombre de la caché.
 - Se actualizan los metadatos de versión y la caché del service worker a
   `v2.10.9`. El script de verificación se ejecutó sobre esta versión con los
   mismos recuentos y sin fallos (`verificacion/resultado-2.10.9.json`).

@@ -1,13 +1,14 @@
 /* =======================================================================
    VGI Digital: service worker
-   Estrategia: se precarga el paquete local de la aplicación web progresiva
-   y se sirve desde caché. Las fuentes de
-   Google se guardan la primera vez que se usan, para que la aplicación
-   conserve su tipografía sin conexión.
+   Estrategia: se precarga el paquete local de la aplicación web progresiva.
+   Los archivos propios (página, estilos, iconos) se piden primero a la red,
+   para que cada visita reciba la versión publicada, y la caché queda como
+   respaldo sin conexión. Las fuentes de Google se sirven desde caché una vez
+   guardadas, para conservar la tipografía sin conexión.
    Al cambiar de versión se cambia CACHE y se borran las cachés viejas.
    ======================================================================= */
 
-const CACHE = 'escalas-geriatria-v2.10.8';
+const CACHE = 'escalas-geriatria-v2.10.9';
 
 const PRECARGA = [
   './',
@@ -74,7 +75,23 @@ self.addEventListener('fetch', e=>{
     return;
   }
 
-  /* Recursos: caché primero, y si no está se pide y se guarda. */
+  /* Recursos propios: red primero y caché como respaldo. Así los estilos y
+     los iconos nunca quedan desfasados respecto de la página. */
+  if(propio){
+    e.respondWith((async ()=>{
+      const c = await caches.open(CACHE);
+      try{
+        const red = await fetch(req);
+        if(red && red.ok) c.put(req, red.clone());
+        return red;
+      }catch(err){
+        return (await c.match(req)) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  /* Fuentes: caché primero, y si no está se pide y se guarda. */
   e.respondWith((async ()=>{
     const c = await caches.open(CACHE);
     const hit = await c.match(req);
