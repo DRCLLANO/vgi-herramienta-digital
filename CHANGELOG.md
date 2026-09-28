@@ -27,6 +27,18 @@ de cálculo, puntos de corte ni interpretaciones clínicas.
 - `VERSION.txt` declaraba 2.10.8 desde la versión anterior; se corrige.
 - Se actualizan los metadatos de versión y la caché del service worker a
   `v2.10.10`.
+- Ajuste posterior, sin cambio de versión (28 de septiembre de 2026): en el
+  conversor de opioides, cuando el destino es un parche transdérmico (fentanilo
+  o buprenorfina), la dosis de rescate dejaba de tener sentido clínico porque
+  se expresaba en mcg/h (por ejemplo, "2,5 mcg/h" para un parche de 25 mcg/h).
+  Ahora se indica que el rescate se da con un opioide de liberación inmediata,
+  por lo general morfina o hidromorfona, por vía oral, subcutánea o intravenosa
+  según el contexto, y se calcula el 10 % del equivalente diario de morfina oral
+  de la liberación calculada en cada una de esas cuatro opciones, con los
+  factores que ya usa el conversor. Se añade que los rescates cobran especial
+  importancia en las primeras 12 a 24 horas. Ningún factor de conversión ni
+  ninguna escala cambia. El script de verificación se repitió sobre el archivo
+  ajustado (`verificacion/resultado-2.10.10.json`).
 
 ## 2.10.9
 
