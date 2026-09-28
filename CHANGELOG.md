@@ -3,6 +3,31 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.10
+
+Corrección de la franja del resultado, sin cambios en las escalas, sus reglas
+de cálculo, puntos de corte ni interpretaciones clínicas.
+
+- Los rótulos de las bandas se repartían en columnas del mismo ancho que cada
+  banda. Cuando una banda era estrecha (Barthel 100, Charlson 2, NPI 0, 4AT 0,
+  Lawton 8, Walter 2 a 3, PPI 4,5 a 6, entre otras) el texto no cabía y se
+  montaba sobre el de la banda vecina. En la prueba a 360 px, los 14 casos
+  revisados tenían rótulos superpuestos o desbordados, y 3 de ellos también a
+  1440 px; tras el cambio, ninguno en ningún ancho.
+- La leyenda se lista ahora debajo de la franja, una banda por línea (color,
+  rango y rótulo), y resalta la banda del resultado obtenido. Los lectores de
+  pantalla la anuncian como "resultado actual".
+- El marcador del puntaje se desplaza dentro de la franja en los extremos del
+  rango (por ejemplo Barthel 100) y su punta sigue señalando la posición exacta.
+- Las bandas contiguas quedan separadas por un espacio, de modo que dos bandas
+  del mismo color (por ejemplo dependencia total y grave en el Barthel) se
+  distinguen.
+- En la ficha "Evidencia y referencia" la franja se muestra sin leyenda, porque
+  los puntos de corte ya se listan debajo.
+- `VERSION.txt` declaraba 2.10.8 desde la versión anterior; se corrige.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.10`.
+
 ## 2.10.9
 
 Ajustes de coherencia y de interfaz, sin cambios en las escalas, sus reglas de

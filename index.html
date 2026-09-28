@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.10.9",
+  "softwareVersion": "2.10.10",
   "datePublished": "2026-09-13",
-  "dateModified": "2026-09-26",
+  "dateModified": "2026-09-27",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -460,31 +460,40 @@ nav.tabs button:nth-child(5)[aria-current="true"] .mark{background:var(--paliati
   text-transform:uppercase;color:var(--muted);background:var(--tint);
 }
 
-/* ---------- Franja de bandas del resultado ---------- */
-.franja{margin:22px 0 4px;}
-.fstrip{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--line);}
-.fstrip i{display:block;min-width:2px;}
-.franja.sinmarca{margin-top:6px;}
-.fmark{position:relative;height:26px;}
-.fmark span{
-  position:absolute;left:0;transform:translateX(-50%);bottom:6px;
-  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;
+/* ---------- Franja de bandas del resultado ----------
+   La franja conserva la proporción real de cada banda, pero la leyenda ya no
+   depende de ese ancho: se lista debajo, una banda por línea, para que ningún
+   rótulo tenga que caber en una banda estrecha (Barthel 100, Charlson 2, NPI 0). */
+.franja{margin:22px 0 6px;}
+.franja.sinmarca{margin-top:8px;}
+.fmark{position:relative;height:32px;}
+.fmark .fval{
+  position:absolute;bottom:9px;left:calc(var(--p) * 1%);transform:translateX(calc(var(--p) * -1%));
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;line-height:1.2;
   background:var(--bar);color:var(--bar-fg);border-radius:6px;padding:3px 8px;white-space:nowrap;
 }
-.fmark span::after{
-  content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-4px;
-  border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--bar);
+.fmark .fptr{
+  position:absolute;bottom:4px;left:calc(var(--p) * 1%);transform:translateX(-50%);width:0;height:0;
+  border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--bar);
 }
-.fleg{display:flex;margin-top:7px;gap:4px;}
-.fleg span{
-  font-size:10.5px;line-height:1.3;color:var(--muted);min-width:0;
-  padding-right:4px;border-left:1px solid var(--line);padding-left:6px;
+.fstrip{display:flex;gap:2px;height:12px;}
+.fstrip i{display:block;min-width:3px;border-radius:2px;}
+.fstrip i:first-child{border-radius:6px 2px 2px 6px;}
+.fstrip i:last-child{border-radius:2px 6px 6px 2px;}
+.fleg{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:2px;max-width:40em;}
+.fleg li{
+  display:grid;grid-template-columns:10px minmax(6.2em,max-content) minmax(0,1fr);align-items:baseline;
+  column-gap:10px;padding:5px 8px;border-radius:8px;font-size:13px;line-height:1.35;color:var(--muted);
 }
-.fleg span:first-child{border-left:none;padding-left:0;}
-.fleg b{
-  display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;
-  color:var(--ink-2);font-weight:500;
+.fleg li i{width:10px;height:10px;border-radius:3px;align-self:center;}
+.fleg li b{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;white-space:nowrap;
+  font-variant-numeric:tabular-nums;color:var(--ink-2);
 }
+.fleg li span{overflow-wrap:anywhere;}
+.fleg li.cur{background:var(--tint);color:var(--ink);font-weight:600;}
+.fleg li.cur b{color:var(--ink);}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
 
 /* ---------- Encabezado de eje con más presencia ---------- */
 .hero{margin:2px 0 20px;}
@@ -2307,8 +2316,10 @@ function cortes(s){
 
 /* Franja de bandas: sitúa el puntaje obtenido dentro del rango completo de
    la escala y muestra dónde caen los puntos de corte. Se construye con los
-   mismos valores que calcula la aplicación. */
-function franjaHTML(s, score){
+   mismos valores que calcula la aplicación. La leyenda va en lista, una banda
+   por línea, y resalta la banda del resultado; con conLeyenda=false se omite
+   (la ficha de evidencia ya lista los puntos de corte debajo). */
+function franjaHTML(s, score, conLeyenda){
   const c = cortes(s);
   if(!c || c.length<2) return '';
   const paso  = c[0].paso;
@@ -2316,14 +2327,21 @@ function franjaHTML(s, score){
   const col   = t => ({ok:'var(--ok)',warn:'var(--warn)',alert:'var(--alert)'}[t] || 'var(--muted)');
   const marca = (score!==null && score!==undefined && isFinite(score));
   const pos   = marca ? Math.max(0, Math.min(100, ((score + paso/2) / largo) * 100)) : 0;
+  let cur = -1;
+  if(marca){
+    cur = c.findIndex(b => score >= b.desde - 1e-9 && score <= b.hasta + 1e-9);
+    if(cur<0){ const t = s.interpret(score).t; cur = c.findIndex(b => b.t===t); }
+  }
   return '<div class="franja'+(marca?'':' sinmarca')+'">'
-    + (marca?'<div class="fmark" style="left:'+pos.toFixed(2)+'%"><span>'+fmt(score)+'</span></div>':'')
-    + '<div class="fstrip">'
+    + (marca?'<div class="fmark" style="--p:'+pos.toFixed(2)+'" aria-hidden="true"><span class="fval">'+fmt(score)+'</span><i class="fptr"></i></div>':'')
+    + '<div class="fstrip" aria-hidden="true">'
     + c.map(b=>'<i style="flex:'+((b.hasta-b.desde+paso)/largo)+';background:'+col(b.tone)+'"></i>').join('')
     + '</div>'
-    + '<div class="fleg">'
-    + c.map(b=>'<span style="flex:'+((b.hasta-b.desde+paso)/largo)+'"><b>'+esc(b.rango)+'</b>'+esc(b.t)+'</span>').join('')
-    + '</div></div>';
+    + (conLeyenda===false ? '' : '<ul class="fleg">'
+      + c.map((b,i)=>'<li'+(i===cur?' class="cur"':'')+'><i style="background:'+col(b.tone)+'"></i><b>'+esc(b.rango)+'</b><span>'+esc(b.t)
+        + (i===cur?'<span class="sr"> (resultado actual)</span>':'')+'</span></li>').join('')
+      + '</ul>')
+    + '</div>';
 }
 
 function tipoInstrumento(s){
@@ -2344,7 +2362,7 @@ function fichaEvidencia(s){
         : 'Manual <i>Abordaje geriátrico integral</i>, Javeriana 2024')+'</span></div>'
     + (s.max?'<div class="fr"><span>Rango</span><span>0 a '+fmt(s.max)+' puntos</span></div>':'')
     + (c ? '<div class="fh" style="margin-top:14px">Puntos de corte aplicados</div>'
-         + franjaHTML(s, null)
+         + franjaHTML(s, null, false)
          + c.map(b=>'<div class="fr"><span>'+esc(b.rango)+' puntos</span><span>'+esc(b.t)+'</span></div>').join('')
        : '<div class="fh" style="margin-top:14px">Interpretación</div>'
          + '<div class="fr"><span>Regla</span><span>El resultado se obtiene por algoritmo, no por suma de puntos: consulte la interpretación.</span></div>')
@@ -2410,7 +2428,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.9</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.10</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2886,10 +2904,11 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.9) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.10) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.10.10</strong> · Corrección de la franja del resultado, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Los rótulos de las bandas ya no se reparten según el ancho de cada banda, lo que los montaba unos sobre otros cuando una banda era estrecha (por ejemplo Barthel 100, Charlson 2, NPI 0 o Lawton 8): ahora se listan debajo de la franja, una banda por línea, y se resalta la del resultado obtenido. El marcador del puntaje ya no se sale de la franja en los extremos del rango, las bandas contiguas del mismo color quedan separadas y, en la ficha de evidencia, la franja se muestra sin leyenda porque los puntos de corte ya se listan debajo.</div>'
   + '<div class="cite"><strong>2.10.9</strong> · Ajustes de coherencia y de interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La descripción del Charlson aclara que sus diecinueve condiciones se agrupan en dieciséis preguntas, más la edad. En Organización por ejes se corrige la frase que situaba los instrumentos paliativos en el eje clínico. La barra de puntaje muestra "Sin iniciar" mientras no haya respuestas y rotula como parcial el puntaje de una escala incompleta. La pestaña VGI pasa a llamarse Resumen VGI. Las secciones extensas de Acerca de se vuelven desplegables. En escritorio se reduce la altura del encabezado de cada eje y se retira el rótulo VGI DIGITAL de la cabecera, redundante con la barra lateral; el símbolo de la barra lateral gana contraste y las etiquetas pequeñas, legibilidad. Las tarjetas alinean su contenido arriba. Los iconos de navegación declaran su tamaño en el propio HTML, de modo que conservan la proporción aunque la hoja de estilos no cargue. El service worker pide primero a la red los archivos propios, para que los estilos nunca queden desfasados respecto de la página.</div>'
   + '<div class="cite"><strong>2.10.8</strong> · Avisos de finalidad y de desarrollo, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La sección Uso previsto pasa a llamarse Finalidad y condiciones de uso, se ubica antes de Derechos y permisos y declara fines exclusivamente educativos y de investigación, sin finalidad comercial; la misma formulación se aplica en Derechos y permisos, en el pie de esta sección, en el README y en CITATION.cff. La ficha de desarrollo declara el apoyo de Claude (Anthropic) y de ChatGPT (OpenAI) y las funciones que asumió el autor. Se incorpora el ajuste de redacción del historial de la 2.10.7 hecho después de publicarla, y se actualizan la versión y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.7</strong> · Corrección de metadatos, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. El título de citación pasa a ser "VGI Digital: herramienta digital para la Valoración Geriátrica Integral", para no confundirse con otros títulos; se corrige la filiación institucional del autor en los metadatos de citación; se incorporan tres ajustes hechos después de la 2.10.6 sin cambio de versión (estilo de los párrafos de la sección Acerca de, orden de la filiación en la ficha del autor y título en la cita sugerida), y se actualizan la versión y la caché del service worker.</div>'
@@ -2914,7 +2933,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.10.9 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.10.10 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 
