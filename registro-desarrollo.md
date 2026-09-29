@@ -200,7 +200,9 @@ núcleo funcional está contenido en `index.html`; la presentación adaptable se
 mantiene en `ui-v3.css`, y el paquete instalable se completa con
 `manifest.json`, el trabajador de servicio (`sw.js`) y los iconos.
 Todo el cálculo ocurre en el dispositivo y no se transmiten respuestas ni
-resultados clínicos a ningún servidor.
+resultados clínicos a ningún servidor. Desde la versión 2.10.11 la página carga
+GoatCounter, que registra estadísticas anónimas de uso (visitas e identificador
+de las fichas abiertas) sin cookies ni datos personales.
 
 La versión 2.10.6 tiene un núcleo HTML de aproximadamente 252 KB y una hoja de
 estilos local de aproximadamente 14 KB; no depende de bibliotecas de código
@@ -578,3 +580,11 @@ interpretativo contenidos en la aplicación es enteramente del autor humano.
 La herramienta no recoge, transmite ni almacena datos de pacientes. Todo el
 cálculo ocurre en el dispositivo del usuario. No se utilizaron datos de
 pacientes en el desarrollo ni en la verificación.
+
+Desde la versión 2.10.11 se registran estadísticas anónimas de uso mediante
+GoatCounter, un servicio de analítica de código abierto que no usa cookies ni
+identificadores persistentes y no guarda datos personales. Se registran las
+visitas (con país, navegador, tamaño de pantalla y sitio de procedencia) y el
+identificador de cada ficha abierta. No se envían respuestas, puntajes,
+resultados ni ningún dato de la valoración. El uso sin conexión no se
+contabiliza, por lo que las cifras representan un mínimo.

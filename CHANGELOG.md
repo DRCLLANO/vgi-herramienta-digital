@@ -3,6 +3,25 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.10.11
+
+Estadísticas anónimas de uso, sin cambios en las escalas, sus reglas de
+cálculo, puntos de corte ni interpretaciones clínicas.
+
+- Se incorpora GoatCounter (vgidigitalco.goatcounter.com), un servicio de
+  analítica de código abierto que no usa cookies ni guarda datos personales,
+  para conocer cuántas visitas recibe la herramienta, desde qué países y
+  dispositivos, y qué fichas se abren.
+- De cada ficha solo se registra su identificador (por ejemplo
+  `ficha/barthel`). Nunca se envían respuestas, puntajes ni resultados. Si el
+  servicio no está disponible, la aplicación funciona igual y no registra nada.
+- El uso sin conexión no se contabiliza.
+- La sección Privacidad de "Acerca de" se reescribe para declararlo, y se
+  actualizan en el mismo sentido `README.md` y `registro-desarrollo.md`.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.10.11`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.10.11.json`).
+
 ## 2.10.10
 
 Corrección de la franja del resultado, sin cambios en las escalas, sus reglas
@@ -39,6 +58,9 @@ de cálculo, puntos de corte ni interpretaciones clínicas.
   importancia en las primeras 12 a 24 horas. Ningún factor de conversión ni
   ninguna escala cambia. El script de verificación se repitió sobre el archivo
   ajustado (`verificacion/resultado-2.10.10.json`).
+- Ajuste posterior, sin cambio de versión (28 de septiembre de 2026): se añade
+  en "Acerca de" la sección Comentarios y sugerencias, con el contacto del
+  autor en X (@CLlanoC).
 
 ## 2.10.9
 

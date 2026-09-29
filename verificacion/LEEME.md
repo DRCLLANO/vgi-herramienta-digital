@@ -31,8 +31,8 @@ La salida incluye la suma SHA-256 del archivo evaluado, la versión declarada,
 los recuentos (escalas, ítems, opciones y umbrales) y la lista de fallos. El
 proceso termina con código 0 si todo se supera y con 1 si hay algún fallo.
 
-`resultado-2.10.6.json`, `resultado-2.10.7.json`, `resultado-2.10.8.json` y
-`resultado-2.10.9.json` son la salida de este script sobre esas cuatro versiones;
+`resultado-2.10.6.json` a `resultado-2.10.11.json` son la salida de este script
+sobre esas seis versiones;
 los recuentos y la lista de fallos (vacía) son idénticos en todas.
 
 ## Alcance
