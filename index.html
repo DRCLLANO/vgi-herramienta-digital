@@ -43,7 +43,7 @@
 <!-- Redes sociales -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="VGI Digital: herramienta digital para la Valoración Geriátrica Integral">
-<meta property="og:description" content="Herramienta digital de acceso libre para el cálculo y la interpretación de 43 escalas de la Valoración Geriátrica Integral, organizadas según los cuatro ejes de la evaluación (clínico, funcional, mental y social) y una sección adicional de paliativos y pronóstico, con un conversor de dosis equianalgésicas de opioides. Se ejecuta por completo en el navegador, sin servidor y sin transmisión de datos clínicos.">
+<meta property="og:description" content="Herramienta digital de acceso libre para el cálculo y la interpretación de 47 escalas de la Valoración Geriátrica Integral, organizadas según los cuatro ejes de la evaluación (clínico, funcional, mental y social) y una sección adicional de paliativos y pronóstico, con un conversor de dosis equianalgésicas de opioides. Se ejecuta por completo en el navegador, sin servidor y sin transmisión de datos clínicos.">
 <meta property="og:url" content="https://drcllano.github.io/vgi-herramienta-digital/">
 <meta property="og:image" content="https://drcllano.github.io/vgi-herramienta-digital/vgi-digital-logo-verde.png">
 <meta property="og:locale" content="es_CO">
@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.10.11",
+  "softwareVersion": "2.11.0",
   "datePublished": "2026-09-13",
   "dateModified": "2026-09-27",
   "inLanguage": "es",
@@ -70,7 +70,7 @@
   "isAccessibleForFree": true,
   "license": "https://opensource.org/licenses/MIT",
   "codeRepository": "https://github.com/drcllano/vgi-herramienta-digital",
-  "description": "Herramienta digital de acceso libre para el cálculo y la interpretación de 43 escalas de la Valoración Geriátrica Integral, organizadas según los cuatro ejes de la evaluación (clínico, funcional, mental y social) y una sección adicional de paliativos y pronóstico, con un conversor de dosis equianalgésicas de opioides. Se ejecuta por completo en el navegador, sin servidor y sin transmisión de datos clínicos.",
+  "description": "Herramienta digital de acceso libre para el cálculo y la interpretación de 47 escalas de la Valoración Geriátrica Integral, organizadas según los cuatro ejes de la evaluación (clínico, funcional, mental y social) y una sección adicional de paliativos y pronóstico, con un conversor de dosis equianalgésicas de opioides. Se ejecuta por completo en el navegador, sin servidor y sin transmisión de datos clínicos.",
   "author": {
     "@type": "Person",
     "name": "Cristian Camilo Llano Ceballos",
@@ -639,7 +639,7 @@ const EJES = [
 ];
 
 const EJE_INTRO = {
-  clinico:'Comorbilidad, nutrición, deglución, caídas, piel, dolor y tamización oncogeriátrica.',
+  clinico:'Comorbilidad, nutrición, deglución, caídas, piel, dolor, tamización oncogeriátrica, valoración prequirúrgica y futilidad en TAVI.',
   funcional:'Funciones corporales, síndromes geriátricos de fragilidad y sarcopenia, actividades básicas, instrumentales y avanzadas, y participación.',
   mental:'Primero descarte el cambio agudo (delirium); luego tamice lo cognoscitivo, estadifique y evalúe el ánimo y la conducta.',
   social:'Autopercepción de salud, redes de apoyo, vulnerabilidad social, maltrato y carga de quien cuida.',
@@ -918,6 +918,127 @@ ves13:{
   ],
   interpret:s=> s>=3 ? {t:'Adulto mayor vulnerable',tone:'alert',d:'Un puntaje de 3 o más identifica a un adulto mayor vulnerable, con un riesgo 4 veces mayor de muerte o deterioro funcional. Debe someterse a valoración geriátrica integral.'}
                      : {t:'No vulnerable en este tamizaje',tone:'ok',d:'Con 2 puntos o menos contextualice el riesgo del paciente para definir la pertinencia de la valoración por geriatría.'}
+},
+
+/* ================== VALORACIÓN PREQUIRÚRGICA Y TAVI ================== */
+/* Instrumentos complementarios incorporados en la 2.11.0. No proceden del
+   manual de referencia: cada uno conserva su referencia primaria. */
+preopger:{
+  eje:'clinico', dom:'Valoración prequirúrgica',
+  name:'Prequirúrgica geriátrica',
+  full:'Lista de verificación prequirúrgica del adulto mayor (ACS NSQIP y AGS)',
+  blurb:'Diez dominios que la guía del American College of Surgeons y la American Geriatrics Society recomienda revisar antes de una cirugía en la persona mayor. Señala qué dominios requieren intervención y remite a las escalas de esta herramienta.',
+  external:true,
+  ref:'Chow WB, Rosenthal RA, Merkow RP, Ko CY, Esnaola NF. Optimal preoperative assessment of the geriatric surgical patient: a best practices guideline from the American College of Surgeons National Surgical Quality Improvement Program and the American Geriatrics Society. J Am Coll Surg. 2012;215(4):453-66. Escala complementaria: no forma parte del manual de referencia.',
+  items:[
+    {q:'Cognición', hint:'Tamice con el Mini-Cog (eje mental). Si es positivo, amplíe la evaluación antes de la cirugía (por ejemplo, con el MMSE) y deje registrado el estado cognitivo basal.', o:[{l:'Sin hallazgos',v:0},{l:'Alterado o en riesgo',v:1}]},
+    {q:'Capacidad para tomar la decisión quirúrgica', hint:'Verifique que la persona comprende la información, aprecia cómo se aplica a su situación, razona sobre las alternativas y expresa una elección. Marque alterado si falla cualquiera de los cuatro criterios.', o:[{l:'Conservada',v:0},{l:'Comprometida o dudosa',v:1}]},
+    {q:'Depresión', hint:'La guía propone el PHQ-2; en esta herramienta puede usar la escala de Yesavage (eje mental).', o:[{l:'Sin hallazgos',v:0},{l:'Alterado o en riesgo',v:1}]},
+    {q:'Riesgo de delirium posoperatorio', hint:'Marque en riesgo si hay alguno de estos factores: deterioro cognitivo, delirium previo, déficit visual o auditivo, dolor no controlado, polifarmacia o uso de psicofármacos, desnutrición, deshidratación, enfermedad grave o consumo de alcohol.', o:[{l:'Sin factores de riesgo',v:0},{l:'Con factores de riesgo',v:1}]},
+    {q:'Consumo de alcohol u otras sustancias', hint:'La guía propone el CAGE. Un consumo de riesgo obliga a anticipar el síndrome de abstinencia en el posoperatorio.', o:[{l:'Sin hallazgos',v:0},{l:'Consumo de riesgo',v:1}]},
+    {q:'Funcionalidad y caídas', hint:'Evalúe las actividades básicas e instrumentales (Barthel y Lawton, eje funcional) y pregunte por caídas en el último año (Downton, eje clínico). Marque alterado si hay dependencia o caídas.', o:[{l:'Sin hallazgos',v:0},{l:'Dependencia o caídas',v:1}]},
+    {q:'Fragilidad', hint:'Use FRAIL, criterios de Fried o la Clinical Frailty Scale (eje funcional).', o:[{l:'Sin fragilidad',v:0},{l:'Prefragilidad o fragilidad',v:1}]},
+    {q:'Estado nutricional', hint:'Riesgo nutricional grave si el IMC es menor de 18,5 kg/m², la albúmina es menor de 3,0 g/dL o hubo pérdida involuntaria de más del 10 al 15 % del peso en 6 meses. Puede tamizar con el MNA-SF (eje clínico).', o:[{l:'Sin hallazgos',v:0},{l:'Desnutrición o riesgo',v:1}]},
+    {q:'Medicamentos', hint:'Revise la lista completa, suspenda lo no esencial, ajuste dosis a la función renal y evite los medicamentos potencialmente inapropiados (criterios de Beers). Marque alterado si hay polifarmacia o algún medicamento por ajustar.', o:[{l:'Sin hallazgos',v:0},{l:'Requiere ajustes',v:1}]},
+    {q:'Metas, expectativas y apoyo', hint:'Explore los objetivos y expectativas de la persona frente al tratamiento, sus directivas anticipadas y quién la apoyará en el posoperatorio. Marque alterado si no están definidos o la red de apoyo es insuficiente.', o:[{l:'Definidos y con apoyo',v:0},{l:'Por definir o apoyo insuficiente',v:1}]}
+  ],
+  logic:a=>{
+    const acc = [
+      'cognición: documente el estado basal y aplique medidas de prevención de delirium',
+      'capacidad para decidir: no proceda sin aclarar quién decide y cómo, con evaluación formal de la capacidad si persiste la duda',
+      'depresión: confirme el diagnóstico y considere la evaluación por especialista',
+      'riesgo de delirium: aplique medidas no farmacológicas de prevención y evite benzodiacepinas, antihistamínicos y meperidina',
+      'alcohol u otras sustancias: anticipe y vigile el síndrome de abstinencia',
+      'funcionalidad y caídas: registre el estado basal y planee la movilización temprana y la rehabilitación',
+      'fragilidad: discuta el riesgo con la persona y su familia y considere la prehabilitación',
+      'estado nutricional: considere el soporte nutricional antes de la cirugía',
+      'medicamentos: concilie, suspenda lo no esencial y evite los potencialmente inapropiados',
+      'metas y apoyo: defina objetivos, directivas anticipadas y plan de egreso con la familia'
+    ];
+    const alt = a.map((x,i)=>x===1?i:-1).filter(i=>i>=0);
+    const n = alt.length;
+    if(!n) return {t:'Sin dominios por intervenir',tone:'ok',display:'0 de 10',
+      d:'Ninguno de los diez dominios muestra hallazgos. Complete la valoración con el riesgo cardíaco (RCRI) y el pulmonar, y reevalúe si cambia la situación clínica.'};
+    const cap = a[1]===1;
+    return {t: cap ? 'Capacidad para decidir comprometida' : 'Requiere intervención en '+n+' dominio'+(n===1?'':'s'),
+      tone: cap ? 'alert' : 'warn', display: n+' de 10',
+      d:'Dominios por intervenir antes de la cirugía. '+alt.map(i=>acc[i].charAt(0).toUpperCase()+acc[i].slice(1)).join('. ')+'.'};
+  },
+  note:'La guía es un consenso de buenas prácticas, no un puntaje validado: el número de dominios alterados no tiene un punto de corte pronóstico y sirve para ordenar las intervenciones. La guía incluye además el riesgo cardíaco, que puede calcular con el RCRI, y el riesgo pulmonar, que no está incluido en esta herramienta.'
+},
+
+rcri:{
+  eje:'clinico', dom:'Valoración prequirúrgica',
+  name:'RCRI',
+  full:'Índice de Riesgo Cardíaco Revisado de Lee (Revised Cardiac Risk Index)',
+  blurb:'Seis predictores independientes de complicaciones cardíacas mayores en la cirugía no cardíaca. No debe confundirse con el índice de Lee de mortalidad a 4 años de la sección de pronóstico.',
+  max:6,
+  external:true,
+  ref:'Lee TH, Marcantonio ER, Mangione CM, Thomas EJ, Polanczyk CA, Cook EF, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-9. Recalibración: Duceppe E, Parlow J, MacDonald P, Lyons K, McMullen M, Srinathan S, et al. Canadian Cardiovascular Society guidelines on perioperative cardiac risk assessment and management for patients who undergo noncardiac surgery. Can J Cardiol. 2017;33(1):17-32. Escala complementaria: no forma parte del manual de referencia.',
+  items:[
+    {q:'Cirugía de alto riesgo', hint:'Intraperitoneal, intratorácica o vascular suprainguinal.', o:no_si},
+    {q:'Cardiopatía isquémica', hint:'Antecedente de infarto, prueba de esfuerzo positiva, angina actual, uso de nitratos u ondas Q patológicas en el EKG.', o:no_si},
+    {q:'Antecedente de insuficiencia cardíaca', o:no_si},
+    {q:'Antecedente de enfermedad cerebrovascular', hint:'Ataque cerebrovascular o accidente isquémico transitorio.', o:no_si},
+    {q:'Diabetes en tratamiento con insulina', o:no_si},
+    {q:'Creatinina prequirúrgica mayor de 2,0 mg/dL', hint:'Equivale a más de 177 µmol/L.', o:no_si}
+  ],
+  interpret:s=> s===0 ? {t:'Clase I · riesgo bajo',tone:'ok',d:'Complicaciones cardíacas mayores en el 0,4 % de la cohorte de validación original. Con la recalibración de la Sociedad Cardiovascular Canadiense, el riesgo de muerte, infarto o paro cardíaco a 30 días es del 3,9 %.'}
+             : s===1 ? {t:'Clase II · riesgo bajo',tone:'ok',d:'Complicaciones cardíacas mayores en el 0,9 % de la cohorte de validación original; 6,0 % de muerte, infarto o paro cardíaco a 30 días con la recalibración canadiense.'}
+             : s===2 ? {t:'Clase III · riesgo intermedio',tone:'warn',d:'Complicaciones cardíacas mayores en el 6,6 % de la cohorte de validación original; 10,1 % de muerte, infarto o paro cardíaco a 30 días con la recalibración canadiense. Valore la capacidad funcional y la necesidad de estudios adicionales según las guías vigentes.'}
+                     : {t:'Clase IV · riesgo alto',tone:'alert',d:'Complicaciones cardíacas mayores en el 11 % de la cohorte de validación original; 15 % de muerte, infarto o paro cardíaco a 30 días con la recalibración canadiense. Discuta con la persona y su familia el balance entre el beneficio esperado y el riesgo, y la optimización previa.'},
+  note:'Las complicaciones cardíacas mayores del estudio original fueron infarto, edema pulmonar, fibrilación ventricular o paro cardíaco primario y bloqueo cardíaco completo. Se diseñó para cirugía no cardíaca: no aplica a la cirugía cardíaca ni al TAVI. Las cifras originales subestiman el riesgo actual; por eso se presentan también las de la recalibración canadiense de 2017.'
+},
+
+fts:{
+  eje:'clinico', dom:'Futilidad en TAVI',
+  name:'FTS',
+  full:'Futile TAVI Simple score',
+  blurb:'Catorce variables clínicas que estiman la probabilidad de muerte en el primer año tras el implante percutáneo de válvula aórtica (TAVI), considerada como futilidad del procedimiento.',
+  max:19,
+  external:true,
+  ref:'Lantelme P, Lacour T, Bisson A, Herbert J, Ivanes F, Bourguignon T, et al. Futility risk model for predicting outcome after transcatheter aortic valve implantation. Am J Cardiol. 2020;130:100-7. doi:10.1016/j.amjcard.2020.05.043. Escala complementaria: no forma parte del manual de referencia.',
+  items:[
+    {q:'Edad', hint:'Puntos por cuartil de edad según la nota de la tabla 3 y la figura 4 del artículo. La tabla 3 asigna a la edad un solo punto, lo que deja el máximo del puntaje en 17; esta herramienta aplica la regla por cuartiles.', o:[{l:'80 años o menos',v:0},{l:'81 a 84 años',v:1},{l:'85 a 87 años',v:2},{l:'88 años o más',v:3}]},
+    {q:'Hospitalización previa por insuficiencia cardíaca', o:no_si},
+    {q:'Antecedente de edema pulmonar', o:[{l:'No',v:0},{l:'Sí',v:3}]},
+    {q:'Ataque cerebrovascular previo', o:no_si},
+    {q:'Fibrilación auricular', o:no_si},
+    {q:'Enfermedad vascular', hint:'Enfermedad arterial periférica o aórtica.', o:no_si},
+    {q:'Función renal alterada', o:no_si},
+    {q:'Enfermedad hepática', o:no_si},
+    {q:'Enfermedad pulmonar', o:no_si},
+    {q:'Anemia', o:no_si},
+    {q:'Cáncer en los 5 años previos', o:no_si},
+    {q:'Antecedente de metástasis', o:[{l:'No',v:0},{l:'Sí',v:2}]},
+    {q:'Depresión', o:no_si},
+    {q:'Desnutrición', o:no_si}
+  ],
+  interpret:s=> s<=4 ? {t:'Riesgo bajo de futilidad',tone:'ok',d:'Mortalidad a un año del 10,7 % en la cohorte de derivación, donde este grupo reunió al 47 % de los pacientes.'}
+             : s<=8 ? {t:'Riesgo intermedio de futilidad',tone:'warn',d:'Mortalidad a un año del 21,9 % en la cohorte de derivación. Complemente con la valoración de fragilidad (EFT) y la valoración geriátrica integral antes de la decisión del equipo cardíaco.'}
+                    : {t:'Riesgo alto de futilidad',tone:'alert',d:'Mortalidad a un año del 42,9 % en la cohorte de derivación, cercana a la de la estenosis aórtica severa con tratamiento médico. Este grupo reunió al 7 % de los pacientes, con especificidad del 95 % y razón de verosimilitud positiva de 3,4. Plantee al equipo cardíaco, a la persona y a su familia el beneficio esperado frente a un abordaje paliativo.'},
+  note:'Derivado de 20.443 pacientes con TAVI percutáneo en la base administrativa hospitalaria de Francia (2010 a 2018), con validación interna por muestra dividida: AUC de 0,674 en derivación y 0,651 en validación, buena calibración. Solo se registraron las muertes intrahospitalarias y se excluyó a los pacientes vivos con seguimiento menor de un año. El sexo masculino aparece en el resumen del artículo, pero no fue significativo y no puntúa. Ningún puntaje ofrece por sí solo un criterio de sí o no para el procedimiento, y su desempeño en población colombiana no ha sido estudiado.'
+},
+
+eft:{
+  eje:'clinico', dom:'Futilidad en TAVI',
+  name:'EFT',
+  full:'Essential Frailty Toolset',
+  blurb:'Cuatro ítems (fuerza de miembros inferiores, cognición, hemoglobina y albúmina) que predicen muerte y discapacidad al año del reemplazo valvular aórtico, percutáneo o quirúrgico.',
+  max:5,
+  external:true,
+  ref:'Afilalo J, Lauck S, Kim DH, Lefèvre T, Piazza N, Lachapelle K, et al. Frailty in older adults undergoing aortic valve replacement: the FRAILTY-AVR study. J Am Coll Cardiol. 2017;70(6):689-700. Escala complementaria: no forma parte del manual de referencia.',
+  items:[
+    {q:'Levantarse cinco veces de una silla sin usar los brazos', hint:'Tiempo para completar las cinco repeticiones.', o:[{l:'Menos de 15 segundos',v:0},{l:'15 segundos o más',v:1},{l:'No logra completarlas',v:2}]},
+    {q:'Cognición', hint:'Puntaje del MMSE (eje mental).', o:[{l:'MMSE de 24 o más',v:0},{l:'MMSE menor de 24',v:1}]},
+    {q:'Hemoglobina', o:[{l:'13 g/dL o más en hombres, 12 g/dL o más en mujeres',v:0},{l:'Menor de 13 g/dL en hombres o de 12 g/dL en mujeres',v:1}]},
+    {q:'Albúmina sérica', o:[{l:'3,5 g/dL o más',v:0},{l:'Menor de 3,5 g/dL',v:1}]}
+  ],
+  interpret:s=> s===0 ? {t:'Sin fragilidad',tone:'ok',d:'No hay marcadores de fragilidad. En la cohorte FRAILTY-AVR la mortalidad global a un año fue del 14 % y la muerte o el empeoramiento de la discapacidad, del 35 %.'}
+             : s<=2  ? {t:'Prefragilidad',tone:'warn',d:'Uno o dos marcadores de fragilidad. Identifique los componentes modificables (anemia, desnutrición, debilidad de miembros inferiores) y considere la prehabilitación antes del procedimiento.'}
+             : s<=4  ? {t:'Fragilidad',tone:'alert',d:'En FRAILTY-AVR, más de la mitad de las personas frágiles había muerto o empeorado su discapacidad al año. Discuta con el equipo cardíaco, la persona y su familia si el beneficio esperado justifica el procedimiento, y optimice los componentes modificables.'}
+                     : {t:'Fragilidad grave',tone:'alert',d:'En FRAILTY-AVR, cerca del 80 % de las personas con 5 puntos había muerto o quedado con discapacidad al año. El procedimiento tiene alta probabilidad de ser fútil: plantee de manera explícita la alternativa de un abordaje paliativo.'},
+  note:'Comparado de forma prospectiva con otras seis escalas de fragilidad en 1.020 personas de 70 años o más sometidas a reemplazo valvular aórtico, fue el predictor más fuerte de muerte a un año (OR ajustado de 3,72), de muerte a 30 días y de empeoramiento de la discapacidad. Añade capacidad predictiva al STS-PROM. Mide fragilidad, no comorbilidad, por lo que complementa al FTS. Su desempeño en población colombiana no ha sido estudiado.'
 },
 
 necpal:{
@@ -2070,7 +2191,9 @@ const ORDER = {
     {g:'Caídas', ids:['downton','fesi']},
     {g:'Piel', ids:['norton']},
     {g:'Dolor', ids:['painad']},
-    {g:'Oncogeriatría', ids:['g8','ves13']}
+    {g:'Oncogeriatría', ids:['g8','ves13']},
+    {g:'Valoración prequirúrgica', ids:['preopger','rcri']},
+    {g:'Futilidad en TAVI', ids:['fts','eft']}
   ],
   paliativo:[
     {g:'Necesidades paliativas', ids:['necpal','pps']},
@@ -2430,7 +2553,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.10.11</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.0</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2438,7 +2561,7 @@ function renderTabs(){
     + '<div class="nav-divider"></div>'
     + '<button class="vgi-tab" data-tab="vgi" aria-label="Resumen de valoración geriátrica integral" style="--tab:var(--ink)" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">Resumen VGI</span><span class="tab-short">Resumen</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
-    + '<div class="nav-foot">43 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
+    + '<div class="nav-foot">47 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
 }
 
 function cardHTML(id, showEje){
@@ -2866,7 +2989,7 @@ function renderAbout(){
 
   + '<details class="acc"><summary>Organización por ejes</summary>'
   + '<p>A los cuatro ejes del manual se añadió una quinta pestaña, Paliativos y pronóstico, que no forma parte de su estructura pero responde a un uso clínico distinto. Allí los instrumentos que identifican necesidades paliativas (NECPAL y PPS) están separados de los que estiman pronóstico (PPI, PaP, Walter y Lee): reconocer a quien se beneficia de un abordaje paliativo y calcular cuánto tiempo de vida le queda son preguntas diferentes, y confundirlas lleva a decisiones equivocadas. El conversor de dosis equianalgésicas acompaña a ese grupo.</p>'
-  + '<p>La ubicación de cada escala sigue la del manual. Por eso la fragilidad y la sarcopenia aparecen en el eje funcional, dentro de los síndromes geriátricos, y no en el clínico. Los instrumentos del capítulo de oncogeriatría (G8 y VES-13) permanecen en el eje clínico; los de cuidados paliativos y pronóstico se reunieron en la quinta pestaña descrita arriba.</p>'
+  + '<p>La ubicación de cada escala sigue la del manual. Por eso la fragilidad y la sarcopenia aparecen en el eje funcional, dentro de los síndromes geriátricos, y no en el clínico. Los instrumentos del capítulo de oncogeriatría (G8 y VES-13) permanecen en el eje clínico; los de cuidados paliativos y pronóstico se reunieron en la quinta pestaña descrita arriba. Las secciones de valoración prequirúrgica y de futilidad en TAVI, que no proceden del manual, se ubicaron en el eje clínico. El EFT mide fragilidad, pero se presenta junto al FTS porque su función aquí es apoyar la decisión sobre el procedimiento.</p>'
   + '</details>'
 
   + '<details class="acc"><summary>Conversor de opioides</summary>'
@@ -2876,10 +2999,14 @@ function renderAbout(){
   + '</details>'
 
   + '<details class="acc"><summary>Escalas complementarias</summary>'
-  + '<p>Seis instrumentos incluidos aquí no están tabulados en el manual y se citan de forma independiente. El Zarit es mencionado en el capítulo de esfera social. El 4AT complementa al CAM en el cribado de delirium: no requiere entrenamiento formal y puede aplicarse al paciente somnoliento o que no colabora, situación en la que el CAM no puede completarse. El PAINAD cubre la evaluación del dolor en la persona que no puede autorreportarlo, para la que el manual no ofrece herramienta. El PaP Score completa el bloque pronóstico en cuidados paliativos junto al PPS y el PPI. Los índices de Walter y de Lee provienen del repositorio ePrognosis de la Universidad de California en San Francisco y estiman mortalidad a un año tras la hospitalización y a cuatro años en la comunidad, respectivamente; su calibración en población colombiana no ha sido estudiada.</p>'
+  + '<p>Diez instrumentos incluidos aquí no están tabulados en el manual y se citan de forma independiente. El Zarit es mencionado en el capítulo de esfera social. El 4AT complementa al CAM en el cribado de delirium: no requiere entrenamiento formal y puede aplicarse al paciente somnoliento o que no colabora, situación en la que el CAM no puede completarse. El PAINAD cubre la evaluación del dolor en la persona que no puede autorreportarlo, para la que el manual no ofrece herramienta. El PaP Score completa el bloque pronóstico en cuidados paliativos junto al PPS y el PPI. Los índices de Walter y de Lee provienen del repositorio ePrognosis de la Universidad de California en San Francisco y estiman mortalidad a un año tras la hospitalización y a cuatro años en la comunidad, respectivamente; su calibración en población colombiana no ha sido estudiada. Desde la versión 2.11.0, el eje clínico incluye dos secciones de valoración perioperatoria: la valoración prequirúrgica, con la lista de verificación del American College of Surgeons y la American Geriatrics Society y el índice de riesgo cardíaco revisado (RCRI), y la futilidad en TAVI, con el Futile TAVI Simple score (FTS), basado en comorbilidad, y el Essential Frailty Toolset (EFT), basado en fragilidad. Se eligieron estos dos porque, en la literatura revisada, ningún puntaje dedicado de futilidad supera con claridad al FTS, y el EFT fue la escala de fragilidad con mejor desempeño en el estudio prospectivo FRAILTY-AVR; los dos se calculan con datos de la cabecera del paciente y se complementan.</p>'
   + '<div class="cite">Zarit SH, Reever KE, Bach-Peterson J. Relatives of the impaired elderly: correlates of feelings of burden. Gerontologist. 1980;20(6):649-55. Versión española: Martín M, et al. Rev Gerontol. 1996;6:338-46. Validación en Colombia: Barreto-Osorio RV, et al. Aquichan. 2015;15(3):368-80.</div>'
   + '<div class="cite">Bellelli G, Morandi A, Davis DHJ, Mazzola P, Turco R, Gentile S, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014;43(4):496-502. Versión española validada: Delgado-Parada E, Morillo-Cuadrado D, Saiz-Ruiz J, Cebollada-Gracia A, Ayuso-Mateos JL, Cruz-Jentoft AJ. Eur J Psychiatry. 2022. doi:10.1016/j.ejpsy.2022.01.003.</div>'
   + '<div class="cite">Warden V, Hurley AC, Volicer L. Development and psychometric evaluation of the Pain Assessment in Advanced Dementia (PAINAD) scale. J Am Med Dir Assoc. 2003;4(1):9-15. Versión española validada: García-Soler Á, Sánchez-Iglesias I, Buiza C, Alaba J, Navarro AB, Arriola E, et al. Rev Esp Geriatr Gerontol. 2014;49(1):10-4.</div>'
+  + '<div class="cite">Chow WB, Rosenthal RA, Merkow RP, Ko CY, Esnaola NF. Optimal preoperative assessment of the geriatric surgical patient: a best practices guideline from the American College of Surgeons National Surgical Quality Improvement Program and the American Geriatrics Society. J Am Coll Surg. 2012;215(4):453-66.</div>'
+  + '<div class="cite">Lee TH, Marcantonio ER, Mangione CM, Thomas EJ, Polanczyk CA, Cook EF, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-9.</div>'
+  + '<div class="cite">Lantelme P, Lacour T, Bisson A, Herbert J, Ivanes F, Bourguignon T, et al. Futility risk model for predicting outcome after transcatheter aortic valve implantation. Am J Cardiol. 2020;130:100-7.</div>'
+  + '<div class="cite">Afilalo J, Lauck S, Kim DH, Lefèvre T, Piazza N, Lachapelle K, et al. Frailty in older adults undergoing aortic valve replacement: the FRAILTY-AVR study. J Am Coll Cardiol. 2017;70(6):689-700.</div>'
   + '</details>'
 
   + '<h3>Tamaño de texto</h3>'
@@ -2919,7 +3046,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.10.11) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -2927,6 +3054,7 @@ function renderAbout(){
   + '<p>Por favor, no incluya en sus mensajes datos que permitan identificar a un paciente.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.11.0</strong> · Valoración prequirúrgica y futilidad en TAVI. Se añaden al eje clínico dos secciones con cuatro instrumentos complementarios: la lista de verificación prequirúrgica del adulto mayor (ACS NSQIP y AGS) y el índice de riesgo cardíaco revisado (RCRI) en Valoración prequirúrgica, y el Futile TAVI Simple score (FTS) y el Essential Frailty Toolset (EFT) en Futilidad en TAVI. En el FTS, la edad puntúa por cuartiles (1, 2 o 3 puntos) según la nota de la tabla 3 y la figura 4 del artículo, y el sexo masculino no puntúa por no haber sido significativo. Las 43 escalas anteriores, sus reglas de cálculo, puntos de corte e interpretaciones no cambian. Se actualizan la versión, los recuentos y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.11</strong> · Estadísticas anónimas de uso, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Se incorpora GoatCounter, un servicio de analítica de código abierto que no usa cookies ni guarda datos personales, para conocer cuántas visitas recibe la herramienta, desde qué países y dispositivos, y qué fichas se abren; de cada ficha solo se registra su identificador. Nunca se envían las respuestas ni los resultados de las escalas, y el uso sin conexión no se contabiliza. La sección Privacidad se reescribe para declararlo. Se actualizan los metadatos de versión y la caché del service worker a v2.10.11.</div>'
   + '<div class="cite"><strong>2.10.10</strong> · Corrección de la franja del resultado, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Los rótulos de las bandas ya no se reparten según el ancho de cada banda, lo que los montaba unos sobre otros cuando una banda era estrecha (por ejemplo Barthel 100, Charlson 2, NPI 0 o Lawton 8): ahora se listan debajo de la franja, una banda por línea, y se resalta la del resultado obtenido. El marcador del puntaje ya no se sale de la franja en los extremos del rango, las bandas contiguas del mismo color quedan separadas y, en la ficha de evidencia, la franja se muestra sin leyenda porque los puntos de corte ya se listan debajo. Ajuste posterior, sin cambio de versión: en el conversor, cuando el destino es un parche transdérmico, el rescate deja de expresarse en mcg/h y se indica con un opioide de liberación inmediata (morfina o hidromorfona, por vía oral, subcutánea o intravenosa), con su dosis calculada. Se añade en Acerca de la sección Comentarios y sugerencias, con el contacto del autor en X.</div>'
   + '<div class="cite"><strong>2.10.9</strong> · Ajustes de coherencia y de interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. La descripción del Charlson aclara que sus diecinueve condiciones se agrupan en dieciséis preguntas, más la edad. En Organización por ejes se corrige la frase que situaba los instrumentos paliativos en el eje clínico. La barra de puntaje muestra "Sin iniciar" mientras no haya respuestas y rotula como parcial el puntaje de una escala incompleta. La pestaña VGI pasa a llamarse Resumen VGI. Las secciones extensas de Acerca de se vuelven desplegables. En escritorio se reduce la altura del encabezado de cada eje y se retira el rótulo VGI DIGITAL de la cabecera, redundante con la barra lateral; el símbolo de la barra lateral gana contraste y las etiquetas pequeñas, legibilidad. Las tarjetas alinean su contenido arriba. Los iconos de navegación declaran su tamaño en el propio HTML, de modo que conservan la proporción aunque la hoja de estilos no cargue. El service worker pide primero a la red los archivos propios, para que los estilos nunca queden desfasados respecto de la página.</div>'
@@ -2953,7 +3081,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.10.11 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.11.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 

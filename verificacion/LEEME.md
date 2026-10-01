@@ -34,6 +34,9 @@ proceso termina con código 0 si todo se supera y con 1 si hay algún fallo.
 `resultado-2.10.6.json` a `resultado-2.10.11.json` son la salida de este script
 sobre esas seis versiones;
 los recuentos y la lista de fallos (vacía) son idénticos en todas.
+`resultado-2.11.0.json` corresponde a la 2.11.0, que añade cuatro instrumentos
+complementarios al eje clínico: los recuentos suben a 48 fichas y 47 escalas, y
+la lista de fallos sigue vacía.
 
 ## Alcance
 

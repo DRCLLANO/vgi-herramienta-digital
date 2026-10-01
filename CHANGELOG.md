@@ -3,6 +3,38 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.0
+
+Valoración prequirúrgica y futilidad en TAVI. Las 43 escalas anteriores, sus
+reglas de cálculo, puntos de corte e interpretaciones no cambian.
+
+- Se añaden al eje clínico dos secciones con cuatro instrumentos
+  complementarios, que no proceden del manual de referencia y conservan su
+  referencia primaria:
+  - Valoración prequirúrgica: lista de verificación prequirúrgica del adulto
+    mayor (Chow et al., ACS NSQIP y AGS, J Am Coll Surg 2012), de resultado
+    algorítmico, que señala los dominios por intervenir y remite a las escalas
+    de la herramienta; e índice de riesgo cardíaco revisado (RCRI; Lee et al.,
+    Circulation 1999), con las cifras originales y las de la recalibración de
+    la Sociedad Cardiovascular Canadiense (Duceppe et al., 2017).
+  - Futilidad en TAVI: Futile TAVI Simple score (FTS; Lantelme et al., Am J
+    Cardiol 2020) y Essential Frailty Toolset (EFT; Afilalo et al., FRAILTY-AVR,
+    J Am Coll Cardiol 2017).
+- En el FTS la edad puntúa por cuartiles (1 punto por encima de 80 años, 2 por
+  encima de 84 y 3 por encima de 87), según la nota de la tabla 3 y la figura 4
+  del artículo; la tabla 3 le asigna un solo punto. El máximo queda en 19. El
+  sexo masculino, citado en el resumen del artículo, no puntúa por no haber
+  sido significativo.
+- Se elige el EFT como complemento del FTS tras revisar la literatura: ningún
+  puntaje dedicado de futilidad supera con claridad al FTS, y el EFT fue la
+  escala de fragilidad con mejor desempeño en el estudio prospectivo
+  FRAILTY-AVR.
+- "Acerca de" incorpora las cuatro referencias, la explicación de su ubicación
+  y la entrada del historial. Se actualizan los recuentos (47 escalas), los
+  metadatos de versión y la caché del service worker a `v2.11.0`. El script
+  de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.0.json`).
+
 ## 2.10.11
 
 Estadísticas anónimas de uso, sin cambios en las escalas, sus reglas de
