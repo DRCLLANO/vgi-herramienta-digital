@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.11.0",
+  "softwareVersion": "2.11.1",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-10-01",
+  "dateModified": "2026-10-02",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -2420,12 +2420,28 @@ function complete(){
    de puntajes y se detectan los cambios de veredicto. Así lo que se
    muestra es siempre lo que la aplicación calcula, sin riesgo de que la
    documentación y el código se separen con el tiempo. */
+/* Puntaje mínimo posible: suma del valor más bajo de cada ítem. Solo se usa
+   para mostrar los rangos y la franja; no interviene en el cálculo ni en la
+   interpretación. Si algún ítem no tiene opciones numéricas, se usa 0. */
+function minimoEscala(s){
+  if(!Array.isArray(s.items) || !s.items.length) return 0;
+  let m = 0;
+  for(const it of s.items){
+    if(!Array.isArray(it.o) || !it.o.length) return 0;
+    const vs = it.o.map(o=>o.v);
+    if(vs.some(v=>typeof v!=='number' || !isFinite(v))) return 0;
+    m += Math.min(...vs);
+  }
+  return (m>0 && m<s.max) ? m : 0;
+}
+
 function cortes(s){
   if(!s.max || !s.interpret) return null;
   const paso = Number.isInteger(s.max) ? 1 : 0.5;
+  const minimo = minimoEscala(s);
   const bandas = [];
   for(let i=0; ; i++){
-    const v = Math.round(i*paso*100)/100;
+    const v = Math.round((minimo + i*paso)*100)/100;
     if(v > s.max + 1e-9) break;
     const t = s.interpret(v).t;
     const ult = bandas[bandas.length-1];
@@ -2435,6 +2451,7 @@ function cortes(s){
   return bandas.map(b=>Object.assign(b, {
     paso,
     tone: s.interpret(b.desde).tone,
+    minimo,
     rango: b.desde===b.hasta ? fmt(b.desde) : fmt(b.desde)+' a '+fmt(b.hasta)
   }));
 }
@@ -2448,10 +2465,11 @@ function franjaHTML(s, score, conLeyenda){
   const c = cortes(s);
   if(!c || c.length<2) return '';
   const paso  = c[0].paso;
-  const largo = s.max + paso;
+  const minimo = c[0].minimo || 0;
+  const largo = s.max - minimo + paso;
   const col   = t => ({ok:'var(--ok)',warn:'var(--warn)',alert:'var(--alert)'}[t] || 'var(--muted)');
   const marca = (score!==null && score!==undefined && isFinite(score));
-  const pos   = marca ? Math.max(0, Math.min(100, ((score + paso/2) / largo) * 100)) : 0;
+  const pos   = marca ? Math.max(0, Math.min(100, ((score - minimo + paso/2) / largo) * 100)) : 0;
   let cur = -1;
   if(marca){
     cur = c.findIndex(b => score >= b.desde - 1e-9 && score <= b.hasta + 1e-9);
@@ -2553,7 +2571,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.1</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3046,7 +3064,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3054,6 +3072,7 @@ function renderAbout(){
   + '<p>Por favor, no incluya en sus mensajes datos que permitan identificar a un paciente.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.11.1</strong> · Corrección de los rangos mostrados y ajustes de interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. En las escalas cuyo puntaje mínimo no es cero, la franja del resultado y la ficha de evidencia rotulaban el primer tramo desde 0: ahora parten del mínimo posible (Norton, 5 a 14; Short FES-I, 7 a 10; Zarit, 22 a 46) y la marca del resultado se sitúa en proporción a ese rango. Al abrir una escala la ficha comienza siempre en el encabezado. En móvil la tarjeta de cada eje es más compacta, conserva su descripción y las etiquetas de la barra inferior son más legibles; en pantallas anchas las fichas fluyen en tres columnas continuas. En Cómo citar el nombre queda como VGI Digital y se unifican las fechas de publicación de los metadatos.</div>'
   + '<div class="cite"><strong>2.11.0</strong> · Valoración prequirúrgica y futilidad en TAVI. Se añaden al eje clínico dos secciones con cuatro instrumentos complementarios: la lista de verificación prequirúrgica del adulto mayor (ACS NSQIP y AGS) y el índice de riesgo cardíaco revisado (RCRI) en Valoración prequirúrgica, y el Futile TAVI Simple score (FTS) y el Essential Frailty Toolset (EFT) en Futilidad en TAVI. En el FTS, la edad puntúa por cuartiles (1, 2 o 3 puntos) según la nota de la tabla 3 y la figura 4 del artículo, y el sexo masculino no puntúa por no haber sido significativo. Las 43 escalas anteriores, sus reglas de cálculo, puntos de corte e interpretaciones no cambian. Se actualizan la versión, los recuentos y la caché del service worker.</div>'
   + '<div class="cite"><strong>2.10.11</strong> · Estadísticas anónimas de uso, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Se incorpora GoatCounter, un servicio de analítica de código abierto que no usa cookies ni guarda datos personales, para conocer cuántas visitas recibe la herramienta, desde qué países y dispositivos, y qué fichas se abren; de cada ficha solo se registra su identificador. Nunca se envían las respuestas ni los resultados de las escalas, y el uso sin conexión no se contabiliza. La sección Privacidad se reescribe para declararlo. Se actualizan los metadatos de versión y la caché del service worker a v2.10.11.</div>'
   + '<div class="cite"><strong>2.10.10</strong> · Corrección de la franja del resultado, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Los rótulos de las bandas ya no se reparten según el ancho de cada banda, lo que los montaba unos sobre otros cuando una banda era estrecha (por ejemplo Barthel 100, Charlson 2, NPI 0 o Lawton 8): ahora se listan debajo de la franja, una banda por línea, y se resalta la del resultado obtenido. El marcador del puntaje ya no se sale de la franja en los extremos del rango, las bandas contiguas del mismo color quedan separadas y, en la ficha de evidencia, la franja se muestra sin leyenda porque los puntos de corte ya se listan debajo. Ajuste posterior, sin cambio de versión: en el conversor, cuando el destino es un parche transdérmico, el rescate deja de expresarse en mcg/h y se indica con un opioide de liberación inmediata (morfina o hidromorfona, por vía oral, subcutánea o intravenosa), con su dosis calculada. Se añade en Acerca de la sección Comentarios y sugerencias, con el contacto del autor en X.</div>'
@@ -3081,7 +3100,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.11.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.11.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 

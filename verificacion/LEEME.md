@@ -36,7 +36,9 @@ sobre esas seis versiones;
 los recuentos y la lista de fallos (vacía) son idénticos en todas.
 `resultado-2.11.0.json` corresponde a la 2.11.0, que añade cuatro instrumentos
 complementarios al eje clínico: los recuentos suben a 48 fichas y 47 escalas, y
-la lista de fallos sigue vacía.
+la lista de fallos sigue vacía. `resultado-2.11.1.json` corresponde a la 2.11.1,
+que corrige el inicio de los tramos de Norton, Short FES-I y Zarit; la tabla de
+trazabilidad se actualizó en consecuencia y la lista de fallos sigue vacía.
 
 ## Alcance
 

@@ -3,6 +3,33 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.1
+
+Corrección de los rangos mostrados y ajustes de interfaz. Las 47 escalas, el
+conversor, sus reglas de cálculo, puntos de corte e interpretaciones no
+cambian.
+
+- En las escalas cuyo puntaje mínimo no es cero, la franja del resultado y la
+  ficha de evidencia rotulaban el primer tramo desde 0. Ahora parten del mínimo
+  posible, calculado como la suma del valor más bajo de cada ítem: Norton, 5 a
+  14; Short FES-I, 7 a 10; Zarit, 22 a 46. La marca del resultado se sitúa en
+  proporción a ese rango. Se actualizan esos tres tramos en
+  `trazabilidad-instrumentos.csv`. El error lo señaló una revisión externa.
+- Al abrir una escala, la ficha comienza siempre en el encabezado; antes
+  conservaba el desplazamiento de la lista y en móvil podía mostrarse a partir
+  del segundo ítem.
+- En móvil, la tarjeta de cada eje es más compacta y conserva su descripción;
+  las etiquetas de la barra inferior pasan de 9,5 a 10,5 px (10 px en
+  pantallas muy angostas).
+- En pantallas de 1240 px o más, las fichas fluyen en tres columnas continuas;
+  cada ficha conserva su dominio.
+- En "Cómo citar" (aplicación y README) el nombre queda como "VGI Digital". Se
+  unifican las fechas de publicación de los metadatos en el 10 de septiembre
+  de 2026, fecha del DOI.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.11.1`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.1.json`).
+
 ## 2.11.0
 
 Valoración prequirúrgica y futilidad en TAVI. Las 43 escalas anteriores, sus

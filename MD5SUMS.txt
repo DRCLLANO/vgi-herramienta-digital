@@ -1,5 +1,5 @@
-f0f2b916e7712bc7ad76082deecd3ee3  CHANGELOG.md
-00543c3045ca42cbd9f29af008f41ddb  CITATION.cff
-204514549cedd67aa85bafaafdc58795  README.md
-fc5c6ccd1948474f7b740aa36acdc776  index.html
-82b1abafab2ac0c9db0eb84c5665939e  sw.js
+fbf9040b4b33630454aa1f8afb9d8d93  CHANGELOG.md
+7f1206f53bc5f12bf7fc083f0db7b20a  CITATION.cff
+8c2352ff0678e0548e769d46700c6e83  README.md
+3d29e96409a0dbb22ab5f640f50f24ff  index.html
+7b9f8ab3e3e8e690f1ba016db310e43b  sw.js
