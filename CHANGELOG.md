@@ -3,6 +3,25 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.2
+
+Corrección del rango general en la ficha de evidencia. Las 47 escalas, el
+conversor, sus reglas de cálculo, puntos de corte e interpretaciones no
+cambian.
+
+- En "Ver evidencia y referencia", la línea "Rango" partía siempre de 0, aunque
+  los tramos de la misma ficha ya partían del mínimo posible desde la 2.11.1.
+  Ahora usa ese mismo mínimo: Norton, 5 a 20; Short FES-I, 7 a 28; Zarit, 22 a
+  110. El detalle lo señaló una revisión externa de la 2.11.1.
+- Al revisar todas las escalas sumativas apareció un cuarto caso: el MOS, sin
+  tramos, mostraba "0 a 95" y ahora muestra "19 a 95". El cálculo del mínimo
+  ya no se detiene ante el ítem de la red cercana, que se registra aparte y no
+  suma al total; los ítems de selección múltiple aportan 0. En las otras 31
+  escalas sumativas el mínimo es 0 y no cambian.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.11.2`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.2.json`).
+
 ## 2.11.1
 
 Corrección de los rangos mostrados y ajustes de interfaz. Las 47 escalas, el
