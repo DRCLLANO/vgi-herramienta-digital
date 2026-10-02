@@ -3,6 +3,29 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.3
+
+Corrección de dos avisos de la interfaz. Las 47 escalas, el conversor, sus
+reglas de cálculo, puntos de corte e interpretaciones no cambian.
+
+- Los ítems de selección múltiple y los numéricos se inicializan en 0 al abrir
+  una escala. Por eso siete instrumentos mostraban desde el inicio un puntaje
+  parcial o criterios completos en lugar de "Sin iniciar": Downton, VES-13,
+  FRAIL, MOS (0 / 95), EQ-5D, vulnerabilidad social y maltrato. Ahora la barra
+  muestra "Sin iniciar" hasta que se marca una opción o se escribe un valor; en
+  las escalas de puntaje, un dato numérico que no suma (la red cercana del MOS)
+  no cuenta como inicio. La barra también se actualiza al escribir en un campo
+  numérico. El cálculo no cambia.
+- En la ficha de evidencia del MOS, la regla decía que el resultado se obtiene
+  por algoritmo y no por suma de puntos. Ahora indica que procede de la suma de
+  los ítems, en un índice global y por componentes, y remite a los puntos de
+  corte de la interpretación.
+- Ambos detalles los señaló una revisión externa de la 2.11.2; al comprobar las
+  47 escalas, el primero resultó afectar a siete instrumentos y no a cuatro.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.11.3`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.3.json`).
+
 ## 2.11.2
 
 Corrección del rango general en la ficha de evidencia. Las 47 escalas, el

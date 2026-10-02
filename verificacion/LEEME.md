@@ -41,6 +41,9 @@ que corrige el inicio de los tramos de Norton, Short FES-I y Zarit; la tabla de
 trazabilidad se actualizó en consecuencia y la lista de fallos sigue vacía.
 `resultado-2.11.2.json` corresponde a la 2.11.2, que corrige la línea "Rango" de
 la ficha de evidencia (Norton, Short FES-I, Zarit y MOS); los recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.11.3.json` corresponde a la 2.11.3, que corrige el aviso "Sin iniciar"
+y la regla del MOS en la ficha de evidencia; los recuentos no cambian y la lista
+de fallos sigue vacía.
 
 ## Alcance
 

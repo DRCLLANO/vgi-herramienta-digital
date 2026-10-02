@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.11.2",
+  "softwareVersion": "2.11.3",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-02",
   "inLanguage": "es",
@@ -2511,7 +2511,9 @@ function fichaEvidencia(s){
          + franjaHTML(s, null, false)
          + c.map(b=>'<div class="fr"><span>'+esc(b.rango)+' puntos</span><span>'+esc(b.t)+'</span></div>').join('')
        : '<div class="fh" style="margin-top:14px">Interpretación</div>'
-         + '<div class="fr"><span>Regla</span><span>El resultado se obtiene por algoritmo, no por suma de puntos: consulte la interpretación.</span></div>')
+         + '<div class="fr"><span>Regla</span><span>'+(s.max
+             ? 'El resultado se obtiene de la suma de los ítems, en un índice global y por componentes: consulte los puntos de corte en la interpretación.'
+             : 'El resultado se obtiene por algoritmo, no por suma de puntos: consulte la interpretación.')+'</span></div>')
     + '<div class="fh" style="margin-top:14px">Referencia</div>'
     + '<div class="fcita">'+esc(s.ref)+'</div>'
     + '<button class="btn" data-act="copyref" style="margin-top:12px">Copiar referencia</button>'
@@ -2574,7 +2576,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.2</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.3</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2775,15 +2777,30 @@ function renderResult(){
     + '<div class="ref"><b>Recuerde</b>El resultado de una escala no constituye por sí solo un diagnóstico. Correlaciónelo siempre con la historia clínica, la escolaridad, el contexto y los criterios diagnósticos vigentes.</div>';
 }
 
+/* Ítems en los que la persona ya intervino. Los de selección múltiple y los
+   numéricos se inicializan en 0 al abrir la escala (initScale), así que no
+   cuentan hasta que se marque una opción o se escriba un valor; en las escalas
+   de puntaje, un dato numérico que no suma (la red cercana del MOS) no cuenta
+   como inicio. Solo se usa
+   para el aviso "Sin iniciar" de la barra; no interviene en el cálculo. */
+function tocados(){
+  const s = SCALES[state.id]; if(!s) return 0;
+  return s.items.reduce((n,it,i)=>{
+    if(it.type==='multi') return n + ((state.multi[i]||[]).length ? 1 : 0);
+    if(it.type==='num')   return n + (!s.max && String(state.extra[it.key] ?? '').trim()!=='' ? 1 : 0);
+    return n + (state.ans[i]!==undefined ? 1 : 0);
+  }, 0);
+}
 function renderScorebar(){
   const bar = $('#scorebar');
   if(state.view!=='scale' || state.showResult){ bar.innerHTML=''; return; }
   const s = SCALES[state.id];
-  const falta = s.items.length - answered();
+  const inicio = tocados()===0;
+  const falta = inicio ? s.items.length : s.items.length - answered();
   bar.className = 'scorebar';
   bar.innerHTML = '<div class="inner"><div>'
-    + '<div class="lbl">'+(answered()>0 && falta ? (s.max?'Puntaje parcial':'Criterios parciales') : (s.max?'Puntaje':'Criterios'))+'</div>'
-    + (answered()===0 ? '<div class="val val-empty">Sin iniciar</div></div>'
+    + '<div class="lbl">'+(!inicio && falta ? (s.max?'Puntaje parcial':'Criterios parciales') : (s.max?'Puntaje':'Criterios'))+'</div>'
+    + (inicio ? '<div class="val val-empty">Sin iniciar</div></div>'
        : '<div class="val">'+(s.max?fmt(total()):answered())+'<span> / '+(s.max?fmt(s.max):s.items.length)+'</span></div></div>')
     + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;opacity:.6">'
     + (falta ? 'faltan '+falta+'<br>ítem'+(falta===1?'':'s')+' por responder' : 'todos los ítems<br>respondidos')
@@ -3067,7 +3084,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.2) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.3) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3075,6 +3092,7 @@ function renderAbout(){
   + '<p>Por favor, no incluya en sus mensajes datos que permitan identificar a un paciente.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.11.3</strong> · Corrección de dos avisos de la interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Siete instrumentos con ítems de selección múltiple o numéricos (Downton, VES-13, FRAIL, MOS, EQ-5D, vulnerabilidad social y maltrato) mostraban al abrirse un puntaje parcial o criterios completos en lugar de Sin iniciar, porque esos ítems se inicializan en 0; ahora muestran Sin iniciar hasta que se marca una opción o se escribe un valor. En la ficha de evidencia del MOS la regla ya no dice que el resultado no se obtiene por suma de puntos: indica que procede de la suma de los ítems, en un índice global y por componentes.</div>'
   + '<div class="cite"><strong>2.11.2</strong> · Corrección del rango general en la ficha de evidencia, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. En Ver evidencia y referencia, la línea Rango partía siempre de 0; ahora parte del mínimo posible, como los tramos desde la 2.11.1 (Norton, 5 a 20; Short FES-I, 7 a 28; Zarit, 22 a 110). En el MOS, que no tiene tramos, el rango pasa de 0 a 95 a 19 a 95: el número de personas de la red cercana se registra aparte y no suma al total.</div>'
   + '<div class="cite"><strong>2.11.1</strong> · Corrección de los rangos mostrados y ajustes de interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. En las escalas cuyo puntaje mínimo no es cero, la franja del resultado y la ficha de evidencia rotulaban el primer tramo desde 0: ahora parten del mínimo posible (Norton, 5 a 14; Short FES-I, 7 a 10; Zarit, 22 a 46) y la marca del resultado se sitúa en proporción a ese rango. Al abrir una escala la ficha comienza siempre en el encabezado. En móvil la tarjeta de cada eje es más compacta, conserva su descripción y las etiquetas de la barra inferior son más legibles; en pantallas anchas las fichas fluyen en tres columnas continuas. En Cómo citar el nombre queda como VGI Digital y se unifican las fechas de publicación de los metadatos.</div>'
   + '<div class="cite"><strong>2.11.0</strong> · Valoración prequirúrgica y futilidad en TAVI. Se añaden al eje clínico dos secciones con cuatro instrumentos complementarios: la lista de verificación prequirúrgica del adulto mayor (ACS NSQIP y AGS) y el índice de riesgo cardíaco revisado (RCRI) en Valoración prequirúrgica, y el Futile TAVI Simple score (FTS) y el Essential Frailty Toolset (EFT) en Futilidad en TAVI. En el FTS, la edad puntúa por cuartiles (1, 2 o 3 puntos) según la nota de la tabla 3 y la figura 4 del artículo, y el sexo masculino no puntúa por no haber sido significativo. Las 43 escalas anteriores, sus reglas de cálculo, puntos de corte e interpretaciones no cambian. Se actualizan la versión, los recuentos y la caché del service worker.</div>'
@@ -3104,7 +3122,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.11.2 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.11.3 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 
@@ -3309,6 +3327,7 @@ document.addEventListener('input', e=>{
   const n = e.target.closest('[data-num]');
   if(!n) return;
   state.extra[n.dataset.num] = n.value;
+  if(state.view==='scale' && !state.showResult) renderScorebar();
   const b = document.getElementById('bmiOut'); if(b) b.innerHTML = bmiText();
   const w = document.getElementById('wOut');  if(w) w.innerHTML = weightText();
 });
