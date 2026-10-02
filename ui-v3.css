@@ -111,3 +111,15 @@ header.top{align-items:center;min-height:76px;padding:calc(14px + env(safe-area-
 @media (min-width:1240px){#list .card{min-height:0;}}
 #list .card{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;}
 #list .card .meta{align-self:flex-start;}
+
+/* Ajustes de interfaz posteriores a 2.11.0: tarjeta del eje compacta en movil y flujo continuo en pantallas anchas */
+@media (max-width:560px){
+  .hero{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;margin-bottom:14px;}
+  .hero::after{display:none;}
+  .hero h2{font-size:26px;margin:0;}
+  .hero p{display:none;}
+  .hero .cnt{margin-top:0;flex:none;}
+}
+@media (min-width:1240px){
+  #list .grp-eje{display:none;}
+}

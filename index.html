@@ -2593,7 +2593,7 @@ function listInner(){
     return '<div class="grp">'+esc(state.dom)+'</div>' + ids.map(id=>cardHTML(id,false)).join('');
   }
   return ORDER[state.eje].map(g=>
-    '<div class="grp">'+esc(g.g)+' <span class="n">'+g.ids.length+'</span></div>' + g.ids.map(id=>cardHTML(id,false)).join('')
+    '<div class="grp grp-eje">'+esc(g.g)+' <span class="n">'+g.ids.length+'</span></div>' + g.ids.map(id=>cardHTML(id,false)).join('')
   ).join('');
 }
 
@@ -3046,7 +3046,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3173,6 +3173,7 @@ function openScale(id){
   }
   state = {view:'scale', eje:s.eje, id:id, ans:{}, sel:{}, multi:{}, extra:{}, q:state.q, dom:state.dom, evid:false, showResult:false};
   initScale(); render();
+  window.scrollTo({top:0, left:0, behavior:'instant'});
 }
 
 document.addEventListener('click', e=>{
