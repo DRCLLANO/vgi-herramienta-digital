@@ -8,8 +8,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F4F7FA",
-  "theme_color": "#0B6148",
+  "background_color": "#F2F7F5",
+  "theme_color": "#013E31",
   "categories": [
     "medical",
     "education"

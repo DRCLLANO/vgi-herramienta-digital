@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="VGI Digital">
 <meta name="application-name" content="VGI Digital">
-<meta name="theme-color" content="#0B6148">
-<meta name="msapplication-TileColor" content="#0B6148">
+<meta name="theme-color" content="#013E31">
+<meta name="msapplication-TileColor" content="#013E31">
 <meta name="description" content="Calculadora de escalas de la valoración geriátrica integral: eje clínico, funcional, mental y social.">
 
 <link rel="canonical" href="https://drcllano.github.io/vgi-herramienta-digital/">
@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.11.4",
+  "softwareVersion": "2.11.5",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-03",
   "inLanguage": "es",
@@ -2576,7 +2576,7 @@ function tabIcon(id){
 function renderTabs(){
   const n = Object.keys(VGI).length;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.4</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.5</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3084,7 +3084,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.4) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.11.5) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3096,6 +3096,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.11.5</strong> · Se renueva la identidad visual a partir del símbolo VGI Digital en degradado (verde bosque, verde, lima y aguamarina): nuevo símbolo, logotipo e iconos de la aplicación instalable, barra lateral y barra de resultado en verde bosque, filete de marca bajo la cabecera y tonos neutros con matiz verde. Los colores de los cinco ejes se conservan. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
   + '<div class="cite"><strong>2.11.4</strong> · Se añade en Acerca de la sección Agradecimientos. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
   + '<div class="cite"><strong>2.11.3</strong> · Corrección de dos avisos de la interfaz, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. Siete instrumentos con ítems de selección múltiple o numéricos (Downton, VES-13, FRAIL, MOS, EQ-5D, vulnerabilidad social y maltrato) mostraban al abrirse un puntaje parcial o criterios completos en lugar de Sin iniciar, porque esos ítems se inicializan en 0; ahora muestran Sin iniciar hasta que se marca una opción o se escribe un valor. En la ficha de evidencia del MOS la regla ya no dice que el resultado no se obtiene por suma de puntos: indica que procede de la suma de los ítems, en un índice global y por componentes.</div>'
   + '<div class="cite"><strong>2.11.2</strong> · Corrección del rango general en la ficha de evidencia, sin cambios en las escalas, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas. En Ver evidencia y referencia, la línea Rango partía siempre de 0; ahora parte del mínimo posible, como los tramos desde la 2.11.1 (Norton, 5 a 20; Short FES-I, 7 a 28; Zarit, 22 a 110). En el MOS, que no tiene tramos, el rango pasa de 0 a 95 a 19 a 95: el número de personas de la red cercana se registra aparte y no suma al total.</div>'
@@ -3127,7 +3128,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.11.4 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
+  + '<p class="disclaimer">Versión 2.11.5 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md).</p>'
   + '</div>';
 }
 

@@ -123,3 +123,71 @@ header.top{align-items:center;min-height:76px;padding:calc(14px + env(safe-area-
 @media (min-width:1240px){
   #list .grp-eje{display:none;}
 }
+
+/* ============================================================
+   2.11.5 · Identidad visual a partir del símbolo en degradado
+   Paleta tomada del símbolo nuevo: verde bosque, verde, lima y
+   aguamarina. Los colores de los cinco ejes NO cambian, porque
+   identifican cada eje en toda la aplicación.
+   ============================================================ */
+:root{
+  --marca-bosque:#013E31;
+  --marca-verde:#038A62;
+  --marca-lima:#74DD23;
+  --marca-agua:#02D4B9;
+  --ink:#122822;
+  --ink-2:#3B5049;
+  --muted:#5E716A;
+  --paper:#F2F7F5;
+  --line:#D9E6E0;
+  --line-2:#ABC0B7;
+  --field:#F8FBFA;
+  --tint:#E7F2EE;
+  --tint-2:#EFF6F3;
+  --bar:#013E31;
+  --glass-top:rgba(242,247,245,.92);
+  --rail:#D9E6E0;
+  --sombra:0 14px 38px rgba(1,62,49,.12);
+  --soft-shadow:0 5px 18px rgba(1,62,49,.07);
+}
+
+/* Filete de marca bajo la cabecera: lima, aguamarina y verde bosque */
+header.top::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:linear-gradient(90deg,var(--marca-lima),var(--marca-agua) 45%,var(--marca-verde) 75%,var(--marca-bosque));
+  opacity:.75;pointer-events:none;
+}
+
+/* Barra lateral de escritorio: verde bosque con el arco aguamarina del logotipo */
+@media (min-width:960px){
+  nav.tabs{
+    background:
+      radial-gradient(circle 300px at 0% 100%,transparent 0 198px,rgba(2,212,185,.06) 212px,rgba(2,212,185,.16) 236px,rgba(2,212,185,.05) 262px,transparent 290px),
+      linear-gradient(180deg,#02493A 0%,#013E31 45%,#012E25 100%);
+    box-shadow:12px 0 36px rgba(1,62,49,.12);
+  }
+  nav.tabs button{color:#C0D9CF;}
+  nav.tabs button:hover{background:rgba(255,255,255,.07);}
+  .nav-brand small{color:#A9C9BC;}
+  .nav-label{color:#98BCAE;}
+  .nav-foot{color:#C0D9CF;border-top-color:rgba(255,255,255,.10);}
+  .nav-foot span{color:#98BCAE;}
+  .nav-count{background:rgba(2,212,185,.16);}
+  .brand-logo-mark{width:44px;height:44px;border-radius:12px;padding:3px;box-shadow:0 0 0 1px rgba(2,212,185,.35);}
+}
+
+/* Bloque de marca en "Acerca de": el logotipo sobre el arco aguamarina */
+.brand-showcase{
+  position:relative;overflow:hidden;
+  padding:34px 22px;
+  border:1px solid var(--line);border-radius:22px;
+  background:
+    radial-gradient(circle 460px at 22% 152%,transparent 0 318px,rgba(2,212,185,.09) 340px,rgba(2,212,185,.19) 372px,rgba(2,212,185,.07) 410px,transparent 450px),
+    radial-gradient(circle 220px at 100% 0%,rgba(116,221,35,.08),transparent 220px),
+    #FFFFFF;
+}
+.brand-showcase img{max-width:320px;}
+@media (max-width:560px){
+  .brand-showcase{padding:26px 16px;}
+  .brand-showcase img{max-width:240px;}
+}

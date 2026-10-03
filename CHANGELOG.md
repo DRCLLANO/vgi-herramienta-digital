@@ -3,6 +3,30 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.5
+
+Identidad visual renovada. Las 47 escalas, el conversor, sus reglas de
+cálculo, puntos de corte e interpretaciones no cambian.
+
+- El símbolo VGI Digital pasa a su versión en degradado (verde bosque, verde,
+  lima y aguamarina). Se sustituyen, con los mismos nombres de archivo,
+  `vgi-digital-simbolo-verde.png` (800x800 px), `vgi-digital-logo-verde.png`
+  (logotipo horizontal con el símbolo nuevo y el texto VGI DIGITAL en verde y
+  aguamarina) y los siete iconos de la aplicación instalable. Los iconos de
+  Apple llevan fondo blanco para que iOS no los muestre sobre negro, y el icono
+  enmascarable lleva fondo verde muy claro con el símbolo dentro de la zona
+  segura.
+- En `ui-v3.css` se añade una capa de identidad 2.11.5: barra lateral de
+  escritorio y barra de resultado en verde bosque (#013E31), arco aguamarina
+  del logotipo en la barra lateral y en el bloque de marca de Acerca de, filete
+  de marca bajo la cabecera y tonos neutros (fondo, líneas, texto) con matiz
+  verde. Los colores de los cinco ejes se conservan.
+- `theme-color`, `msapplication-TileColor` y el `theme_color` del manifest
+  pasan a #013E31; el `background_color` del manifest a #F2F7F5.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.11.5`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.5.json`).
+
 ## 2.11.4
 
 Sección de agradecimientos. Las 47 escalas, el conversor, sus reglas de

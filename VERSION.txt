@@ -1,2 +1,2 @@
-VGI Digital 2.11.4
+VGI Digital 2.11.5
 2026-10-03

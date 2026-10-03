@@ -44,6 +44,9 @@ la ficha de evidencia (Norton, Short FES-I, Zarit y MOS); los recuentos no cambi
 `resultado-2.11.3.json` corresponde a la 2.11.3, que corrige el aviso "Sin iniciar"
 y la regla del MOS en la ficha de evidencia; los recuentos no cambian y la lista
 de fallos sigue vacía.
+`resultado-2.11.4.json` y `resultado-2.11.5.json` corresponden a la 2.11.4
+(sección de agradecimientos) y a la 2.11.5 (identidad visual); los recuentos no
+cambian y la lista de fallos sigue vacía.
 
 ## Alcance
 
