@@ -3,6 +3,22 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.11.4
+
+Sección de agradecimientos. Las 47 escalas, el conversor, sus reglas de
+cálculo, puntos de corte e interpretaciones no cambian.
+
+- Se añade en Acerca de la sección "Agradecimientos", después de "Comentarios y
+  sugerencias": a los padres y a la esposa del autor, y a la Unidad de
+  Geriatría del Hospital Universitario San Ignacio, en particular a los
+  doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y
+  Rodrigo Alberto Heredia Ramírez.
+- Se retira del final de este historial el apartado "Pendiente para versiones
+  futuras".
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.11.4`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.11.4.json`).
+
 ## 2.11.3
 
 Corrección de dos avisos de la interfaz. Las 47 escalas, el conversor, sus
@@ -425,10 +441,3 @@ dentro de cada eje, con buscador.
 ## 1.0
 
 Nueve escalas basadas en el manual de 2020.
-
----
-
-## Pendiente para versiones futuras
-
-- Timed Up and Go (TUG), del conjunto mínimo señalado en el editorial de
-  Abizanda y Sánchez Jurado (Rev Esp Geriatr Gerontol. 2026;61:101831).
