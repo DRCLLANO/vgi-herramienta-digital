@@ -1,8 +1,13 @@
 # Alcance de la licencia y derechos sobre el contenido
 
-La licencia MIT del archivo `LICENSE` cubre **el código fuente** de esta
+La licencia PolyForm Noncommercial 1.0.0 del archivo `LICENSE` cubre **el código fuente** de esta
 aplicación: la estructura del archivo HTML, la interfaz, la lógica de cálculo,
 la aplicación de puntos de corte y la generación del resumen de la valoración.
+
+Desde la versión 2.12.0 el código solo puede usarse, modificarse y
+redistribuirse con fines no comerciales; cualquier uso comercial requiere
+autorización escrita del autor. Las versiones 1.0 a 2.11.5 se publicaron bajo
+licencia MIT y conservan esa licencia.
 
 **No cubre el contenido de las escalas.** Cada instrumento tiene su propio
 titular de derechos y sus propias condiciones de uso.
@@ -74,17 +79,17 @@ Creative Commons Atribución 4.0 Internacional (CC BY 4.0).
 El archivo `index.html` incluye, embebida en base64, una fotografía de
 Cristian Camilo Llano Ceballos en la ficha de autor. Su publicación en este
 repositorio se hace con su consentimiento y no está cubierta por la licencia
-MIT.
+del código.
 
 ## 6. Identidad visual "VGI Digital"
 
 Desde la versión 2.10.4 la aplicación usa un logotipo en tonos verdes y un
 símbolo derivado del que proceden los iconos. Los archivos correspondientes
 (`vgi-digital-logo-verde.png`, `vgi-digital-simbolo-verde.png` y los
-`icon-*.png`) **no están cubiertos por la licencia MIT del código** y quedan
+`icon-*.png`) **no están cubiertos por la licencia del código** y quedan
 reservados como signos distintivos de esta herramienta.
 
-Quien reutilice el código bajo la licencia MIT debe sustituirlos por una
+Quien reutilice el código bajo su licencia debe sustituirlos por una
 identidad propia. No pueden emplearse para identificar otro producto ni para
 sugerir respaldo de esta aplicación, de su autor o de la Pontificia Universidad
 Javeriana.

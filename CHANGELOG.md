@@ -3,6 +3,33 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.12.0
+
+Cambio de licencia del código. Las 47 escalas, el conversor, sus reglas de
+cálculo, puntos de corte e interpretaciones no cambian.
+
+- El código fuente pasa de la licencia MIT a la PolyForm Noncommercial License
+  1.0.0: puede usarse, estudiarse, copiarse, modificarse y redistribuirse solo
+  con fines no comerciales, y cualquier uso comercial requiere autorización
+  escrita del autor. El cambio responde a la finalidad declarada de la
+  herramienta (uso exclusivamente educativo y de investigación, sin finalidad
+  comercial). No es retroactivo: las versiones 1.0 a 2.11.5 conservan la
+  licencia MIT.
+- `LICENSE` reproduce sin modificaciones el texto oficial de PolyForm, precedido
+  de la línea "Required Notice" con el titular y el DOI, de los bloques de
+  alcance en español e inglés (las cinco exclusiones se conservan) y de un
+  resumen orientativo en español, no vinculante.
+- `NOTICE.md`, `README.md` (insignia, sección de licencia y tabla de archivos)
+  y `CITATION.cff` (`license: PolyForm-Noncommercial-1.0.0`, identificador
+  SPDX) se actualizan en consecuencia.
+- En `index.html`: `link rel="license"`, `DC.rights` y el JSON-LD apuntan a la
+  nueva licencia, y el JSON-LD declara el titular de los derechos
+  (`copyrightHolder`, `copyrightYear`). En Acerca de, la sección Derechos y
+  permisos explica la nueva licencia y el pie la menciona.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.12.0`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.12.0.json`).
+
 ## 2.11.5
 
 Identidad visual renovada. Las 47 escalas, el conversor, sus reglas de

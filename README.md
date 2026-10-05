@@ -1,7 +1,7 @@
 # VGI DIGITAL: herramienta digital para la Valoración Geriátrica Integral
 
 [![DOI](https://img.shields.io/badge/DOI-10.17605%2FOSF.IO%2FKMX8H-blue)](https://doi.org/10.17605/OSF.IO/KMX8H)
-[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-green)](LICENSE)
+[![Licencia: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/Licencia-PolyForm%20Noncommercial%201.0.0-orange)](LICENSE)
 [![ORCID](https://img.shields.io/badge/ORCID-0000--0001--9745--3863-a6ce39)](https://orcid.org/0000-0001-9745-3863)
 
 Herramienta digital para el cálculo y la interpretación de las escalas de la
@@ -9,7 +9,7 @@ Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
 evaluación (clínico, funcional, mental y social) más una sección de paliativos
 y pronóstico.
 
-**Versión 2.11.5** · 47 escalas y un conversor de dosis equianalgésicas de opioides. Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI.
+**Versión 2.12.0** · 47 escalas y un conversor de dosis equianalgésicas de opioides. Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI.
 
 ## Abrir la herramienta
 
@@ -99,7 +99,7 @@ citarse.
 
 La carpeta [`verificacion/`](verificacion/) contiene el script que ejecuta las
 tres pruebas automatizadas sobre `index.html` y el resultado fechado de las
-versiones 2.10.6 a 2.11.5. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
+versiones 2.10.6 a 2.12.0. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
 cada archivo, para comprobar que el repositorio y el depósito de OSF contienen
 exactamente la misma versión.
 
@@ -108,17 +108,23 @@ exactamente la misma versión.
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. VGI Digital: herramienta digital
-> para la Valoración Geriátrica Integral (versión 2.11.5) [software]. Open Science
+> para la Valoración Geriátrica Integral (versión 2.12.0) [software]. Open Science
 > Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
 
-El **código fuente** se publica bajo licencia MIT (archivo `LICENSE`).
+El **código fuente** se publica, desde la versión 2.12.0, bajo la
+[PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/)
+(archivo `LICENSE`): puede usarse, estudiarse, modificarse y redistribuirse solo
+con fines no comerciales, y cualquier uso comercial requiere autorización
+escrita del autor. Es una licencia de código fuente disponible, no una licencia
+de código abierto en el sentido de la Open Source Initiative. Las versiones 1.0
+a 2.11.5 se publicaron bajo licencia MIT y conservan esa licencia.
 
 La **documentación** de este repositorio se publica bajo CC BY 4.0.
 
 El **logotipo, el símbolo y los iconos** de la identidad visual VGI Digital
-tampoco están cubiertos por la licencia MIT y no pueden reutilizarse para
+tampoco están cubiertos por la licencia del código y no pueden reutilizarse para
 identificar otra herramienta.
 
 El **contenido de las escalas** no está cubierto por ninguna de las dos. Antes
@@ -133,10 +139,10 @@ derechos propio y condiciones de uso específicas.
 | `index.html` | Núcleo funcional y contenido de la herramienta |
 | `ui-v3.css` | Capa visual adaptable para escritorio y dispositivos móviles |
 | `README.md` | Este documento |
-| `LICENSE` | Licencia MIT del código fuente |
+| `LICENSE` | Licencia del código fuente (PolyForm Noncommercial 1.0.0) |
 | `NOTICE.md` | Alcance de la licencia y derechos sobre el contenido de las escalas |
 | `CITATION.cff` | Metadatos de citación |
-| `CHANGELOG.md` | Historial de versiones (1.0 a 2.11.5) |
+| `CHANGELOG.md` | Historial de versiones (1.0 a 2.12.0) |
 | `sw.js` | Service worker: permite el uso sin conexión tras la primera visita |
 | `manifest.json` | Manifiesto de la aplicación web progresiva |
 | `icon-*.png` | Iconos de la aplicación (120, 152, 167, 180, 192 y 512 px, más el icono *maskable*) |
@@ -157,5 +163,6 @@ derechos propio y condiciones de uso específicas.
 | `verificacion/resultado-2.11.3.json` | Resultado fechado de esas pruebas sobre la versión 2.11.3 |
 | `verificacion/resultado-2.11.4.json` | Resultado fechado de esas pruebas sobre la versión 2.11.4 |
 | `verificacion/resultado-2.11.5.json` | Resultado fechado de esas pruebas sobre la versión 2.11.5 |
+| `verificacion/resultado-2.12.0.json` | Resultado fechado de esas pruebas sobre la versión 2.12.0 |
 | `verificacion/LEEME.md` | Instrucciones para ejecutar la verificación |
 | `SHA256SUMS.txt` | Sumas SHA-256 de todos los archivos del depósito |
