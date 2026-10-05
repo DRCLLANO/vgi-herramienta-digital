@@ -47,6 +47,9 @@ de fallos sigue vacía.
 `resultado-2.11.4.json` y `resultado-2.11.5.json` corresponden a la 2.11.4
 (sección de agradecimientos) y a la 2.11.5 (identidad visual); los recuentos no
 cambian y la lista de fallos sigue vacía.
+`resultado-2.12.0.json` corresponde a la 2.12.0 (cambio de licencia del código a
+PolyForm Noncommercial 1.0.0); los recuentos no cambian y la lista de fallos
+sigue vacía.
 
 ## Alcance
 
