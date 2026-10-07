@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.12.0",
+  "softwareVersion": "2.12.1",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-10-05",
+  "dateModified": "2026-10-06",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -609,6 +609,7 @@ body.tg2 .card h2{font-size:20px;}
 .brand-logo-mark{width:42px;height:42px;object-fit:contain;}
 </style>
 <link rel="stylesheet" href="ui-v3.css">
+<link rel="stylesheet" href="ui-motion.css">
 <!-- Estadísticas anónimas de uso (GoatCounter, desde la 2.10.11): sin cookies ni datos personales. Nunca se envían respuestas ni resultados de las escalas. -->
 <script data-goatcounter="https://vgidigitalco.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2523,6 +2524,69 @@ function fichaEvidencia(s){
 }
 
 /* ---------------------------- RENDER ---------------------------- */
+/* ---------- Movimiento (2.12.1): solo presentación ----------
+   Cada pantalla tiene una "clave" (vista, eje, escala, resultado). Cuando la
+   clave cambia, #view recibe data-anim con la dirección del cambio y la hoja
+   ui-motion.css anima la entrada. Las actualizaciones dentro de la misma
+   pantalla (marcar una opción, abrir la evidencia) no la vuelven a animar. */
+const MOV_REDUCIDO = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+let pantallaPrev = null, domPrev = null;
+function pantallaClave(){
+  return [state.view, state.view==='vgi'?'':state.eje, state.id||'', state.showResult?'r':''].join('|');
+}
+function profundidad(v, r){ return v==='list'||v==='vgi' ? 0 : (r ? 2 : 1); }
+function marcarEntrada(){
+  const view = document.getElementById('view');
+  const clave = pantallaClave();
+  const antes = pantallaPrev;
+  pantallaPrev = clave;
+  const cambioDom = antes===clave && state.view==='list' && !state.q && domPrev!==state.dom;
+  domPrev = state.dom;
+  if(antes===clave){
+    if(cambioDom) animarLista();
+    return;
+  }
+  view.removeAttribute('data-anim');
+  if(antes===null || MOV_REDUCIDO) return;
+  const [vA,, , rA] = antes.split('|');
+  const dA = profundidad(vA, rA), dB = profundidad(state.view, state.showResult);
+  const dir = dB>dA ? 'fwd' : dB<dA ? 'back' : 'up';
+  void view.offsetWidth;
+  view.setAttribute('data-anim', dir);
+  indexarTarjetas(document.getElementById('list'));
+  clearTimeout(marcarEntrada.t);
+  marcarEntrada.t = setTimeout(()=>view.removeAttribute('data-anim'), 1100);
+}
+function indexarTarjetas(list){
+  if(!list) return;
+  Array.prototype.forEach.call(list.children, (c,k)=>c.style.setProperty('--k', Math.min(k,10)));
+}
+function animarLista(){
+  const list = document.getElementById('list');
+  if(!list || MOV_REDUCIDO) return;
+  list.removeAttribute('data-anim'); void list.offsetWidth;
+  indexarTarjetas(list);
+  list.setAttribute('data-anim','');
+  clearTimeout(animarLista.t);
+  animarLista.t = setTimeout(()=>list.removeAttribute('data-anim'), 900);
+}
+/* Cuenta ascendente del puntaje en el resultado. Termina siempre en el texto
+   exacto que produce fmt(), y solo se usa con puntajes enteros. */
+function contarPuntaje(){
+  const n = document.querySelector('.result .score .n:not(.sm)');
+  if(!n || MOV_REDUCIDO) return;
+  const final = n.textContent, meta = total();
+  if(!Number.isInteger(meta) || meta<=0 || fmt(meta)!==final) return;
+  const t0 = performance.now(), dur = Math.min(900, 380 + meta*12);
+  n.textContent = '0';
+  const paso = t=>{
+    const x = Math.min(1, (t-t0)/dur), e = 1-Math.pow(1-x,3);
+    n.textContent = x<1 ? fmt(Math.round(meta*e)) : final;
+    if(x<1) requestAnimationFrame(paso);
+  };
+  requestAnimationFrame(paso);
+}
+
 function render(){
   setEjeColor(state.view==='vgi' ? 'ink' : state.eje);
   document.body.dataset.view = state.view;
@@ -2534,7 +2598,13 @@ function render(){
   else if(state.view==='tool') renderTool();
   else renderScale();
   renderScorebar(); renderSpine();
-  if(state.view!=='scale' || state.showResult) window.scrollTo(0,0);
+  /* Al cambiar de pantalla se sube al inicio de inmediato (la entrada de la
+     vista ya da la transición); las actualizaciones dentro de la misma
+     pantalla, como abrir la evidencia en el resultado, conservan la posición. */
+  const nueva = pantallaPrev!==pantallaClave();
+  if(nueva && (state.view!=='scale' || state.showResult)) window.scrollTo({top:0, left:0, behavior:'instant'});
+  marcarEntrada();
+  if(nueva && state.view==='scale' && state.showResult) contarPuntaje();
 }
 
 function renderTop(){
@@ -2577,8 +2647,9 @@ function tabIcon(id){
 
 function renderTabs(){
   const n = Object.keys(VGI).length;
+  const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.11.5</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.1</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2587,6 +2658,9 @@ function renderTabs(){
     + '<button class="vgi-tab" data-tab="vgi" aria-label="Resumen de valoración geriátrica integral" style="--tab:var(--ink)" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">Resumen VGI</span><span class="tab-short">Resumen</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
     + '<div class="nav-foot">47 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
+  if(nPrev!==undefined && n>nPrev && !MOV_REDUCIDO){
+    const c = document.querySelector('#tabs .nav-count'); if(c) c.classList.add('bump');
+  }
 }
 
 function cardHTML(id, showEje){
@@ -2799,15 +2873,35 @@ function renderScorebar(){
   const s = SCALES[state.id];
   const inicio = tocados()===0;
   const falta = inicio ? s.items.length : s.items.length - answered();
-  bar.className = 'scorebar';
-  bar.innerHTML = '<div class="inner"><div>'
+  const previo = bar.querySelector('.inner');
+  const valPrev = previo ? (previo.querySelector('.val')||{}).textContent : null;
+  const html = '<div class="inner"><div class="sb-prog" aria-hidden="true"><i></i></div><div>'
     + '<div class="lbl">'+(!inicio && falta ? (s.max?'Puntaje parcial':'Criterios parciales') : (s.max?'Puntaje':'Criterios'))+'</div>'
     + (inicio ? '<div class="val val-empty">Sin iniciar</div></div>'
        : '<div class="val">'+(s.max?fmt(total()):answered())+'<span> / '+(s.max?fmt(s.max):s.items.length)+'</span></div></div>')
     + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;opacity:.6">'
     + (falta ? 'faltan '+falta+'<br>ítem'+(falta===1?'':'s')+' por responder' : 'todos los ítems<br>respondidos')
     + '</div>'
-    + '<button class="go" data-act="result">Interpretar</button></div>';
+    + '<button class="go" data-act="result" data-falta="'+falta+'">Interpretar</button></div>';
+  if(previo){
+    const tmp = document.createElement('div'); tmp.innerHTML = html;
+    const nuevo = tmp.firstChild;
+    /* La barra de progreso se conserva para que su avance se anime. */
+    nuevo.replaceChild(previo.querySelector('.sb-prog'), nuevo.querySelector('.sb-prog'));
+    /* El botón late solo en el momento en que se completa el último ítem. */
+    const goPrev = previo.querySelector('.go');
+    if(!falta && goPrev && goPrev.dataset.falta!=='0' && !MOV_REDUCIDO) nuevo.querySelector('.go').classList.add('listo');
+    bar.className = 'scorebar';
+    bar.replaceChild(nuevo, previo);
+  } else {
+    bar.className = 'scorebar sb-in';
+    bar.innerHTML = html;
+  }
+  const val = bar.querySelector('.val');
+  if(val && valPrev!==null && valPrev!==val.textContent && !MOV_REDUCIDO) val.classList.add('bump');
+  const pct = inicio ? 0 : Math.min(1, answered()/s.items.length);
+  const barra = bar.querySelector('.sb-prog i');
+  requestAnimationFrame(()=>{ barra.style.transform = 'scaleX('+pct.toFixed(3)+')'; });
 }
 
 function renderSpine(){
@@ -3057,22 +3151,27 @@ function renderAbout(){
   + '</div>'
   + '<p>La preferencia se conserva en este dispositivo.</p>'
 
-  + '<h3>Uso sin conexión</h3>'
+  + '<details class="acc"><summary>Uso sin conexión</summary>'
   + '<p>La aplicación se instala en la pantalla de inicio y funciona sin señal. En iPhone, abra el enlace en Safari, toque el botón de compartir y elija "Añadir a pantalla de inicio". En Android, use la opción "Instalar aplicación" del menú del navegador. Después de la primera visita, todo el contenido queda disponible sin conexión.</p>'
+  + '</details>'
 
-  + '<h3>Valoración geriátrica integral</h3>'
+  + '<details class="acc"><summary>Valoración geriátrica integral</summary>'
   + '<p>La pestaña Resumen VGI reúne los resultados de varias escalas y produce un resumen de los cuatro ejes listo para copiar en la historia clínica. Esa valoración vive solo en la memoria mientras la aplicación está abierta y se pierde al cerrarla o recargarla.</p>'
+  + '</details>'
 
-  + '<h3>Privacidad</h3>'
+  + '<details class="acc"><summary>Privacidad</summary>'
   + '<p>La aplicación no transmite ningún dato clínico: todo el cálculo ocurre en el dispositivo, y las respuestas de cada escala y la valoración en curso se pierden al cerrar la aplicación. Desde la versión 2.10.11 se registran estadísticas anónimas de uso mediante GoatCounter, un servicio de código abierto que no usa cookies ni guarda datos personales: el número de visitas, el país, el tipo de dispositivo y qué fichas se abren, nunca las respuestas ni los resultados. Lo único que se conserva en el dispositivo son sus preferencias de uso: escalas favoritas, escalas recientes y tamaño de texto. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</p>'
+  + '</details>'
 
-  + '<h3>Finalidad y condiciones de uso</h3>'
+  + '<details class="acc"><summary>Finalidad y condiciones de uso</summary>'
   + '<p>VGI Digital es una herramienta con fines exclusivamente educativos y de investigación, sin finalidad comercial. Facilita el cálculo y la interpretación de instrumentos de la Valoración Geriátrica Integral como apoyo a la formación y a la práctica clínica. No reemplaza la valoración clínica, el juicio profesional ni los criterios diagnósticos vigentes. Las escalas deben cumplir su función de cuantificar, pero son parte del apoyo a la atención diaria y no elementos que sustituyan el diagnóstico clínico. El conversor de opioides es material educativo y no constituye una guía de prescripción.</p>'
+  + '</details>'
 
-  + '<h3>Derechos y permisos</h3>'
+  + '<details class="acc"><summary>Derechos y permisos</summary>'
   + '<p>El contenido de las escalas proviene del manual citado arriba. Todos los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, y sus editores autorizaron el uso de ese contenido en esta herramienta. Esa autorización cubre esta aplicación y no se extiende a quien la reutilice o la redistribuya.</p>'
   + '<p>Varios de los instrumentos incluidos tienen titular de derechos propio, distinto del manual, y condiciones de uso que dependen de ese titular. Esta herramienta los reproduce con fines exclusivamente educativos y de investigación, sin finalidad comercial, y cita en cada ficha su fuente primaria. Quien desee reutilizarlos, traducirlos o incorporarlos a otro producto debe verificar sus condiciones con el titular correspondiente; el detalle consta en el archivo NOTICE.md del repositorio.</p>'
   + '<p>© 2026 Cristian Camilo Llano Ceballos. Desde la versión 2.12.0, el código de la aplicación se publica bajo la licencia <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a>: puede usarse, estudiarse, modificarse y redistribuirse solo con fines no comerciales, y cualquier uso comercial requiere autorización escrita del autor. Las versiones anteriores se publicaron bajo licencia MIT. Esta licencia no cubre el contenido de las escalas ni la identidad visual de la herramienta.</p>'
+  + '</details>'
 
   + '<div class="sig">'
   + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Desarrollo</span>'
@@ -3086,7 +3185,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3098,6 +3197,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.12.1</strong> · Transiciones e interacción: cada pantalla entra con un desplazamiento breve y escalonado, la opción elegida y la barra de puntaje responden al toque, la barra muestra el progreso de los ítems y el resultado dibuja la franja y cuenta el puntaje. Al abrir la evidencia en el resultado ya no se vuelve al inicio de la página. En Acerca de, Uso sin conexión, Valoración geriátrica integral, Privacidad, Finalidad y condiciones de uso y Derechos y permisos pasan a ser secciones desplegables, como las demás. Respeta la preferencia de movimiento reducido del sistema. Ninguna escala, puntaje, punto de corte ni el conversor cambian.</div>'
   + '<div class="cite"><strong>2.12.0</strong> · Cambio de licencia del código: de MIT a PolyForm Noncommercial 1.0.0, que permite usar, estudiar, modificar y redistribuir el código solo con fines no comerciales. Las versiones anteriores conservan la licencia MIT. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
   + '<div class="cite"><strong>2.11.5</strong> · Se renueva la identidad visual a partir del símbolo VGI Digital en degradado (verde bosque, verde, lima y aguamarina): nuevo símbolo, logotipo e iconos de la aplicación instalable, barra lateral y barra de resultado en verde bosque, filete de marca bajo la cabecera y tonos neutros con matiz verde. Los colores de los cinco ejes se conservan. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
   + '<div class="cite"><strong>2.11.4</strong> · Se añade en Acerca de la sección Agradecimientos. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
@@ -3131,7 +3231,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.12.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.12.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3279,7 +3379,7 @@ document.addEventListener('click', e=>{
     const i = +opt.dataset.ans;
     state.ans[i] = +opt.dataset.v;
     state.sel[i] = +opt.dataset.oi;
-    opt.parentElement.querySelectorAll('.opt').forEach(b=>b.setAttribute('aria-pressed', b===opt));
+    opt.parentElement.querySelectorAll('.opt').forEach(b=>{ b.setAttribute('aria-pressed', b===opt); b.classList.toggle('pick', b===opt); });
     clearPend(opt);
     renderScorebar(); renderSpine();
     return;
@@ -3293,6 +3393,7 @@ document.addEventListener('click', e=>{
     const at = sel.indexOf(ci);
     if(at>=0) sel.splice(at,1); else sel.push(ci);
     chip.setAttribute('aria-pressed', at<0);
+    chip.classList.toggle('pick', at<0);
     state.ans[i] = multiScore(it, sel);
     const c = document.getElementById('mc'+i), sc = document.getElementById('ms'+i);
     if(c) c.textContent = sel.length;
@@ -3361,6 +3462,14 @@ if ('serviceWorker' in navigator) {
 
 setTamano(store.get('tsize',0));
 render();
+
+/* Sombra de la cabecera cuando el contenido se desplaza bajo ella. */
+(function(){
+  let pend = false;
+  const upd = ()=>{ pend = false; document.documentElement.classList.toggle('scrolled', window.scrollY > 6); };
+  window.addEventListener('scroll', ()=>{ if(!pend){ pend = true; requestAnimationFrame(upd); } }, {passive:true});
+  upd();
+})();
 </script>
 </body>
 </html>

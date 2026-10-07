@@ -3,6 +3,45 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.12.1
+
+Transiciones e interacción. Solo presentación: las 47 escalas, el conversor,
+sus reglas de cálculo, puntos de corte e interpretaciones no cambian.
+
+- Hoja nueva `ui-motion.css`, cargada después de `ui-v3.css`. Todas sus
+  animaciones quedan anuladas con la preferencia de movimiento reducido del
+  sistema y ninguna deja contenido oculto si no llega a ejecutarse.
+- Cada cambio de pantalla entra con un desplazamiento breve y escalonado: hacia
+  adelante al abrir una escala o su resultado, hacia atrás al volver, y hacia
+  arriba al cambiar de eje. Las tarjetas del catálogo entran escalonadas,
+  también al filtrar por dominio.
+- La opción elegida y los criterios de selección múltiple responden al toque;
+  los ítems sin responder hacen un aviso breve al señalarse.
+- La barra de puntaje entra deslizándose, lleva una barra fina de progreso de
+  los ítems respondidos, en el verde lima de la identidad visual, el valor da un pequeño salto al cambiar y el botón
+  Interpretar late una vez al completarse el último ítem.
+- En el resultado, la franja de bandas se dibuja de izquierda a derecha, el
+  marcador se desplaza hasta el puntaje y el puntaje cuenta desde 0 (solo en
+  puntajes enteros; termina siempre en el valor exacto).
+- La cabecera gana sombra al desplazarse el contenido, el indicador del eje
+  activo crece al seleccionarse, el contador del resumen VGI late al añadir una
+  escala y el foco de teclado es visible con el color del eje.
+- Corrección de comportamiento: al cambiar de pantalla se sube al inicio de
+  inmediato y no con un desplazamiento suave largo; al abrir o cerrar la
+  evidencia en el resultado (o actualizar el resumen VGI) se conserva la
+  posición, en lugar de volver al inicio de la página.
+- En Acerca de, las secciones Uso sin conexión, Valoración geriátrica integral,
+  Privacidad, Finalidad y condiciones de uso y Derechos y permisos pasan a ser
+  desplegables, como ya lo eran Organización por ejes, Conversor de opioides,
+  Escalas complementarias e Historial de versiones. Su texto no cambia. Los
+  desplegables se abren con altura en los navegadores que lo admiten, y el pie
+  de Acerca de sigue mostrando a la vista la finalidad educativa, la
+  autorización de los editores y la licencia.
+- Corrección: la barra lateral de escritorio mostraba "Versión 2.11.5".
+- `sw.js` precarga `ui-motion.css` y la caché pasa a `v2.12.1`. El script de
+  verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.12.1.json`): recuentos idénticos y sin fallos.
+
 ## 2.12.0
 
 Cambio de licencia del código. Las 47 escalas, el conversor, sus reglas de

@@ -49,6 +49,8 @@ de fallos sigue vacía.
 cambian y la lista de fallos sigue vacía.
 `resultado-2.12.0.json` corresponde a la 2.12.0 (cambio de licencia del código a
 PolyForm Noncommercial 1.0.0); los recuentos no cambian y la lista de fallos
+sigue vacía. `resultado-2.12.1.json` corresponde a la 2.12.1 (transiciones e
+interacción, solo presentación); los recuentos no cambian y la lista de fallos
 sigue vacía.
 
 ## Alcance

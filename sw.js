@@ -8,12 +8,13 @@
    Al cambiar de versión se cambia CACHE y se borran las cachés viejas.
    ======================================================================= */
 
-const CACHE = 'escalas-geriatria-v2.12.0';
+const CACHE = 'escalas-geriatria-v2.12.1';
 
 const PRECARGA = [
   './',
   './index.html',
   './ui-v3.css',
+  './ui-motion.css',
   './manifest.json',
   './icon-120.png',
   './icon-152.png',
