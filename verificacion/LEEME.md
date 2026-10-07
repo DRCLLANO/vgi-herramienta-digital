@@ -51,7 +51,8 @@ cambian y la lista de fallos sigue vacía.
 PolyForm Noncommercial 1.0.0); los recuentos no cambian y la lista de fallos
 sigue vacía. `resultado-2.12.1.json` corresponde a la 2.12.1 (transiciones e
 interacción, solo presentación); los recuentos no cambian y la lista de fallos
-sigue vacía.
+sigue vacía. `resultado-2.12.2.json` corresponde a la 2.12.2 (ajustes de esas
+transiciones); los recuentos no cambian y la lista de fallos sigue vacía.
 
 ## Alcance
 

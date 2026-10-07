@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.12.1",
+  "softwareVersion": "2.12.2",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-06",
   "inLanguage": "es",
@@ -602,7 +602,7 @@ body.tg2 .card h2{font-size:20px;}
 .sizer button:nth-child(2){font-size:16px;}
 .sizer button:nth-child(3){font-size:18px;}
 
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after,::details-content{transition:none!important;animation:none!important;}}
 /* Base mínima de la navegación: mantiene la proporción aunque ui-v3.css no cargue */
 .tabicon{width:20px;height:20px;flex:none;}
 .tab-short,.nav-brand,.nav-label,.nav-divider,.nav-foot{display:none;}
@@ -2570,23 +2570,6 @@ function animarLista(){
   clearTimeout(animarLista.t);
   animarLista.t = setTimeout(()=>list.removeAttribute('data-anim'), 900);
 }
-/* Cuenta ascendente del puntaje en el resultado. Termina siempre en el texto
-   exacto que produce fmt(), y solo se usa con puntajes enteros. */
-function contarPuntaje(){
-  const n = document.querySelector('.result .score .n:not(.sm)');
-  if(!n || MOV_REDUCIDO) return;
-  const final = n.textContent, meta = total();
-  if(!Number.isInteger(meta) || meta<=0 || fmt(meta)!==final) return;
-  const t0 = performance.now(), dur = Math.min(900, 380 + meta*12);
-  n.textContent = '0';
-  const paso = t=>{
-    const x = Math.min(1, (t-t0)/dur), e = 1-Math.pow(1-x,3);
-    n.textContent = x<1 ? fmt(Math.round(meta*e)) : final;
-    if(x<1) requestAnimationFrame(paso);
-  };
-  requestAnimationFrame(paso);
-}
-
 function render(){
   setEjeColor(state.view==='vgi' ? 'ink' : state.eje);
   document.body.dataset.view = state.view;
@@ -2604,7 +2587,6 @@ function render(){
   const nueva = pantallaPrev!==pantallaClave();
   if(nueva && (state.view!=='scale' || state.showResult)) window.scrollTo({top:0, left:0, behavior:'instant'});
   marcarEntrada();
-  if(nueva && state.view==='scale' && state.showResult) contarPuntaje();
 }
 
 function renderTop(){
@@ -2649,7 +2631,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.1</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.2</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3185,7 +3167,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.2) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3197,6 +3179,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.12.2</strong> · Ajustes de las transiciones: el puntaje del resultado se muestra fijo desde el primer momento, sin conteo desde 0, para que nunca aparezca un número distinto junto a la interpretación. Abrir la evidencia o añadir la escala a la VGI ya no repite la animación del resultado. La preferencia de movimiento reducido cubre también los indicadores de la navegación y de las opciones.</div>'
   + '<div class="cite"><strong>2.12.1</strong> · Transiciones e interacción: cada pantalla entra con un desplazamiento breve y escalonado, la opción elegida y la barra de puntaje responden al toque, la barra muestra el progreso de los ítems y el resultado dibuja la franja y cuenta el puntaje. Al abrir la evidencia en el resultado ya no se vuelve al inicio de la página. En Acerca de, Uso sin conexión, Valoración geriátrica integral, Privacidad, Finalidad y condiciones de uso y Derechos y permisos pasan a ser secciones desplegables, como las demás. Respeta la preferencia de movimiento reducido del sistema. Ninguna escala, puntaje, punto de corte ni el conversor cambian.</div>'
   + '<div class="cite"><strong>2.12.0</strong> · Cambio de licencia del código: de MIT a PolyForm Noncommercial 1.0.0, que permite usar, estudiar, modificar y redistribuir el código solo con fines no comerciales. Las versiones anteriores conservan la licencia MIT. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
   + '<div class="cite"><strong>2.11.5</strong> · Se renueva la identidad visual a partir del símbolo VGI Digital en degradado (verde bosque, verde, lima y aguamarina): nuevo símbolo, logotipo e iconos de la aplicación instalable, barra lateral y barra de resultado en verde bosque, filete de marca bajo la cabecera y tonos neutros con matiz verde. Los colores de los cinco ejes se conservan. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
@@ -3231,7 +3214,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.12.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.12.2 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3249,6 +3232,7 @@ function flagPending(){
   const s = SCALES[state.id];
   state.flagPend = true;
   render();
+  document.querySelectorAll('.item.pend').forEach(n=>n.classList.add('avisa'));
   const first = s.items.findIndex((_,i)=>state.ans[i]===undefined);
   const node = document.getElementById('it'+first);
   if(node) node.scrollIntoView({behavior:'smooth', block:'center'});
@@ -3349,7 +3333,7 @@ document.addEventListener('click', e=>{
     if(a==='copy'){ copySummary(act); }
     if(a==='review'){ state.showResult=false; render(); }
     if(a==='clearq'){ state.q=''; render(); }
-    if(a==='evid'){ state.evid = !state.evid; render(); }
+    if(a==='evid'){ state.evid = !state.evid; render(); const f = document.querySelector('.ficha'); if(f && state.evid) f.classList.add('abre'); }
     if(a==='fav'){ toggleFav(state.id); act.setAttribute('aria-pressed', esFav(state.id)); }
     if(a==='copyref'){ copiar(SCALES[state.id].ref, act); }
     if(a==='addvgi'){ vgiAdd(); render(); }

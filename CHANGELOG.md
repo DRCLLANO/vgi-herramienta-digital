@@ -3,6 +3,28 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.12.2
+
+Ajustes de las transiciones de la 2.12.1, a partir de una revisión externa.
+Solo presentación: las 47 escalas, el conversor, sus reglas de cálculo, puntos
+de corte e interpretaciones no cambian.
+
+- El puntaje del resultado se muestra fijo desde el primer momento. Se retira
+  el conteo desde 0: durante esa animación podía verse, por ejemplo, un 4AT con
+  0 junto a la interpretación de posible delirium, que correspondía a 12. La
+  tarjeta del resultado sigue entrando con la transición de la pantalla.
+- La franja, el marcador, la banda actual y el veredicto se animan solo al
+  llegar al resultado. Abrir la evidencia o añadir la escala a la VGI
+  reconstruye la vista y ya no repite esas animaciones; la ficha de evidencia
+  se anima solo al abrirse, y el aviso de ítems sin responder solo al pulsar
+  Interpretar.
+- La regla de movimiento reducido cubre también los pseudoelementos
+  (`::before`, `::after`) y el contenido de los desplegables, que usan el
+  indicador de la barra inferior, el punto de las opciones y Acerca de.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.12.2`. El script de verificación se repitió sobre esta versión
+  (`verificacion/resultado-2.12.2.json`): recuentos idénticos y sin fallos.
+
 ## 2.12.1
 
 Transiciones e interacción. Solo presentación: las 47 escalas, el conversor,

@@ -108,7 +108,7 @@
   60%{transform:translateX(-3px);}
   80%{transform:translateX(2px);}
 }
-.item.pend{animation:vgi-nudge .45s ease .25s;}
+.item.pend.avisa{animation:vgi-nudge .45s ease .25s;}
 .item{transition:border-color var(--t-med) ease, box-shadow var(--t-med) ease;}
 
 /* Criterios desplegables (NECPAL): el contenido entra suave. */
@@ -152,13 +152,16 @@ details > summary{transition:color var(--t-fast) ease;}
 @keyframes vgi-strip{from{clip-path:inset(0 100% 0 0 round 6px);}}
 @keyframes vgi-mark{from{--p:0;}}
 @keyframes vgi-mark-fade{from{opacity:0;}}
-.result .band{transform-origin:left center;animation:vgi-band .6s var(--ease-out) .1s backwards;}
-.franja .fstrip{animation:vgi-strip .7s var(--ease-out) .25s backwards;}
-.franja .fmark{animation:vgi-mark .9s var(--ease-out) .45s backwards, vgi-mark-fade .3s ease .45s backwards;}
+/* Solo al llegar a la pantalla (#view con data-anim): abrir la evidencia o
+   añadir a la VGI reconstruye el resultado y no debe repetir la animación.
+   El número del puntaje no se anima: se muestra fijo desde el primer cuadro. */
+#view[data-anim] .result .band{transform-origin:left center;animation:vgi-band .6s var(--ease-out) .1s backwards;}
+#view[data-anim] .franja .fstrip{animation:vgi-strip .7s var(--ease-out) .25s backwards;}
+#view[data-anim] .franja .fmark{animation:vgi-mark .9s var(--ease-out) .45s backwards, vgi-mark-fade .3s ease .45s backwards;}
 .fleg li{transition:background-color var(--t-med) ease;}
 @keyframes vgi-cur{from{background-color:transparent;}}
-.fleg li.cur{animation:vgi-cur .5s ease .95s backwards;}
-.verdict{animation:vgi-in-up var(--t-slow) var(--ease-out) .35s backwards;}
+#view[data-anim] .fleg li.cur{animation:vgi-cur .5s ease .95s backwards;}
+#view[data-anim] .verdict{animation:vgi-in-up var(--t-slow) var(--ease-out) .35s backwards;}
 .score .n{font-variant-numeric:tabular-nums;}
 
 /* ---------- 6. Botones ---------- */
@@ -166,7 +169,7 @@ details > summary{transition:color var(--t-fast) ease;}
 .btn:active{transform:scale(.98);transition-duration:.06s;}
 
 /* Ficha de evidencia: se despliega en lugar de aparecer de golpe. */
-.ficha{animation:vgi-in-up var(--t-slow) var(--ease-out);}
+.ficha.abre{animation:vgi-in-up var(--t-slow) var(--ease-out);}
 
 /* Aviso "Copiado": entra con un leve desplazamiento. */
 @keyframes vgi-toast{from{opacity:0;transform:translateY(4px);}}
