@@ -3,6 +3,41 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.13.0
+
+Rediseño de la PPS y pictogramas en la Clinical Frailty Scale. Ninguna otra
+escala, el conversor ni los puntos de corte cambian.
+
+- PPS por columnas. Antes había que escoger una de once filas que mezclaban las
+  cinco dimensiones. Ahora cada dimensión es un ítem: deambulación, actividad y
+  evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia. Cada
+  opción muestra el tramo de niveles en que aparece ese descriptor.
+- El nivel se calcula con la instrucción de la PPSv2 (Victoria Hospice): se baja
+  por la deambulación hasta el nivel elegido y, desde ahí, se sigue bajando
+  columna por columna hacia la derecha. Las columnas de la izquierda prevalecen
+  y ninguna columna de la derecha hace subir el resultado; si una encaja solo en
+  niveles más altos, el resultado lo advierte y remite al juicio clínico, como
+  en el ejemplo de la paraplejia de la guía. El valor es siempre múltiplo de 10.
+- El resultado muestra el recorrido por columnas. Las interpretaciones y su
+  equivalencia en el Índice Pronóstico Paliativo no cambian.
+- Se retira el 0 % (muerte) como opción; la nota de la escala lo explica.
+- Comprobado: las diez filas de la tabla, respondidas con sus propios
+  descriptores, devuelven su nivel; los tres ejemplos de la guía dan 50 %, 30 %
+  y 30 % con aviso; las 3.200 combinaciones producen un nivel válido.
+- Clinical Frailty Scale: cada nivel lleva un pictograma de dibujo propio, en
+  trazo de línea y en los verdes de la marca (verde bosque y lima al
+  seleccionar). No reproduce las ilustraciones de la escala. La figura sentada
+  corresponde al nivel 8 y la acostada al 9. La ayuda del ítem aclara que la
+  puntuación depende de la descripción y no del pictograma.
+- Motor: una opción puede mostrar un rótulo de tramo en lugar de su valor y
+  puede llevar pictograma. Solo lo usan la PPS y la CFS.
+- `trazabilidad-instrumentos.csv`: la PPS pasa a 5 ítems y 26 opciones.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.13.0`. El script general se repitió sobre esta versión
+  (`verificacion/resultado-2.13.0.json`): sin fallos; los ítems pasan de 371 a
+  375 y las opciones de 1.264 a 1.279. La prueba del CDR sigue sin
+  discrepancias.
+
 ## 2.12.3
 
 Corrección del puntaje global del CDR. Ninguna otra escala, el conversor ni la

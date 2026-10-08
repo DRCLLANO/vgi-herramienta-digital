@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.12.3",
+  "softwareVersion": "2.13.0",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-08",
   "inLanguage": "es",
@@ -286,6 +286,10 @@ main{padding:20px 18px 8px 18px;max-width:640px;margin:0 auto;}
   margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);flex:none;padding-left:8px;
 }
 .opt[aria-pressed="true"] .val{color:var(--eje);}
+.opt .pic{flex:none;width:46px;height:46px;border-radius:11px;display:grid;place-items:center;margin:-3px 0;
+  color:var(--marca-verde,#038A62);background:color-mix(in srgb, var(--marca-verde,#038A62) 11%, var(--card));transition:background-color .13s ease,color .13s ease;}
+.opt .pic svg{width:38px;height:38px;}
+.opt[aria-pressed="true"] .pic{background:var(--marca-bosque,#013E31);color:var(--marca-lima,#74DD23);}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
 .chip{
   border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13.5px;background:var(--field);
@@ -1140,36 +1144,79 @@ pps:{
   eje:'paliativo', dom:'Necesidades paliativas',
   name:'PPS',
   full:'Escala Funcional Paliativa (Palliative Performance Scale)',
-  blurb:'Once categorías descendentes desde el 100 % hasta el 0 %. Modificación de la Escala de Karnofsky para el paciente en cuidado paliativo.',
+  blurb:'Cinco dimensiones valoradas por separado (deambulación, actividad y evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia). La aplicación ubica el nivel de 100 % a 10 % siguiendo la regla de lectura de la versión 2. Modificación de la Escala de Karnofsky para el paciente en cuidado paliativo.',
   max:null,
   ref:'Vila-Arias J, Pereira S, López E, Guzmán J, Sanmartín J. Utilidad del Palliative Performance Scale v2 para la estimación de supervivencia en enfermos con cáncer avanzado. Med Paliat. 2012;19(4):133-8.',
+  /* Desde la 2.13.0 cada columna se responde por separado. El valor de cada
+     opción es el nivel más alto de la tabla en el que aparece ese descriptor;
+     PPS_NIVELES dice en qué niveles aparece. El cálculo sigue la instrucción
+     de la PPSv2 (Victoria Hospice): bajar por la deambulación hasta su nivel y,
+     desde ahí, seguir bajando columna por columna hacia la derecha. Las
+     columnas de la izquierda prevalecen; si una columna de la derecha solo
+     encaja en niveles más altos, no hace subir el resultado, pero se avisa. */
   items:[
-    {q:'Seleccione el nivel que mejor describe al paciente',
-     hint:'Valore de arriba hacia abajo cinco dimensiones: deambulación, actividad y evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia. Elija el nivel en el que la persona encaja de forma global.',
+    {q:'Deambulación',
+     hint:'Valore la movilidad que la persona tendría por sí misma, sin contar la ayuda de los cuidadores: ser trasladado a una silla no la mejora.',
      o:[
-      {l:'100 % · Deambulación normal, sin evidencia de enfermedad, autocuidado completo, ingesta normal, alerta',v:100},
-      {l:'90 % · Deambulación normal, alguna evidencia de enfermedad, autocuidado completo, ingesta normal, alerta',v:90},
-      {l:'80 % · Deambulación normal, actividad normal con esfuerzo, autocuidado completo, ingesta normal o reducida, alerta',v:80},
-      {l:'70 % · Deambulación reducida, imposible trabajar, autocuidado completo, ingesta normal o reducida, alerta',v:70},
-      {l:'60 % · Deambulación reducida, incapaz para pasatiempos o trabajos domésticos, asistencia ocasional, alerta o confusión mental',v:60},
-      {l:'50 % · Sillón o cama, incapaz para cualquier trabajo, asistencia considerable, alerta o confusión mental',v:50},
-      {l:'40 % · Fundamentalmente en cama, fundamentalmente asistido, ingesta normal o reducida, somnolencia o confusión',v:40},
-      {l:'30 % · Encamado 100 %, completamente dependiente, ingesta reducida, somnolencia o confusión',v:30},
-      {l:'20 % · Encamado 100 %, completamente dependiente, ingesta a sorbos, somnolencia o confusión',v:20},
-      {l:'10 % · Encamado 100 %, completamente dependiente, solo cuidados de boca, somnolencia o coma',v:10},
-      {l:'0 % · Muerto',v:0}
+      {l:'Completa',v:100,vl:'100 a 80 %'},
+      {l:'Reducida',v:70,vl:'70 a 60 %'},
+      {l:'Principalmente sentado o acostado',v:50,vl:'50 %'},
+      {l:'Principalmente en cama',v:40,vl:'40 %'},
+      {l:'Totalmente encamado',v:30,vl:'30 a 10 %'}
+     ]},
+    {q:'Actividad y evidencia de enfermedad',
+     o:[
+      {l:'Actividad y trabajo normales, sin evidencia de enfermedad',v:100,vl:'100 %'},
+      {l:'Actividad y trabajo normales, alguna evidencia de enfermedad',v:90,vl:'90 %'},
+      {l:'Actividad normal con esfuerzo, alguna evidencia de enfermedad',v:80,vl:'80 %'},
+      {l:'Incapaz de realizar su trabajo habitual, enfermedad significativa',v:70,vl:'70 %'},
+      {l:'Incapaz de realizar tareas domésticas o pasatiempos, enfermedad significativa',v:60,vl:'60 %'},
+      {l:'Incapaz de realizar cualquier trabajo, enfermedad extensa',v:50,vl:'50 %'},
+      {l:'Incapaz de realizar la mayoría de las actividades, enfermedad extensa',v:40,vl:'40 %'},
+      {l:'Incapaz de realizar cualquier actividad, enfermedad extensa',v:30,vl:'30 a 10 %'}
+     ]},
+    {q:'Autocuidado',
+     o:[
+      {l:'Completo',v:100,vl:'100 a 70 %'},
+      {l:'Asistencia ocasional',v:60,vl:'60 %'},
+      {l:'Asistencia considerable',v:50,vl:'50 %'},
+      {l:'Asistencia la mayor parte del tiempo',v:40,vl:'40 %'},
+      {l:'Dependencia total',v:30,vl:'30 a 10 %'}
+     ]},
+    {q:'Ingesta',
+     o:[
+      {l:'Normal',v:100,vl:'100 a 30 %'},
+      {l:'Reducida',v:80,vl:'80 a 30 %'},
+      {l:'Mínima, a sorbos',v:20,vl:'20 %'},
+      {l:'Solo cuidados de la boca',v:10,vl:'10 %'}
+     ]},
+    {q:'Nivel de conciencia',
+     hint:'Si coexisten somnolencia y confusión, elija somnolencia.',
+     o:[
+      {l:'Alerta',v:100,vl:'100 a 20 %'},
+      {l:'Alerta con confusión',v:60,vl:'60 a 10 %'},
+      {l:'Somnolencia, con o sin confusión',v:40,vl:'40 a 10 %'},
+      {l:'Coma, con o sin confusión',v:10,vl:'10 %'}
      ]}
   ],
   logic:a=>{
-    const v = a[0];
-    if(v===undefined) return {t:'Sin dato',tone:'ok',display:'—',d:''};
-    if(v===0)   return {t:'Fallecido',tone:'alert',display:'0 %',d:'Categoría terminal de la escala.'};
-    if(v<=30)   return {t:'Deterioro funcional muy avanzado',tone:'alert',display:v+' %',d:'Paciente encamado y completamente dependiente. Priorice control de síntomas, cuidados de confort, acompañamiento familiar y planificación anticipada de las decisiones. Este rango puntúa 4 puntos en el Índice Pronóstico Paliativo.'};
-    if(v<=50)   return {t:'Deterioro funcional significativo',tone:'alert',display:v+' %',d:'Un PPS menor del 50 % es criterio de deterioro funcional significativo en el bloque oncológico del NECPAL. Este rango puntúa 2,5 puntos en el Índice Pronóstico Paliativo.'};
-    if(v<=70)   return {t:'Deterioro funcional moderado',tone:'warn',display:v+' %',d:'Deambulación reducida con autocuidado aún conservado. Anticipe necesidades de apoyo y revise objetivos de cuidado. Este rango puntúa 0 puntos en el Índice Pronóstico Paliativo.'};
-    return {t:'Funcionalidad conservada',tone:'ok',display:v+' %',d:'Deambulación y autocuidado normales. Utilice mediciones seriadas: la escala es especialmente útil para detectar el declive progresivo en el tiempo.'};
+    if(a.some(v=>v===undefined)) return {t:'Sin dato',tone:'ok',display:'—',d:''};
+    const r = ppsNivel(a);
+    const v = r.nivel;
+    const traza = 'Lectura por columnas: '+r.pasos.map(p=>p.col+' '+p.nivel+' %').join(' · ')+'.';
+    const cap = t=>t.charAt(0).toUpperCase()+t.slice(1);
+    const aviso = r.altos.length
+      ? ' '+cap(r.altos.map(p=>p.col+' ('+p.sugiere+' %)').join(' y '))+(r.altos.length>1?' encajan':' encaja')
+        + ' en un nivel más alto, pero prevalecen las columnas de la izquierda. Si lo que limita esas columnas de la izquierda no se debe a la enfermedad (por ejemplo, una paraplejia previa), el mejor ajuste puede estar entre el nivel calculado y ese nivel más alto: decida con juicio clínico, siempre en múltiplos de 10.'
+      : '';
+    let base;
+    if(v<=30)      base = {t:'Deterioro funcional muy avanzado',tone:'alert',d:'Paciente encamado y completamente dependiente. Priorice control de síntomas, cuidados de confort, acompañamiento familiar y planificación anticipada de las decisiones. Este rango puntúa 4 puntos en el Índice Pronóstico Paliativo.'};
+    else if(v<=50) base = {t:'Deterioro funcional significativo',tone:'alert',d:'Un PPS menor del 50 % es criterio de deterioro funcional significativo en el bloque oncológico del NECPAL. Este rango puntúa 2,5 puntos en el Índice Pronóstico Paliativo.'};
+    else if(v<=70) base = {t:'Deterioro funcional moderado',tone:'warn',d:'Deambulación reducida con autocuidado aún conservado. Anticipe necesidades de apoyo y revise objetivos de cuidado. Este rango puntúa 0 puntos en el Índice Pronóstico Paliativo.'};
+    else           base = {t:'Funcionalidad conservada',tone:'ok',d:'Deambulación y autocuidado normales. Utilice mediciones seriadas: la escala es especialmente útil para detectar el declive progresivo en el tiempo.'};
+    return {t:base.t, tone:base.tone, display:v+' %', d:base.d+' '+traza+aviso};
   },
-  note:'Su valor principal es el seguimiento seriado: permite medir el declinar progresivo del paciente paliativo más que definir una conducta en una única medición.'
+  note:'Cómo se calcula: se baja por la columna de deambulación hasta el nivel elegido y, desde ese nivel, se sigue bajando en cada columna hacia la derecha hasta encontrar el descriptor marcado. Las columnas de la izquierda son las que más pesan; ninguna columna de la derecha hace subir el resultado. El valor es siempre un múltiplo de 10 (un 45 % no es correcto). El nivel 0 % corresponde a la muerte y no se solicita. Su valor principal es el seguimiento seriado: permite medir el declinar progresivo del paciente paliativo más que definir una conducta en una única medición.'
 },
 
 ppi:{
@@ -1435,17 +1482,17 @@ cfs:{
   ref:'Rockwood K, Theou O. Using the Clinical Frailty Scale in allocating scarce health care resources. Can Geriatr J. 2020;23(3):254-9.',
   items:[
     {q:'Seleccione la categoría que mejor describe al paciente',
-     hint:'Se enfoca en movilidad, equilibrio, uso de ayudas para caminar y habilidades para comer, vestirse, comprar, cocinar y realizar operaciones bancarias. La puntuación debe coincidir con la descripción, no basarse en imágenes.',
+     hint:'Se enfoca en movilidad, equilibrio, uso de ayudas para caminar y habilidades para comer, vestirse, comprar, cocinar y realizar operaciones bancarias. La puntuación debe coincidir con la descripción, no con el pictograma, que solo orienta.',
      o:[
-      {l:'1 · Muy en forma. Personas sanas, activas, enérgicas y motivadas. Hacen ejercicio regularmente y presentan mejor estado general que la gente de su edad',v:1},
-      {l:'2 · En forma. Sin síntomas de enfermedad activa, pero con estado general peor que la categoría anterior. A menudo hacen ejercicio en periodos discontinuos',v:2},
-      {l:'3 · Buen manejo. Problemas médicos bien controlados, pero no se muestran regularmente activas más allá de la rutina de caminar',v:3},
-      {l:'4 · Vive con fragilidad muy leve. No dependen de terceros, pero los síntomas a menudo limitan las actividades: "ir más despacio" o "estar cansado durante el día"',v:4},
-      {l:'5 · Vive con fragilidad leve. Necesitan ayuda en actividades instrumentales (finanzas, transporte, trabajo doméstico pesado, medicamentos) y hay lentitud evidente',v:5},
-      {l:'6 · Vive con fragilidad moderada. Necesitan ayuda con todas las actividades externas y el mantenimiento de la casa; problemas con escaleras y ayuda para bañarse',v:6},
-      {l:'7 · Vive con fragilidad grave. Completamente dependientes para el cuidado personal por causa física o cognitiva, pero estables y sin alto riesgo de morir en 6 meses',v:7},
-      {l:'8 · Vive con fragilidad muy grave. Totalmente dependientes, acercándose al final de la vida; no se recuperan ni de una enfermedad menor',v:8},
-      {l:'9 · Situación terminal. Esperanza de vida inferior a 6 meses en personas que no son evidentemente débiles',v:9}
+      {l:'1 · Muy en forma. Personas sanas, activas, enérgicas y motivadas. Hacen ejercicio regularmente y presentan mejor estado general que la gente de su edad',v:1,ic:1},
+      {l:'2 · En forma. Sin síntomas de enfermedad activa, pero con estado general peor que la categoría anterior. A menudo hacen ejercicio en periodos discontinuos',v:2,ic:2},
+      {l:'3 · Buen manejo. Problemas médicos bien controlados, pero no se muestran regularmente activas más allá de la rutina de caminar',v:3,ic:3},
+      {l:'4 · Vive con fragilidad muy leve. No dependen de terceros, pero los síntomas a menudo limitan las actividades: "ir más despacio" o "estar cansado durante el día"',v:4,ic:4},
+      {l:'5 · Vive con fragilidad leve. Necesitan ayuda en actividades instrumentales (finanzas, transporte, trabajo doméstico pesado, medicamentos) y hay lentitud evidente',v:5,ic:5},
+      {l:'6 · Vive con fragilidad moderada. Necesitan ayuda con todas las actividades externas y el mantenimiento de la casa; problemas con escaleras y ayuda para bañarse',v:6,ic:6},
+      {l:'7 · Vive con fragilidad grave. Completamente dependientes para el cuidado personal por causa física o cognitiva, pero estables y sin alto riesgo de morir en 6 meses',v:7,ic:7},
+      {l:'8 · Vive con fragilidad muy grave. Totalmente dependientes, acercándose al final de la vida; no se recuperan ni de una enfermedad menor',v:8,ic:8},
+      {l:'9 · Situación terminal. Esperanza de vida inferior a 6 meses en personas que no son evidentemente débiles',v:9,ic:9}
      ]}
   ],
   logic:a=>{
@@ -2422,6 +2469,43 @@ function setEjeColor(eje){ document.documentElement.style.setProperty('--eje', '
 /* --ink existe como color base, de modo que la vista VGI queda neutra */
 const norm = t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
+/* Pictogramas propios de la CFS (2.13.0): dibujo original de VGI Digital en trazo
+   de línea, en los verdes de la marca. No reproducen las ilustraciones de
+   la escala; la puntuación sigue dependiendo de la descripción, no del dibujo. */
+const PICTO_CFS = {
+  1:'<circle cx="30" cy="8.5" r="3.6"/><path d="M28.5 13 23 25M27.6 16l6.4 4.5M27.6 16l-7.6 1.6M23 25l7 6.5-2.4 8.5M23 25l-7 6-6.5-1.5M5 15h6M3 20.5h6"/>',
+  2:'<circle cx="25" cy="8" r="3.6"/><path d="M24.6 12 23 26M24.2 15.5l6.5 3.5 2 5M24.2 15.5l-5.5 4.5-1 5.5M23 26l7 6.5 1 8.5M23 26l-6 7.5-4 6"/>',
+  3:'<circle cx="21" cy="8" r="3.6"/><path d="M21 12v14M21 15.5l4.5 6M21 15.5l-4.5 6M21 26l4 7.5.5 7.5M21 26l-3.8 7.5-1.7 7.5"/><circle cx="37.5" cy="12" r="6"/><path d="M34.8 12.2l1.9 1.9 3.6-3.8"/>',
+  4:'<circle cx="20" cy="9" r="3.6"/><path d="M20.6 13 21.8 27M21 16l3.6 6.5M21 16l-3.6 6M21.8 27l2.5 7.5v6.5M21.8 27l-2.6 7.5-.7 6.5"/><path d="M33 6.5h9M33 23.5h9M34.5 7v2.5l3 5.5-3 5.5v2.5M40.5 7v2.5l-3 5.5 3 5.5v2.5"/>',
+  5:'<circle cx="18" cy="9.5" r="3.6"/><path d="M19.5 13.5c1.6 4 2 8.5 2 13.5M20.6 17.5l7.4 4.5M21.5 27l3 7v7M21.5 27l-2.5 7.5-1.5 6.5M28 22.5l1.2 18.5M28 22.5c0-2.2 3.4-2.2 3.4 0"/>',
+  6:'<circle cx="16" cy="10" r="3.6"/><path d="M17.5 14c2.5 3.5 3.5 8 3.6 13M19.5 18l9 2.5M21.1 27l2.6 7v7M21.1 27l-2.6 7.5-1 6.5M28.5 20.5h11M30 20.5l-1.5 18M38.5 20.5l1.5 18M29.5 29h9.5"/><circle cx="28.4" cy="40" r="1.6"/><circle cx="40.1" cy="40" r="1.6"/>',
+  7:'<circle cx="20" cy="8" r="3.6"/><path d="M19.5 12l1 12.5h9.5l3 9M20.4 16l7 3.5M13.5 18.5v12h13M30 24.5h4"/><circle cx="20" cy="34" r="8"/><circle cx="36" cy="40.2" r="1.8"/>',
+  8:'<path d="M9 41V21c0-3 2-4 4-4h3M39 41V27M9 31h30M9 27h9"/><circle cx="21" cy="12" r="3.6"/><path d="M22 16l2.5 11h9.5M24.5 27v4M24 20l6.5 3.5M34 27l3 6v8"/>',
+  9:'<path d="M5 20v21M5 33h38M43 28v13M5 28h8"/><circle cx="11" cy="23.5" r="3.4"/><path d="M15 28h22c3 0 4.5-2.5 6-5"/><path d="M15.5 28.5c3-4 13-4.5 22-1"/>'
+};
+
+/* PPS por columnas (2.13.0). Niveles de la tabla PPSv2 en los que aparece
+   cada descriptor, indexados por columna y por el valor de la opción. */
+const PPS_NIVELES = [
+  {col:'deambulación', m:{100:[100,90,80],70:[70,60],50:[50],40:[40],30:[30,20,10]}},
+  {col:'actividad', m:{100:[100],90:[90],80:[80],70:[70],60:[60],50:[50],40:[40],30:[30,20,10]}},
+  {col:'autocuidado', m:{100:[100,90,80,70],60:[60],50:[50],40:[40],30:[30,20,10]}},
+  {col:'ingesta', m:{100:[100,90,80,70,60,50,40,30],80:[80,70,60,50,40,30],20:[20],10:[10]}},
+  {col:'conciencia', m:{100:[100,90,80,70,60,50,40,30,20],60:[60,50,40,30,20,10],40:[40,30,20,10],10:[10]}}
+];
+function ppsNivel(a){
+  let nivel = Math.max(...PPS_NIVELES[0].m[a[0]]);
+  const pasos = [{col:PPS_NIVELES[0].col, nivel}], altos = [];
+  for(let c=1; c<PPS_NIVELES.length; c++){
+    const niveles = PPS_NIVELES[c].m[a[c]];
+    const abajo = niveles.filter(n=>n<=nivel);
+    if(abajo.length) nivel = Math.max(...abajo);
+    else altos.push({col:PPS_NIVELES[c].col, sugiere:Math.min(...niveles)});
+    pasos.push({col:PPS_NIVELES[c].col, nivel});
+  }
+  return {nivel, pasos, altos};
+}
+
 /* ---------------------------- SCORING ---------------------------- */
 function initScale(){
   const s = SCALES[state.id]; if(!s) return;
@@ -2660,7 +2744,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.3</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.0</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2803,7 +2887,7 @@ function renderScale(){
 function optsHTML(o,i){
   return '<div class="opts">'+o.map((op,oi)=>
     '<button class="opt" data-ans="'+i+'" data-oi="'+oi+'" data-v="'+op.v+'" aria-pressed="'+(state.ans[i]!==undefined && state.sel[i]===oi)+'">'
-    + '<span class="dot"></span><span>'+esc(op.l)+'</span><span class="val">'+fmt(op.v)+'</span></button>').join('')+'</div>';
+    + '<span class="dot"></span>'+(op.ic&&PICTO_CFS[op.ic]?'<span class="pic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+PICTO_CFS[op.ic]+'</svg></span>':'')+'<span>'+esc(op.l)+'</span><span class="val">'+(op.vl!==undefined?esc(op.vl):fmt(op.v))+'</span></button>').join('')+'</div>';
 }
 
 function bmiText(){
@@ -3196,7 +3280,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.3) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3208,6 +3292,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.13.0</strong> · PPS por columnas: cinco ítems (deambulación, actividad y evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia) en lugar de una sola lista de niveles. El nivel se calcula con la regla de lectura de la PPSv2: se baja por la deambulación y, desde ahí, columna por columna hacia la derecha; las columnas de la izquierda prevalecen. El resultado muestra el recorrido y avisa cuando una columna encaja en un nivel más alto. Se retira el 0 % (muerte) como opción. La Clinical Frailty Scale muestra un pictograma propio junto a cada nivel, en los verdes de la marca; la puntuación sigue dependiendo de la descripción.</div>'
   + '<div class="cite"><strong>2.12.3</strong> · Corrección del puntaje global del CDR. La lógica aplicaba solo las reglas generales, con el umbral "más de tres áreas" en lugar de "tres o más", y omitía los casos especiales de memoria 0, 0,5 y 1 o más; por ejemplo, memoria 0,5 con las demás áreas en 0 daba CDR 0 en vez de 0,5. Ahora sigue las reglas de Washington University, verificadas en las 15.625 combinaciones posibles. El resultado indica qué regla definió el estadio.</div>'
   + '<div class="cite"><strong>2.12.2</strong> · Ajustes de las transiciones: el puntaje del resultado se muestra fijo desde el primer momento, sin conteo desde 0, para que nunca aparezca un número distinto junto a la interpretación. Abrir la evidencia o añadir la escala a la VGI ya no repite la animación del resultado. La preferencia de movimiento reducido cubre también los indicadores de la navegación y de las opciones.</div>'
   + '<div class="cite"><strong>2.12.1</strong> · Transiciones e interacción: cada pantalla entra con un desplazamiento breve y escalonado, la opción elegida y la barra de puntaje responden al toque, la barra muestra el progreso de los ítems y el resultado dibuja la franja y cuenta el puntaje. Al abrir la evidencia en el resultado ya no se vuelve al inicio de la página. En Acerca de, Uso sin conexión, Valoración geriátrica integral, Privacidad, Finalidad y condiciones de uso y Derechos y permisos pasan a ser secciones desplegables, como las demás. Respeta la preferencia de movimiento reducido del sistema. Ninguna escala, puntaje, punto de corte ni el conversor cambian.</div>'
@@ -3244,7 +3329,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.12.3 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.13.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 

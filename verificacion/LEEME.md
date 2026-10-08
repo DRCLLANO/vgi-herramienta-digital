@@ -55,6 +55,10 @@ sigue vacía. `resultado-2.12.2.json` corresponde a la 2.12.2 (ajustes de esas
 transiciones); los recuentos no cambian y la lista de fallos sigue vacía.
 `resultado-2.12.3.json` corresponde a la 2.12.3 (corrección del puntaje global
 del CDR); los recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.13.0.json` corresponde a la 2.13.0, en la que la PPS pasa de un ítem
+con 11 opciones a cinco ítems con 26 opciones: los ítems suben de 371 a 375 y las
+opciones de 1.264 a 1.279; escalas y umbrales no cambian y la lista de fallos
+sigue vacía.
 
 ## Prueba del puntaje global del CDR
 
