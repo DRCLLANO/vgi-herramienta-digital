@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.13.2",
+  "softwareVersion": "2.13.3",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-08",
   "inLanguage": "es",
@@ -2485,11 +2485,19 @@ function opiCalc(){
   const motivo = mismo ? OPI_MISMO : (OPI_MOTIVOS.find(m=>m.id===(t.motivo||'estand')) || OPI_MOTIVOS[2]);
   const final = bruta * (1 - motivo.r/100);
   const rescate = final * 0.10;
-  let parche = null;
-  if(d.parche){
-    parche = d.pres.reduce((a,b)=> Math.abs(b-final)<Math.abs(a-final) ? b : a);
+  /* 2.13.3: la presentación sugerida es la mayor que no supera la liberación
+     calculada. Antes se elegía la más cercana, aunque quedara por encima: con
+     buprenorfina, 12,3 mcg/h pasaban a un parche de 35, y por debajo del
+     parche mínimo se proponía igualmente el mínimo (1,39 mcg/h de fentanilo
+     daban 12). Si el cálculo no alcanza la menor presentación, no hay parche
+     compatible. Con el mismo parche de origen y destino la dosis se conserva y
+     no se redondea. */
+  let parche = null, sinParche = false;
+  if(d.parche && !mismo){
+    const caben = d.pres.filter(p=>p<=final+1e-9);
+    if(caben.length) parche = Math.max(...caben); else sinParche = true;
   }
-  return {o,d,dosis:dosisTotal,emo,bruta,motivo,final,rescate,metaBanda,parche};
+  return {o,d,dosis:dosisTotal,emo,bruta,motivo,final,rescate,metaBanda,parche,sinParche};
 }
 
 /* ---------------------------- ESTADO ---------------------------- */
@@ -2829,7 +2837,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.2</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.3</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3166,6 +3174,7 @@ function renderOpiRes(){
     + '<div class="score" style="margin-top:8px"><span class="n'+(dfmt(r.final).length>4?' sm':'')+'">'+dfmt(r.final)+'</span>'
     + '<span class="d">'+(r.d.parche?'mcg/h':uni(r.d.u).trim()+' al día')+'</span></div>'
     + (mismo?'<div class="verdict v-warn">Ajuste de dosis, no rotación</div>':'')
+    + (r.sinParche?'<div class="verdict v-alert">Sin presentación compatible</div>':'')
     + '<p class="detail">'+esc(
         (mismo
           ? 'El opioide y la vía de origen coinciden con los de destino, de modo que no hay rotación: la dosis diaria se mantiene en '+dfmt(r.final)+(r.d.parche?' mcg/h':uni(r.d.u)+' al día')+'. '
@@ -3193,12 +3202,13 @@ function renderOpiRes(){
 
     + (r.metaBanda?'<p class="detail">Se aplicó la razón dependiente de la dosis del taller: '+esc(r.metaBanda)+'.</p>':'')
 
-    + (r.parche?'<p class="detail">Presentación disponible más cercana: parche de '+dfmt(r.parche)+' mcg/h. Los parches no se fraccionan: elija entre la presentación inmediatamente inferior y la superior según el control del dolor y la fragilidad del paciente, y combine presentaciones solo si es necesario.</p>':'')
+    + (r.sinParche?'<p class="detail" style="color:var(--alert)"><strong>Sin presentación compatible:</strong> la liberación calculada ('+dfmt(r.final)+' mcg/h) es menor que el parche más pequeño de '+esc(opiLabel(r.d))+' ('+dfmt(r.d.pres[0])+' mcg/h). Ningún parche disponible corresponde a esta dosis; considere otro opioide o vía.</p>':'')
+    + (r.parche?'<p class="detail">Presentación sugerida: parche de '+dfmt(r.parche)+' mcg/h, la mayor que no supera la liberación calculada. Los parches no se fraccionan; ajuste según el control del dolor, con los rescates, y combine presentaciones solo si es necesario.</p>':'')
 
-    + (!r.d.parche && r.d.frac>1 ? '<p class="detail">Posología sugerida: '+esc(r.d.pos)+' Repartida en '+r.d.frac+' tomas queda en '+dfmt(r.final/r.d.frac)+uni(r.d.u)+' por dosis.</p>'
+    + (r.sinParche ? '' : !r.d.parche && r.d.frac>1 ? '<p class="detail">Posología sugerida: '+esc(r.d.pos)+' Repartida en '+r.d.frac+' tomas queda en '+dfmt(r.final/r.d.frac)+uni(r.d.u)+' por dosis.</p>'
       : '<p class="detail">Posología sugerida: '+esc(r.d.pos)+'</p>')
 
-    + (r.d.parche
+    + (r.sinParche ? '' : r.d.parche
       ? (()=>{ /* Con parche el rescate no se da en mcg/h: se da con un opioide de liberación
                   inmediata, calculado sobre la liberación calculada (10 % de su equivalente diario de morfina oral).
                   Se usa la cifra calculada y no la presentación más cercana, que en dosis altas puede
@@ -3212,6 +3222,16 @@ function renderOpiRes(){
             + '</div>'
             + '<p class="detail">Si el paciente requiere más de 3 rescates al día, reevalúe la dosis del parche. Durante las primeras 12 a 24 horas, mientras el parche alcanza concentraciones útiles, los rescates cobran especial importancia.</p>'; })()
       : '<p class="detail"><strong>Dosis de rescate:</strong> '+dfmt(r.rescate)+uni(r.d.u)+', equivalente al 10 % de la dosis total diaria, según el paso 5 del taller. Si el paciente requiere más de 3 rescates al día, reevalúe la dosis de base.</p>')
+
+    /* 2.13.3: la ficha técnica del fentanilo transdérmico lo restringe a
+       pacientes tolerantes a opioides (al menos 60 mg de morfina oral al día,
+       o su equivalente, durante una semana o más) por riesgo de depresión
+       respiratoria grave. */
+    + (r.d.id==='fen_td' && !mismo
+      ? (r.emo<60
+        ? '<p class="detail" style="color:var(--alert)"><strong>Contraindicado si no hay tolerancia a opioides:</strong> el equivalente actual es de '+dfmt(r.emo)+' mg de morfina oral al día, por debajo de los 60 mg diarios durante al menos una semana que exige la ficha técnica del fentanilo transdérmico. En una persona no tolerante puede causar depresión respiratoria grave o mortal.</p>'
+        : '<p class="detail"><strong>Tolerancia a opioides:</strong> la ficha técnica exige al menos 60 mg de morfina oral al día, o su equivalente, durante una semana o más antes de iniciar fentanilo transdérmico. Confirme que el paciente lleva ese tiempo con la dosis actual.</p>')
+      : '')
 
     + (techo?'<p class="detail" style="color:var(--alert)"><strong>Atención:</strong> la dosis calculada supera la dosis máxima diaria de '+r.d.techo+' mg de este fármaco. Elija un opioide sin techo terapéutico.</p>':'')
 
@@ -3368,7 +3388,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.2) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.3) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3380,6 +3400,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.13.3</strong> · Conversor de opioides, tres correcciones de seguridad. (1) Al cambiar el opioide o la vía de origen se vacía la dosis: antes se conservaba y pasaba a leerse en la nueva unidad (500 mcg de fentanilo IV quedaban como 500 mg de morfina oral). (2) La presentación de parche sugerida es la mayor que no supera la liberación calculada; antes era la más cercana aunque quedara por encima (morfina oral 30 mg con reducción del 30 % daba un parche de buprenorfina de 35 mcg/h, unas dos veces la dosis de origen), y por debajo del parche mínimo se proponía el mínimo. Ahora, si el cálculo no alcanza la menor presentación, se indica "Sin presentación compatible" y se retiran la posología y el rescate. (3) Con fentanilo transdérmico de destino se comprueba la tolerancia a opioides que exige su ficha técnica (60 mg de morfina oral al día durante una semana o más) y se advierte el riesgo de depresión respiratoria grave por debajo de ese umbral. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.2</strong> · Corrección del puntaje global del CDR. Con memoria 1 o más, la regla "el CDR no puede ser 0; es 0,5 cuando la mayoría de las áreas secundarias están en 0" se aplicaba antes de las reglas generales y anulaba el reparto tres y dos. Por ejemplo, memoria 1 con las demás áreas en 0, 0, 0, 2 y 2 daba 0,5 en lugar de 1, y memoria 2 con 0, 0, 0, 3 y 3 daba 0,5 en lugar de 2 (50 de las 12.500 combinaciones). Ahora la regla actúa como piso: solo corrige un resultado que sería 0. El estadio 0,5 se rotula "Demencia cuestionable o muy leve" (antes "Deterioro cognitivo leve"), porque abarca tanto el deterioro cognitivo leve como la demencia muy leve. No cambia ninguna otra escala.</div>'
   + '<div class="cite"><strong>2.13.1</strong> · Correcciones contra las fuentes originales, a partir de dos revisiones externas. Cambian resultados: VES-13 (Saliba 2001: ayuda en alguna actividad funcional suma 4 en total, actividades físicas con tope de 2, máximo 10); PPI (delirium 4, máximo 15, sin contar el delirium causado solo por un medicamento); Charlson (enfermedad cerebrovascular 1 punto, máximo 37); Charlson Colombia (tumor con o sin metástasis como opciones excluyentes, máximo 26); Lawton (se separan las cinco opciones del cuidado de la casa); SPPB (equilibrio jerárquico de 0 a 4 e intervalos contiguos de marcha y silla según Guralnik); CDR (el cuidado personal no tiene 0,5); conversor (el mismo opioide por la misma vía conserva la dosis). EQ-5D-5L: niveles de 1 a 5 (perfil 11111 a 55555), sin clasificación por suma y con la EVA validada de 0 a 100. Las preguntas de selección múltiple ya no cuentan como respondidas sin tocarlas: se marca una opción o "Ninguna". Textos: PPS (puntos del PPI por nivel, NECPAL solo por debajo del 50 % e intervalo de mejor ajuste en perfiles discordantes), CFS (nombres de las categorías 4 y 9 de la versión 2.0), Fried (4,57 metros), FRAIL (pérdida mayor del 5 %), Barthel (criterio NECPAL menor de 20), G8, PAINAD, trastornos de memoria y vulnerabilidad social. Validación estricta de números. Nueva prueba contra las fuentes.</div>'
   + '<div class="cite"><strong>2.13.0</strong> · PPS por columnas: cinco ítems (deambulación, actividad y evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia) en lugar de una sola lista de niveles. El nivel se calcula con la regla de lectura de la PPSv2: se baja por la deambulación y, desde ahí, columna por columna hacia la derecha; las columnas de la izquierda prevalecen. El resultado muestra el recorrido y avisa cuando una columna encaja en un nivel más alto. Se retira el 0 % (muerte) como opción. La Clinical Frailty Scale muestra un pictograma propio junto a cada nivel, en los verdes de la marca; la puntuación sigue dependiendo de la descripción.</div>'
@@ -3419,7 +3440,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.13.2 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.13.3 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3611,7 +3632,10 @@ document.addEventListener('change', e=>{
   const sel = e.target.closest('select[data-op]');
   if(!sel) return;
   state.tool[sel.dataset.op] = sel.value;
-  if(sel.dataset.op==='from'){ state.tool.dpt=''; state.tool.tomas=''; renderTool(); }
+  /* 2.13.3: al cambiar el opioide o la vía de origen se vacía también la dosis.
+     Antes la cifra se conservaba y pasaba a leerse en la unidad del nuevo
+     origen (500 mcg de fentanilo IV quedaban como 500 mg de morfina oral). */
+  if(sel.dataset.op==='from'){ state.tool.dose=''; state.tool.dpt=''; state.tool.tomas=''; renderTool(); }
   else renderOpiRes();
 });
 

@@ -3,6 +3,46 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.13.3
+
+Conversor de opioides: tres correcciones de seguridad, a partir de una revisión
+externa de la 2.13.2. No cambia ninguna escala ni ningún factor de conversión.
+
+- Cambio de origen. Al cambiar el opioide o la vía de origen se vacía la dosis.
+  Antes la cifra se conservaba y pasaba a leerse en la unidad del nuevo origen:
+  500 mcg al día de fentanilo IV quedaban como 500 mg al día de morfina oral y
+  el resultado se recalculaba con ellos.
+- Presentación del parche. La sugerida es la mayor que no supera la liberación
+  calculada. Antes era la más cercana aunque quedara por encima: morfina oral
+  30 mg al día con la reducción estándar daba 12,3 mcg/h de buprenorfina y
+  proponía el parche de 35 (unos 60 mg de morfina oral, el doble del origen); y
+  por debajo del parche mínimo se proponía el mínimo (morfina oral 10 mg con
+  reducción del 50 % daba 1,39 mcg/h de fentanilo y proponía 12 mcg/h, 8,6
+  veces más). Ahora, si el cálculo no alcanza la menor presentación, se indica
+  "Sin presentación compatible" y se retiran la posología y el rescate. Con el
+  mismo parche de origen y destino la dosis se conserva sin redondear.
+- Tolerancia a opioides. Con fentanilo transdérmico de destino se comprueba el
+  requisito de su ficha técnica (al menos 60 mg de morfina oral al día, o su
+  equivalente, durante una semana o más). Por debajo de ese umbral se advierte
+  que está contraindicado por riesgo de depresión respiratoria grave o mortal;
+  por encima se recuerda confirmar la semana de tratamiento.
+
+Verificación:
+
+- `verificar-fuentes.mjs` añade una sección de seguridad del conversor: los 20
+  orígenes por los dos parches de destino, 15 dosis y cuatro motivos (2.400
+  combinaciones), los dos casos de la revisión externa y el cambio de origen en
+  la pantalla real. Sobre la 2.13.2 señala 5.535 discrepancias; sobre la
+  2.13.3, ninguna (`resultado-fuentes-2.13.3.json`). Las pruebas del conversor
+  anteriores no miraban la presentación sugerida ni el estado de la pantalla.
+- El script general y la prueba del CDR pasan sin fallos, con los mismos
+  recuentos.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.13.3`.
+- Quedan para decisión clínica, sin cambios en esta versión, los factores que
+  se usan en ambas direcciones (fentanilo transdérmico de origen, 3,6;
+  metadona de origen, 5) y el factor de la meperidina IV.
+
 ## 2.13.2
 
 Corrección del puntaje global del CDR. Solo cambia el CDR.

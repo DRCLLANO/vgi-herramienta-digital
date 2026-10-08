@@ -553,6 +553,28 @@ añadir casos fijos en los límites entre reglas, no solo en su centro. Se
 corrigió en la versión 2.13.2, en la aplicación y en la referencia, con tres
 casos fijos nuevos.
 
+### 8.11 Lo que la pantalla propone a partir de un cálculo correcto
+
+El 8 de octubre de 2026 una revisión externa de la 2.13.2 reprodujo en la web
+dos fallos del conversor de opioides con potencial de error grave, y la revisión
+con el modelo de desarrollo encontró el mismo problema del parche por otra vía.
+Primero, al cambiar el opioide de origen la dosis escrita se conservaba y pasaba
+a leerse en la nueva unidad: 500 mcg de fentanilo IV quedaban como 500 mg de
+morfina oral. Segundo, la presentación de parche sugerida era la más cercana a
+la liberación calculada, aunque quedara por encima: con buprenorfina, morfina
+oral 30 mg daba 12,3 mcg/h y se proponía el parche de 35, el doble del origen;
+con fentanilo, 1,39 mcg/h se redondeaban a 12, 8,6 veces más. Además, el
+conversor no advertía que el fentanilo transdérmico exige tolerancia previa a
+opioides.
+
+En ambos casos el cálculo era correcto y las pruebas lo confirmaban en 19.200
+combinaciones. El fallo estaba en lo que la interfaz hacía con ese cálculo: un
+estado que sobrevivía al cambio de unidad y una sugerencia derivada que nadie
+comparaba con la cifra de la que salía. Es un modo de fallo distinto de los de
+las secciones 8.8 a 8.10: no una regla mal transcrita, sino una salida
+secundaria sin verificar junto a una salida principal verificada. Se corrigió
+en la versión 2.13.3 y las comprobaciones quedaron en `verificar-fuentes.mjs`.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la
