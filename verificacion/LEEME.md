@@ -53,6 +53,24 @@ sigue vacía. `resultado-2.12.1.json` corresponde a la 2.12.1 (transiciones e
 interacción, solo presentación); los recuentos no cambian y la lista de fallos
 sigue vacía. `resultado-2.12.2.json` corresponde a la 2.12.2 (ajustes de esas
 transiciones); los recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.12.3.json` corresponde a la 2.12.3 (corrección del puntaje global
+del CDR); los recuentos no cambian y la lista de fallos sigue vacía.
+
+## Prueba del puntaje global del CDR
+
+Desde la 2.12.3, `verificar-cdr.mjs` compara la lógica del CDR de la
+aplicación con una transcripción aparte de las reglas de Washington University
+(Knight ADRC, "CDR Scoring Rules") en las 15.625 combinaciones posibles de las
+seis áreas, y comprueba nueve casos fijos tomados de esas reglas:
+
+```
+node verificacion/verificar-cdr.mjs index.html > resultado-cdr.json
+```
+
+Las tres pruebas anteriores no podían detectar el error que corrigió la 2.12.3:
+toda combinación producía un veredicto, solo que no el correcto. Sobre la
+2.12.2 esta prueba señala 7.149 discrepancias y falla cinco de los nueve casos
+fijos; sobre la 2.12.3 no hay discrepancias (`resultado-cdr-2.12.3.json`).
 
 ## Alcance
 

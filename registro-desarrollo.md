@@ -482,6 +482,26 @@ La suma SHA-256 de cada archivo del depósito consta en `SHA256SUMS.txt`, que
 permite comprobar que la copia del repositorio y la del Open Science Framework
 son idénticas.
 
+### 8.8 Regla clínica incompleta en un instrumento algorítmico
+
+El 8 de octubre de 2026, al revisar qué instrumentos merecían rediseño, se
+comparó la lógica del CDR de la versión 2.12.2 con las reglas de puntaje global
+de Washington University (Knight ADRC) en las 15.625 combinaciones posibles. No
+coincidían en 7.149. El código aplicaba solo las reglas generales, con el umbral
+"más de tres" en lugar de "tres o más", y omitía los casos especiales de memoria
+0, 0,5 y 1 o más. El caso clínicamente más relevante era la memoria 0,5 con las
+demás áreas en 0, que la aplicación clasificaba como normal (CDR 0) en lugar de
+0,5.
+
+Ninguna de las pruebas existentes podía detectarlo: la de interpretación exige
+que toda combinación produzca un veredicto, y lo producía; solo que no el que
+dictan las reglas. El error se detectó contrastando el algoritmo contra su
+fuente primaria de forma exhaustiva. Se corrigió en la versión 2.12.3 y se
+añadió `verificacion/verificar-cdr.mjs`, que repite esa comparación. Es un
+modo de fallo propio de los instrumentos algorítmicos: una regla resumida que
+cubre los casos típicos y parece correcta en la revisión clínica de unos pocos
+ejemplos.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la

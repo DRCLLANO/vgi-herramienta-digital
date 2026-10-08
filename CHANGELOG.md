@@ -3,6 +3,32 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.12.3
+
+Corrección del puntaje global del CDR. Ninguna otra escala, el conversor ni la
+presentación cambian.
+
+- La lógica aplicaba solo las reglas generales y con un umbral equivocado
+  ("más de tres" áreas por encima o por debajo de la memoria, en lugar de "tres
+  o más"). Omitía además los casos especiales de las reglas de Washington
+  University (Knight ADRC, "CDR Scoring Rules"): con memoria 0, el CDR es 0,5
+  si dos o más áreas secundarias tienen 0,5 o más; con memoria 0,5, nunca es 0
+  y es 1 si tres o más áreas tienen 1 o más; con memoria 1 o más, nunca es 0 y
+  es 0,5 cuando la mayoría de las áreas secundarias están en 0.
+- Consecuencia clínica principal: memoria 0,5 con las demás áreas en 0 daba
+  CDR 0 ("Normal") en vez de 0,5, y memoria 0,5 con tres áreas en 1 daba 0,5 en
+  vez de 1. En total, 7.149 de las 15.625 combinaciones posibles diferían de las
+  reglas.
+- El resultado indica ahora qué regla definió el estadio.
+- Nueva prueba `verificacion/verificar-cdr.mjs`, que compara la lógica con una
+  transcripción aparte de las reglas en las 15.625 combinaciones y en nueve
+  casos fijos (`verificacion/resultado-cdr-2.12.3.json`: sin discrepancias). Las
+  tres pruebas anteriores no podían detectar este error, porque toda combinación
+  producía un veredicto.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.12.3`. El script general se repitió sobre esta versión
+  (`verificacion/resultado-2.12.3.json`): recuentos idénticos y sin fallos.
+
 ## 2.12.2
 
 Ajustes de las transiciones de la 2.12.1, a partir de una revisión externa.

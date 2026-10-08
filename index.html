@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.12.2",
+  "softwareVersion": "2.12.3",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-10-06",
+  "dateModified": "2026-10-08",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -1854,20 +1854,49 @@ cdr:{
     'Hogar y pasatiempos — 0: vida hogareña, pasatiempos e intereses intelectuales conservados. 0,5: deterioro leve. 1: deterioro leve pero definitivo; se abandonan las tareas domésticas difíciles y los intereses complejos. 2: solo se conservan quehaceres simples, intereses muy restringidos y pobremente conservados. 3: no hay funcionamiento significativo dentro del hogar',
     'Cuidado personal — 0: completamente capaz de cuidar de sí mismo. 0,5: completamente capaz. 1: necesita recordatorios. 2: requiere asistencia para vestirse, higiene y cuidado de sus efectos personales. 3: requiere mucha ayuda, incontinencia frecuente'
   ],
+  /* Puntaje global según las reglas de Washington University (Knight ADRC,
+     "CDR Scoring Rules"; Morris 1993). Corregido en la 2.12.3: hasta la 2.12.2
+     solo se aplicaban las reglas generales, con el umbral "más de tres" en vez
+     de "tres o más", y faltaban los casos especiales de memoria 0, 0,5 y 1 o
+     más. Las reglas generales solo se usan con memoria 1 o más, porque con
+     memoria 0 o 0,5 las reglas propias definen el resultado por completo. */
   logic:a=>{
     const M=a[0], sec=a.slice(1).filter(x=>x!==undefined);
-    if(M===undefined) return {t:'Incompleto',tone:'warn',display:'—',d:'Califique las seis áreas.'};
+    if(M===undefined || sec.length<5) return {t:'Incompleto',tone:'warn',display:'—',d:'Califique las seis áreas.'};
+    const lbl=v=>({0:'0',0.5:'0,5',1:'1',2:'2',3:'3'})[v];
+    /* Puntaje más frecuente; en empate, el más cercano a la memoria. */
     const moda=arr=>{const c={};arr.forEach(x=>c[x]=(c[x]||0)+1);
       return Number(Object.keys(c).sort((x,y)=>c[y]-c[x]||Math.abs(x-M)-Math.abs(y-M))[0]);};
-    const iguales=sec.filter(x=>x===M).length;
-    const arriba=sec.filter(x=>x>M), abajo=sec.filter(x=>x<M);
-    let cdr=M;
-    if(iguales<3){
-      if(arriba.length>3) cdr=moda(arriba);
-      else if(abajo.length>3) cdr=moda(abajo);
+    let cdr, regla;
+    if(M===0){
+      const alt = sec.filter(x=>x>=0.5).length;
+      cdr = alt>=2 ? 0.5 : 0;
+      regla = alt>=2
+        ? 'Con memoria 0, el CDR es 0,5 cuando dos o más áreas secundarias tienen 0,5 o más ('+alt+' en este caso).'
+        : 'Con memoria 0, el CDR es 0 salvo que dos o más áreas secundarias tengan 0,5 o más.';
+    } else if(M===0.5){
+      const alt = sec.filter(x=>x>=1).length;
+      cdr = alt>=3 ? 1 : 0.5;
+      regla = 'Con memoria 0,5, el CDR no puede ser 0: es 1 si tres o más áreas secundarias tienen 1 o más ('+alt+' en este caso) y 0,5 en los demás casos.';
+    } else {
+      const iguales=sec.filter(x=>x===M).length;
+      const arriba=sec.filter(x=>x>M), abajo=sec.filter(x=>x<M);
+      const ceros=sec.filter(x=>x===0).length;
+      if(ceros>=3){
+        cdr=0.5; regla='Con memoria 1 o más, el CDR no puede ser 0 y es 0,5 cuando la mayoría de las áreas secundarias están en 0.';
+      } else if(iguales>=3){
+        cdr=M; regla='Al menos tres áreas secundarias coinciden con la memoria, que define el estadio.';
+      } else if((arriba.length>=3 && abajo.length>=2) || (abajo.length>=3 && arriba.length>=2)){
+        cdr=M; regla='Las áreas secundarias se reparten tres a un lado de la memoria y dos al otro: prevalece la memoria.';
+      } else if(arriba.length>=3 || abajo.length>=3){
+        cdr=moda(arriba.length>=3?arriba:abajo);
+        regla='Tres o más áreas secundarias quedan '+(arriba.length>=3?'por encima':'por debajo')+' de la memoria: el CDR es el puntaje más frecuente en ese lado (en empate, el más cercano a la memoria).';
+        if(cdr===0){ cdr=0.5; regla+=' Con memoria 1 o más, el CDR no puede ser 0, por lo que queda en 0,5.'; }
+      } else {
+        cdr=M; regla='Una o dos áreas coinciden con la memoria y no más de dos quedan a cada lado: prevalece la memoria.';
+      }
     }
-    const lbl=v=>({0:'0',0.5:'0,5',1:'1',2:'2',3:'3'})[v];
-    const txt='CDR global '+lbl(cdr)+'. La memoria tiene prioridad para determinar el estadio: si al menos otras tres áreas se califican igual que la memoria, ella define el estadio; si más de tres categorías quedan por encima o por debajo, predomina la puntuación de aquellas.';
+    const txt='CDR global '+lbl(cdr)+'. '+regla;
     if(cdr===0)   return {t:'Normal',tone:'ok',display:'0',d:txt};
     if(cdr===0.5) return {t:'Deterioro cognitivo leve',tone:'warn',display:'0,5',d:txt+'\nDefina el seguimiento y complemente el estudio etiológico.'};
     if(cdr===1)   return {t:'Demencia leve',tone:'warn',display:'1',d:txt+'\nInicie la planificación compartida de la atención mientras la persona conserva capacidad para expresar sus preferencias.'};
@@ -2631,7 +2660,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.2</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.12.3</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3167,7 +3196,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.2) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.12.3) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3179,6 +3208,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.12.3</strong> · Corrección del puntaje global del CDR. La lógica aplicaba solo las reglas generales, con el umbral "más de tres áreas" en lugar de "tres o más", y omitía los casos especiales de memoria 0, 0,5 y 1 o más; por ejemplo, memoria 0,5 con las demás áreas en 0 daba CDR 0 en vez de 0,5. Ahora sigue las reglas de Washington University, verificadas en las 15.625 combinaciones posibles. El resultado indica qué regla definió el estadio.</div>'
   + '<div class="cite"><strong>2.12.2</strong> · Ajustes de las transiciones: el puntaje del resultado se muestra fijo desde el primer momento, sin conteo desde 0, para que nunca aparezca un número distinto junto a la interpretación. Abrir la evidencia o añadir la escala a la VGI ya no repite la animación del resultado. La preferencia de movimiento reducido cubre también los indicadores de la navegación y de las opciones.</div>'
   + '<div class="cite"><strong>2.12.1</strong> · Transiciones e interacción: cada pantalla entra con un desplazamiento breve y escalonado, la opción elegida y la barra de puntaje responden al toque, la barra muestra el progreso de los ítems y el resultado dibuja la franja y cuenta el puntaje. Al abrir la evidencia en el resultado ya no se vuelve al inicio de la página. En Acerca de, Uso sin conexión, Valoración geriátrica integral, Privacidad, Finalidad y condiciones de uso y Derechos y permisos pasan a ser secciones desplegables, como las demás. Respeta la preferencia de movimiento reducido del sistema. Ninguna escala, puntaje, punto de corte ni el conversor cambian.</div>'
   + '<div class="cite"><strong>2.12.0</strong> · Cambio de licencia del código: de MIT a PolyForm Noncommercial 1.0.0, que permite usar, estudiar, modificar y redistribuir el código solo con fines no comerciales. Las versiones anteriores conservan la licencia MIT. Sin cambios en las escalas, el conversor, sus reglas de cálculo, puntos de corte ni interpretaciones clínicas.</div>'
@@ -3214,7 +3244,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.12.2 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.12.3 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
