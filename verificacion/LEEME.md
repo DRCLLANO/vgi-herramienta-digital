@@ -67,6 +67,8 @@ VES-13) y deduce el paso entre puntajes de los valores de las opciones y no de
 si el máximo es entero; así los tramos del PPI y del G8 recorren los medios puntos.
 `resultado-2.13.2.json` corresponde a la 2.13.2 (corrección del CDR); los
 recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.13.3.json` corresponde a la 2.13.3 (seguridad del conversor); los
+recuentos no cambian y la lista de fallos sigue vacía.
 
 ## Prueba del puntaje global del CDR
 
@@ -133,3 +135,14 @@ referencia); sobre la 2.13.1, ninguna
 (`resultado-fuentes-2.13.1.json`). Las transcripciones de referencia se
 escribieron también con asistencia de un modelo de lenguaje y deben cotejarse
 con las publicaciones citadas.
+
+Desde la 2.13.3 la misma prueba incluye una sección de seguridad del conversor
+(`seguridadConversor`): con parche de destino, la presentación sugerida no
+supera la liberación calculada y es la mayor que no la supera; por debajo del
+parche mínimo se avisa "Sin presentación compatible" sin posología ni rescate;
+con fentanilo transdérmico se advierte la falta de tolerancia a opioides por
+debajo de 60 mg de morfina oral; y al cambiar el origen en la pantalla real la
+dosis se vacía. Son 2.400 combinaciones más tres casos. Sobre la 2.13.2 señala
+5.535 discrepancias; sobre la 2.13.3, ninguna (`resultado-fuentes-2.13.3.json`).
+Las comprobaciones anteriores del conversor validaban la cifra calculada, pero
+no lo que la pantalla proponía a partir de ella.

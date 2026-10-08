@@ -27,6 +27,14 @@
 //              (equilibrio y tiempos límite), Fried, pérdida de peso, entradas
 //              numéricas, selección múltiple sin evaluar, vulnerabilidad social,
 //              PPI (exclusión de delirium por medicamento) y G8.
+//   Seguridad  Desde la 2.13.3, conversor con parche de destino: los 20
+//   (conv.)    orígenes por los dos parches, 15 dosis y cuatro motivos. La
+//              presentación sugerida es la mayor que no supera la liberación
+//              calculada; por debajo del parche mínimo se avisa "Sin
+//              presentación compatible" sin posología ni rescate; con
+//              fentanilo transdérmico se advierte la falta de tolerancia a
+//              opioides por debajo de 60 mg de morfina oral. Además, al cambiar
+//              el origen en la pantalla real la dosis se vacía.
 // Termina con código 0 si no hay discrepancias y con 1 si las hay.
 import { chromium } from 'playwright';
 import { createHash } from 'node:crypto';
@@ -248,10 +256,62 @@ const r = await page.evaluate(() => {
     ok(!/15 o más/.test(SCALES.g8.interpret(14.5).d), 'G8: texto excluye 14,5');
     out.casosInforme = { comprobaciones: nOk, discrepancias: dif.length, ejemplos: dif };
   }
+  // ---------------- Seguridad del conversor (2.13.3) ----------------
+  // Parches: la presentación sugerida nunca supera la liberación calculada y es
+  // la mayor que no la supera; por debajo del parche mínimo no hay presentación
+  // compatible y no se dibujan posología ni rescate. Fentanilo transdérmico:
+  // advertencia de tolerancia a opioides por debajo de 60 mg de morfina oral.
+  // Cambio de origen: la dosis se vacía.
+  {
+    const dif = [], ids = OPIOIDES.map(o => o.id), parches = OPIOIDES.filter(o => o.parche);
+    const dosis = [1, 5, 10, 20, 25, 30, 37.5, 40, 59, 60, 90, 100, 200, 300, 500];
+    let n = 0;
+    const prev = state;
+    state = { view: 'tool', eje: 'paliativo', id: 'opioides', ans: {}, sel: {}, multi: {}, extra: {}, q: '', dom: null,
+      evid: false, showResult: false, tool: { from: 'mor_vo', dose: '60', dpt: '', tomas: '', to: 'oxi_vo', motivo: 'estand' } };
+    render();
+    for (const a of ids) for (const d of parches) for (const dose of dosis) for (const mot of OPI_MOTIVOS) {
+      n++;
+      Object.assign(state.tool, { from: a, to: d.id, dose: String(dose), motivo: mot.id });
+      const r = opiCalc(), mismo = a === d.id;
+      const caben = d.pres.filter(p => p <= r.final + 1e-9);
+      const esperado = mismo ? null : (caben.length ? Math.max(...caben) : null);
+      const caso = { origen: a, destino: d.id, dosis: dose, motivo: mot.id, calculado: r.final };
+      if (r.parche !== esperado) dif.push({ ...caso, app: r.parche, esperado, problema: 'presentación sugerida' });
+      if (r.parche !== null && r.parche > r.final + 1e-9) dif.push({ ...caso, problema: 'parche por encima de lo calculado' });
+      if (!!r.sinParche !== (!mismo && !caben.length)) dif.push({ ...caso, problema: 'aviso de sin presentación' });
+      renderOpiRes();
+      const txt = document.getElementById('opires').innerText;
+      if (r.sinParche && (/Posología sugerida|Dosis de rescate|Presentación sugerida/.test(txt) || !/Sin presentación compatible/.test(txt)))
+        dif.push({ ...caso, problema: 'sin presentación: texto incorrecto' });
+      if (d.id === 'fen_td' && !mismo) {
+        const contra = /Contraindicado si no hay tolerancia/.test(txt), recuerdo = /Tolerancia a opioides:/.test(txt);
+        if (r.emo < 60 ? !contra : (contra || !recuerdo)) dif.push({ ...caso, emo: r.emo, problema: 'advertencia de tolerancia' });
+      }
+    }
+    // Casos del informe externo de la 2.13.2.
+    Object.assign(state.tool, { from: 'mor_vo', to: 'fen_td', dose: '10', motivo: 'fragil' });
+    let r = opiCalc();
+    if (!(r.sinParche && r.parche === null)) dif.push({ problema: 'morfina oral 10 mg con −50 % a fentanilo: sugiere parche ' + r.parche });
+    Object.assign(state.tool, { from: 'mor_vo', to: 'bup_td', dose: '30', motivo: 'estand' });
+    r = opiCalc();
+    if (!(r.sinParche && r.parche === null)) dif.push({ problema: 'morfina oral 30 mg a buprenorfina: sugiere parche ' + r.parche });
+    // Cambio de origen en la pantalla real: la dosis se vacía.
+    Object.assign(state.tool, { from: 'fen_iv', to: 'mor_vo', dose: '500', dpt: '', tomas: '', motivo: 'estand' });
+    render();
+    const sel = document.querySelector('select[data-op="from"]');
+    sel.value = 'mor_vo';
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+    const inp = document.querySelector('input[data-op="dose"]');
+    if (state.tool.dose !== '' || (inp && inp.value !== '') || opiCalc() !== null)
+      dif.push({ problema: 'cambio de origen: la dosis se conserva (' + state.tool.dose + ')' });
+    state = prev;
+    out.seguridadConversor = { combinaciones: n, discrepancias: dif.length, ejemplos: dif.slice(0, 15) };
+  }
   return out;
 });
 
-const total = r.ves13.discrepancias + r.ppi.discrepancias + r.ppsPpi.discrepancias + r.conversor.discrepancias + r.casosInforme.discrepancias
+const total = r.ves13.discrepancias + r.ppi.discrepancias + r.ppsPpi.discrepancias + r.conversor.discrepancias + r.casosInforme.discrepancias + r.seguridadConversor.discrepancias
   + (r.ves13.maximoDeclarado !== r.ves13.maximoFuente ? 1 : 0) + (r.ppi.maximoDeclarado !== r.ppi.maximoFuente ? 1 : 0);
 console.log(JSON.stringify({ archivo: file.split('/').pop(), sha256, fecha: new Date().toISOString().slice(0, 10),
   ...r, totalDiscrepancias: total, erroresJS: jsErrors }, null, 2));
