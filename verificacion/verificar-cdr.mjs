@@ -6,6 +6,11 @@
 // ofrece la aplicación en cada una (desde la 2.13.1 el cuidado personal no
 // tiene 0,5: 5^5 x 4 = 12.500 combinaciones), y comprueba además unos casos
 // fijos tomados de esas reglas.
+// 2.13.2: la regla "con memoria 1 o más el CDR no puede ser 0; es 0,5 cuando la
+// mayoría de las secundarias están en 0" se transcribía, igual que en la
+// aplicación, antes de las reglas generales. Así la referencia compartía el
+// error y no podía señalarlo. Ahora actúa como piso al final, y dos casos fijos
+// cubren el reparto de tres áreas en 0 y dos por encima de la memoria.
 // Termina con código 0 si no hay discrepancias y con 1 si las hay.
 import { chromium } from 'playwright';
 import { createHash } from 'node:crypto';
@@ -30,8 +35,6 @@ const r = await page.evaluate(() => {
     if (M === 0) return sec.filter(x => x >= 0.5).length >= 2 ? 0.5 : 0;
     // Regla especial: memoria 0,5 (nunca 0).
     if (M === 0.5) return sec.filter(x => x >= 1).length >= 3 ? 1 : 0.5;
-    // Memoria 1 o más: 0,5 si la mayoría de las secundarias están en 0.
-    if (sec.filter(x => x === 0).length >= 3) return 0.5;
     const eq = sec.filter(x => x === M).length;
     const up = sec.filter(x => x > M), dn = sec.filter(x => x < M);
     const mayoria = arr => {
@@ -45,7 +48,9 @@ const r = await page.evaluate(() => {
     else if ((up.length >= 3 && dn.length >= 2) || (dn.length >= 3 && up.length >= 2)) cdr = M;
     else if (up.length >= 3) cdr = mayoria(up);
     else if (dn.length >= 3) cdr = mayoria(dn);
-    if (cdr === 0) cdr = 0.5; // con memoria 1 o más el CDR no puede ser 0
+    // Memoria 1 o más: el CDR no puede ser 0; en ese caso (mayoría de las
+    // secundarias en 0) es 0,5. Es un piso, no una regla previa.
+    if (cdr === 0) cdr = 0.5;
     return cdr;
   }
   const s = SCALES.cdr;
@@ -75,7 +80,10 @@ const r = await page.evaluate(() => {
     { areas: [1, 0, 0, 0, 0.5, 0], esperado: 0.5, regla: 'memoria 1 o más: nunca 0' },
     { areas: [1, 2, 2, 2, 0.5, 0], esperado: 1, regla: 'reparto tres y dos a cada lado' },
     { areas: [1, 2, 2, 2, 1, 0], esperado: 2, regla: 'tres o más por encima de la memoria' },
-    { areas: [2, 2, 1, 3, 1, 3], esperado: 2, regla: 'una o dos iguales y no más de dos a cada lado' }
+    { areas: [2, 2, 1, 3, 1, 3], esperado: 2, regla: 'una o dos iguales y no más de dos a cada lado' },
+    { areas: [1, 0, 0, 0, 2, 2], esperado: 1, regla: 'tres áreas en 0 y dos por encima: reparto tres y dos, prevalece la memoria' },
+    { areas: [2, 0, 0, 0, 3, 3], esperado: 2, regla: 'tres áreas en 0 y dos por encima: reparto tres y dos, prevalece la memoria' },
+    { areas: [1, 0, 0, 0, 0, 2], esperado: 0.5, regla: 'memoria 1 o más con la mayoría en 0: piso de 0,5' }
   ];
   for (const c of fijos) {
     const app = valor(s.logic(c.areas));

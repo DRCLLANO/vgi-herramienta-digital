@@ -65,6 +65,8 @@ Colombia, Lawton y CDR), y la lista de fallos sigue vacía. En esta versión el 
 las preguntas de selección múltiple (con tope y "cualquiera suma", que usa el
 VES-13) y deduce el paso entre puntajes de los valores de las opciones y no de
 si el máximo es entero; así los tramos del PPI y del G8 recorren los medios puntos.
+`resultado-2.13.2.json` corresponde a la 2.13.2 (corrección del CDR); los
+recuentos no cambian y la lista de fallos sigue vacía.
 
 ## Prueba del puntaje global del CDR
 
@@ -73,7 +75,7 @@ aplicación con una transcripción aparte de las reglas de Washington University
 (Knight ADRC, "CDR Scoring Rules") en todas las combinaciones de las seis
 áreas con las opciones que ofrece la aplicación (15.625 hasta la 2.13.0; 12.500
 desde la 2.13.1, en que el cuidado personal deja de tener 0,5), y comprueba
-nueve casos fijos tomados de esas reglas:
+casos fijos tomados de esas reglas (nueve hasta la 2.13.1, doce desde la 2.13.2):
 
 ```
 node verificacion/verificar-cdr.mjs index.html > resultado-cdr.json
@@ -83,6 +85,17 @@ Las tres pruebas anteriores no podían detectar el error que corrigió la 2.12.3
 toda combinación producía un veredicto, solo que no el correcto. Sobre la
 2.12.2 esta prueba señala 7.149 discrepancias y falla cinco de los nueve casos
 fijos; sobre la 2.12.3 no hay discrepancias (`resultado-cdr-2.12.3.json`).
+
+Hasta la 2.13.1 la referencia aplicaba la regla de memoria 1 o más ("el CDR no
+puede ser 0; es 0,5 cuando la mayoría de las secundarias están en 0") antes de
+las reglas generales, en el mismo orden que la aplicación. Compartía así el
+error y no podía señalarlo: con tres áreas en 0 y dos por encima de la memoria
+ambas daban 0,5, cuando el reparto tres y dos da el puntaje de la memoria. En
+la 2.13.2 la regla pasa a ser un piso en las dos. Con la referencia corregida,
+la 2.13.1 tiene 50 discrepancias y falla dos de los doce casos fijos; la 2.13.2
+no tiene ninguna (`resultado-cdr-2.13.2.json`). Una referencia escrita con la
+misma lectura de la regla que el código no es independiente, aunque se escriba
+aparte.
 
 ## Alcance
 
