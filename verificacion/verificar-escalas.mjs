@@ -49,7 +49,12 @@ const r = await page.evaluate((referencia) => {
   const m = document.documentElement.innerHTML.match(/"softwareVersion":\s*"([^"]+)"/);
   out.version = m ? m[1] : null;
   const maxItem = it => {
-    if (it.type === 'multi') return it.score === 'threshold' ? 1 : (it.chips || []).length;
+    if (it.type === 'multi') {
+      if (it.score === 'threshold') return 1;
+      if (it.score === 'cap') return it.cap;   // desde la 2.13.1 (VES-13)
+      if (it.score === 'any') return it.pts;   // desde la 2.13.1 (VES-13)
+      return (it.chips || []).length;
+    }
     const vs = (it.o || []).map(x => x.v).filter(v => typeof v === 'number');
     return vs.length ? Math.max(...vs) : 0;
   };
@@ -76,7 +81,7 @@ const r = await page.evaluate((referencia) => {
         if (!(id in ref)) out.fallos.tramos.push(`${id}: no figura en la tabla de trazabilidad`);
         else if (ref[id] !== actual) out.fallos.tramos.push(`${id}: tramos distintos de los registrados`);
       }
-      const paso = Number.isInteger(s.max) ? 1 : 0.5;
+      const paso = typeof pasoEscala === 'function' ? pasoEscala(s) : (Number.isInteger(s.max) ? 1 : 0.5);
       for (let v = 0; v <= s.max + 1e-9; v += paso) {
         const x = s.interpret(Math.round(v * 100) / 100);
         if (!x || !x.t) out.fallos.interpretacion.push(`${id}: sin veredicto para ${v}`);

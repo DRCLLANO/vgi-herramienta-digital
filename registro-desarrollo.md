@@ -502,6 +502,37 @@ modo de fallo propio de los instrumentos algorítmicos: una regla resumida que
 cubre los casos típicos y parece correcta en la revisión clínica de unos pocos
 ejemplos.
 
+### 8.9 Reglas de puntuación distintas de la fuente original
+
+El 8 de octubre de 2026 una revisión externa con otro modelo de lenguaje
+contrastó el cálculo de las 47 escalas con sus fuentes y señaló errores que
+cambiaban resultados. Se confirmaron en el código y en las publicaciones
+originales: el VES-13 puntuaba cada actividad por separado (máximo 15) en lugar
+de los bloques de Saliba 2001 (máximo 10), de modo que una persona con ayuda solo
+para bañarse quedaba como no vulnerable; el PPI asignaba 4,5 puntos al delirium
+en lugar de 4; el texto de la PPS atribuía 4 puntos de PPI al 30 %, que vale 2,5;
+y el conversor recalculaba la metadona aunque el destino fuera la misma metadona.
+La revisión del mismo día por el modelo con el que se desarrolla la herramienta,
+sobre la PPS y el CDR, no los había advertido.
+
+Es el mismo modo de fallo de la sección 8.8, ahora en cuatro instrumentos: las
+pruebas comprobaban que cada combinación produjera un veredicto, no que el
+veredicto fuera el de la fuente. La lección es que una revisión que se limita a
+leer el código y a probar casos sueltos no basta, aunque la haga un modelo de
+lenguaje con acceso a la fuente; hace falta una transcripción independiente de
+la regla publicada y una comparación exhaustiva. Se corrigió en la versión 2.13.1
+y se añadió `verificacion/verificar-fuentes.mjs`. Una segunda revisión externa, más
+exhaustiva, añadió errores confirmados en Charlson (enfermedad cerebrovascular
+con el peso de la versión colombiana), Charlson Colombia (tumor puntuable dos
+veces), Lawton (cuidado de la casa), SPPB (intervalos con huecos y equilibrio no
+jerárquico), CDR (0,5 en cuidado personal) y EQ-5D (codificación y suma no
+oficial), además de un defecto general: las preguntas de selección múltiple
+contaban como respondidas sin tocarlas. Todo se corrigió en la misma 2.13.1 y
+sus casos de referencia quedaron en la prueba. Otros hallazgos de esa revisión
+dependen de la versión que adopta el manual (NPI, Downton modificada,
+autopercepción, vulnerabilidad social, trastornos de memoria, MOS, Zarit, FTS
+y Charlson colombiano) y quedan pendientes de cotejo.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la

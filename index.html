@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.13.0",
+  "softwareVersion": "2.13.1",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-08",
   "inLanguage": "es",
@@ -295,6 +295,7 @@ main{padding:20px 18px 8px 18px;max-width:640px;margin:0 auto;}
   border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13.5px;background:var(--field);
   text-align:left;line-height:1.3;
 }
+.chip-ninguna{border-style:dashed;}
 .chip[aria-pressed="true"]{border-color:var(--eje);background:color-mix(in srgb, var(--eje) 10%, var(--card));font-weight:500;color:var(--eje);}
 .calc{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
 .field{flex:1;min-width:110px;}
@@ -667,14 +668,16 @@ charlson:{
   name:'Charlson',
   full:'Índice de Comorbilidad de Charlson',
   blurb:'Diecinueve condiciones médicas ponderadas, agrupadas en dieciséis preguntas, más la edad. El instrumento más utilizado en la evaluación pronóstica del paciente con comorbilidad.',
-  max:38,
+  max:37,
   ref:'Charlson M, Szatrowski TP, Peterson J, Gold J. Validation of a combined comorbidity index. J Clin Epidemiol. 1994;47(11):1245-51.',
+  /* 2.13.1: la enfermedad cerebrovascular vale 1 en el índice original (valía 2,
+     que es el peso de la versión colombiana) y el máximo pasa de 38 a 37. */
   items:[
     {q:'Edad', o:[{l:'Menor de 50 años',v:0},{l:'50 a 59 años',v:1},{l:'60 a 69 años',v:2},{l:'70 a 79 años',v:3},{l:'80 años o más',v:4}]},
     {q:'Infarto agudo de miocardio', hint:'Excluye cambios en la EKG sin antecedentes médicos.', o:no_si},
     {q:'Insuficiencia cardíaca congestiva', o:no_si},
     {q:'Enfermedad arterial periférica', hint:'Incluye aneurisma de aorta de 6 cm.', o:no_si},
-    {q:'Enfermedad cerebrovascular', o:[{l:'No',v:0},{l:'Sí',v:2}]},
+    {q:'Enfermedad cerebrovascular', o:no_si},
     {q:'Demencia', o:no_si},
     {q:'Enfermedad pulmonar obstructiva crónica', o:no_si},
     {q:'Enfermedad del tejido conectivo', o:no_si},
@@ -699,8 +702,11 @@ charlsonco:{
   name:'Charlson · Colombia',
   full:'Índice de Charlson validado en población hospitalizada colombiana',
   blurb:'Catorce ítems reponderados con datos del Sistema de Seguridad Social en Salud para predecir mortalidad a un año.',
-  max:29,
+  max:26,
   ref:'Oliveros H, Buitrago G. Validation and adaptation of the Charlson Comorbidity Index using administrative data from the Colombian health system: retrospective cohort study. BMJ Open. 2022;12:e054058.',
+  /* 2.13.1: tumor sin metástasis y con metástasis pasan a ser opciones
+     excluyentes de un mismo ítem (antes podían sumarse 3 + 4 por el mismo
+     proceso); el máximo pasa de 29 a 26. */
   items:[
     {q:'Infarto agudo de miocardio', hint:'Excluye cambios en la EKG sin antecedentes médicos.', o:no_si},
     {q:'Insuficiencia cardíaca congestiva', o:no_si},
@@ -711,15 +717,14 @@ charlsonco:{
     {q:'Úlcera gastroduodenal', o:[{l:'No',v:0},{l:'Sí',v:2}]},
     {q:'Enfermedad renal moderada a severa', o:[{l:'No',v:0},{l:'Sí',v:4}]},
     {q:'Hemiplejía', o:[{l:'No',v:0},{l:'Sí',v:2}]},
-    {q:'Tumor sin metástasis', hint:'Excluir si han pasado más de 5 años desde el diagnóstico. Incluye leucemia y linfoma.', o:[{l:'No',v:0},{l:'Sí',v:3}]},
-    {q:'Tumor sólido con metástasis', o:[{l:'No',v:0},{l:'Sí',v:4}]},
+    {q:'Tumor', hint:'Una sola categoría por proceso tumoral. Excluir si han pasado más de 5 años desde el diagnóstico. La categoría sin metástasis incluye leucemia y linfoma.', o:[{l:'No',v:0},{l:'Tumor sin metástasis',v:3},{l:'Tumor sólido con metástasis',v:4}]},
     {q:'VIH / sida', o:no_si},
     {q:'Diabetes', o:no_si},
     {q:'Enfermedad hepática', o:[{l:'No',v:0},{l:'Sí',v:3}]}
   ],
   interpret:s=> s<=1 ? {t:'Ausencia de comorbilidad',tone:'ok',d:'Con puntuación de 0 la mortalidad anual estimada en pacientes adultos hospitalizados en Colombia es del 0,07 %.'}
              : s===2 ? {t:'Comorbilidad baja',tone:'warn',d:'Riesgo intermedio. Verifique la enfermedad índice y la posibilidad de que alguna comorbilidad se convierta en ella.'}
-                     : {t:'Comorbilidad alta',tone:'alert',d:'Con puntuaciones mayores de 5 la mortalidad anual estimada es del 10,46 % en pacientes adultos hospitalizados en Colombia.'},
+                     : {t:'Comorbilidad alta',tone:'alert',d:'Con 5 puntos o más la mortalidad anual estimada es del 10,46 % en pacientes adultos hospitalizados en Colombia.'},
   note:'No tiene ajuste por edad y fue elaborado en población hospitalizada mayor de 18 años, no exclusivamente en mayores de 65. Su uso se limita al entorno hospitalario.'
 },
 
@@ -875,7 +880,7 @@ painad:{
              : s<=3  ? {t:'Dolor leve',tone:'warn',d:'Un puntaje de 1 o más sugiere presencia de dolor. Identifique la causa (lesiones por presión, retención urinaria, estreñimiento, artrosis, posición forzada), inicie analgesia escalonada y reevalúe con la misma escala tras la intervención.'}
              : s<=6  ? {t:'Dolor moderado',tone:'alert',d:'Requiere intervención analgésica y búsqueda activa de la causa. Reevalúe con la misma escala después de administrar el analgésico para verificar la respuesta.'}
                      : {t:'Dolor intenso',tone:'alert',d:'Equivale a un dolor severo. Inicie manejo analgésico multimodal sin demora, descarte causas agudas (fractura, abdomen agudo, isquemia, retención urinaria) y reevalúe de forma estrecha. Considere valoración por clínica del dolor si no hay respuesta.'},
-  note:'El puntaje total va de 0 a 10 y es equiparable a una escala visual análoga de 0 a 10. Observe al paciente durante 3 a 5 minutos, preferiblemente en actividad o durante el cuidado, no solo en reposo. Un delirium, la agitación o la ansiedad pueden elevar el puntaje: correlacione siempre con el contexto clínico y con la respuesta a la analgesia.'
+  note:'El puntaje total va de 0 a 10. Se correlaciona con escalas de autorreporte, pero no equivale individualmente a una escala visual analógica, y la graduación en leve, moderado e intenso es orientativa. Observe al paciente durante 3 a 5 minutos, preferiblemente en actividad o durante el cuidado, no solo en reposo. Un delirium, la agitación o la ansiedad pueden elevar el puntaje: correlacione siempre con el contexto clínico y con la respuesta a la analgesia.'
 },
 
 g8:{
@@ -903,7 +908,7 @@ g8:{
     {q:'Edad', o:[{l:'Mayor de 85 años',v:0},{l:'80 a 85 años',v:1},{l:'Menor de 80 años',v:2}]}
   ],
   interpret:s=> s<=14 ? {t:'Realizar valoración geriátrica integral',tone:'alert',d:'El puntaje identifica al paciente que se beneficia de una valoración geriátrica integral antes de definir el plan oncológico.'}
-                      : {t:'Valoración a criterio de oncología',tone:'ok',d:'Con 15 o más puntos la valoración por geriatría queda a criterio de oncología. Reevalúe si aparece deterioro funcional, toxicidad o cambio clínico.'}
+                      : {t:'Valoración a criterio de oncología',tone:'ok',d:'Con más de 14 puntos la valoración por geriatría queda a criterio de oncología. Reevalúe si aparece deterioro funcional, toxicidad o cambio clínico.'}
 },
 
 ves13:{
@@ -911,19 +916,25 @@ ves13:{
   name:'VES-13',
   full:'Vulnerable Elders Survey',
   blurb:'Detección del riesgo de deterioro funcional. Amplio uso en el tamizaje del adulto mayor con cáncer.',
-  max:15,
+  max:10,
   ref:'Saliba D, Elliott M, Rubenstein LZ, Solomon DH, Young RT, Kamberg CJ, et al. The Vulnerable Elders Survey: a tool for identifying vulnerable older people in the community. J Am Geriatr Soc. 2001;49(12):1691-9.',
+  /* Puntaje de Saliba 2001 (corregido en la 2.13.1): edad 75 a 84 = 1 y 85 o
+     más = 3; salud regular o mala = 1; actividades físicas con mucha
+     dificultad o que no puede hacer = 1 punto cada una, con tope de 2; ayuda
+     en una o más de las cinco actividades funcionales = 4 puntos en total, no
+     por actividad. Máximo 10. Hasta la 2.13.0 cada actividad sumaba 1 punto,
+     sin tope, con máximo 15. */
   items:[
-    {q:'Edad', o:[{l:'Menor de 75 años',v:0},{l:'75 a 84 años',v:1},{l:'85 años o más',v:3}]},
-    {q:'Autopercepción de salud', o:[{l:'Buena o excelente',v:0},{l:'Regular o mala',v:1}]},
-    {q:'Actividades básicas o instrumentales de la vida diaria: ¿necesita ayuda para…?', type:'multi', score:'count',
-     hint:'Marque todas las que apliquen. Cada una suma 1 punto.',
-     chips:['Ir de compras','Utilizar el dinero','Realizar trabajos ligeros en casa','Transportarse','Bañarse']},
-    {q:'Actividades adicionales: ¿necesita ayuda para…?', type:'multi', score:'count',
-     hint:'Marque todas las que apliquen. Cada una suma 1 punto.',
-     chips:['Agacharse, ponerse en cuclillas o de rodillas','Levantar o cargar un objeto de 10 libras','Escribir o manipular objetos pequeños','Extender los brazos por encima del hombro','Caminar 500 metros','Realizar trabajos pesados en casa']}
+    {q:'Edad', o:[{l:'Menos de 75 años',v:0},{l:'75 a 84 años',v:1},{l:'85 años o más',v:3}]},
+    {q:'En general, comparada con otras personas de su edad, su salud es…', o:[{l:'Excelente, muy buena o buena',v:0},{l:'Regular o mala',v:1}]},
+    {q:'¿Cuánta dificultad tiene, en promedio, para hacer estas actividades físicas?', type:'multi', score:'cap', cap:2,
+     hint:'Marque solo las que le causan mucha dificultad o que no puede hacer. Cada una suma 1 punto, con un máximo de 2 en este bloque.',
+     chips:['Agacharse, ponerse en cuclillas o de rodillas','Levantar o cargar objetos de unos 4,5 kg','Extender los brazos por encima del hombro','Escribir, o tomar y manipular objetos pequeños','Caminar 400 metros','Hacer trabajos pesados en casa, como restregar pisos o lavar ventanas']},
+    {q:'Por su salud o su condición física, ¿necesita ayuda para…?', type:'multi', score:'any', pts:4,
+     hint:'Marque las que apliquen. Cuente también la actividad que no realiza a causa de su salud. Una o más marcadas suman 4 puntos en total, no por actividad.',
+     chips:['Comprar artículos personales (de aseo o medicamentos)','Manejar el dinero (llevar las cuentas o pagar facturas)','Caminar de un lado a otro de la habitación (puede usar bastón o caminador)','Hacer trabajos ligeros en casa (lavar platos, ordenar, limpieza ligera)','Bañarse o ducharse']}
   ],
-  interpret:s=> s>=3 ? {t:'Adulto mayor vulnerable',tone:'alert',d:'Un puntaje de 3 o más identifica a un adulto mayor vulnerable, con un riesgo 4 veces mayor de muerte o deterioro funcional. Debe someterse a valoración geriátrica integral.'}
+  interpret:s=> s>=3 ? {t:'Adulto mayor vulnerable',tone:'alert',d:'Un puntaje de 3 o más identifica a un adulto mayor vulnerable, con un riesgo unas 4 veces mayor de muerte o deterioro funcional que quienes puntúan menos. Debe someterse a valoración geriátrica integral.'}
                      : {t:'No vulnerable en este tamizaje',tone:'ok',d:'Con 2 puntos o menos contextualice el riesgo del paciente para definir la pertinencia de la valoración por geriatría.'}
 },
 
@@ -1209,12 +1220,22 @@ pps:{
       ? ' '+cap(r.altos.map(p=>p.col+' ('+p.sugiere+' %)').join(' y '))+(r.altos.length>1?' encajan':' encaja')
         + ' en un nivel más alto, pero prevalecen las columnas de la izquierda. Si lo que limita esas columnas de la izquierda no se debe a la enfermedad (por ejemplo, una paraplejia previa), el mejor ajuste puede estar entre el nivel calculado y ese nivel más alto: decida con juicio clínico, siempre en múltiplos de 10.'
       : '';
+    /* Textos revisados en la 2.13.1. Puntos del PPI según Morita 1999: PPS de
+       10 a 20 % = 4; de 30 a 50 % = 2,5; de 60 % o más = 0. El criterio del
+       NECPAL es un PPS menor del 50 %, así que no incluye el 50 %. */
+    const ppiPts = v<=20 ? '4 puntos' : v<=50 ? '2,5 puntos' : '0 puntos';
+    const extra = (v<50 ? ' Un PPS menor del 50 % cumple el criterio de deterioro funcional del bloque oncológico del NECPAL.' : '')
+      + ' En el Índice Pronóstico Paliativo, un PPS de '+v+' % suma '+ppiPts+'.';
     let base;
-    if(v<=30)      base = {t:'Deterioro funcional muy avanzado',tone:'alert',d:'Paciente encamado y completamente dependiente. Priorice control de síntomas, cuidados de confort, acompañamiento familiar y planificación anticipada de las decisiones. Este rango puntúa 4 puntos en el Índice Pronóstico Paliativo.'};
-    else if(v<=50) base = {t:'Deterioro funcional significativo',tone:'alert',d:'Un PPS menor del 50 % es criterio de deterioro funcional significativo en el bloque oncológico del NECPAL. Este rango puntúa 2,5 puntos en el Índice Pronóstico Paliativo.'};
-    else if(v<=70) base = {t:'Deterioro funcional moderado',tone:'warn',d:'Deambulación reducida con autocuidado aún conservado. Anticipe necesidades de apoyo y revise objetivos de cuidado. Este rango puntúa 0 puntos en el Índice Pronóstico Paliativo.'};
-    else           base = {t:'Funcionalidad conservada',tone:'ok',d:'Deambulación y autocuidado normales. Utilice mediciones seriadas: la escala es especialmente útil para detectar el declive progresivo en el tiempo.'};
-    return {t:base.t, tone:base.tone, display:v+' %', d:base.d+' '+traza+aviso};
+    if(v<=30)      base = {t:'Deterioro funcional muy avanzado',tone:'alert',d:'Paciente encamado y completamente dependiente. Priorice control de síntomas, cuidados de confort, acompañamiento familiar y planificación anticipada de las decisiones.'};
+    else if(v<=50) base = {t:'Deterioro funcional significativo',tone:'alert',d:'La persona pasa la mayor parte del día sentada o acostada y necesita asistencia considerable o la mayor parte del tiempo para su cuidado. Revise objetivos de cuidado y necesidades del cuidador.'};
+    else if(v<=70) base = {t:'Deterioro funcional moderado',tone:'warn',d:'Deambulación reducida, con autocuidado completo o con asistencia ocasional. Anticipe necesidades de apoyo y revise objetivos de cuidado.'};
+    else           base = {t:'Funcionalidad conservada',tone:'ok',d:'Deambulación y autocuidado completos. Utilice mediciones seriadas: la escala es especialmente útil para detectar el declive progresivo en el tiempo.'};
+    /* 2.13.1: en perfiles discordantes la cifra se presenta con el intervalo en
+       que puede estar el mejor ajuste, para no darla como resolución única. */
+    const tope = r.altos.length ? Math.max(...r.altos.map(p=>p.sugiere)) : v;
+    const display = tope>v ? v+' % (mejor ajuste entre '+v+' y '+tope+' %)' : v+' %';
+    return {t:base.t, tone:base.tone, display, d:base.d+extra+' '+traza+aviso};
   },
   note:'Cómo se calcula: se baja por la columna de deambulación hasta el nivel elegido y, desde ese nivel, se sigue bajando en cada columna hacia la derecha hasta encontrar el descriptor marcado. Las columnas de la izquierda son las que más pesan; ninguna columna de la derecha hace subir el resultado. El valor es siempre un múltiplo de 10 (un 45 % no es correcto). El nivel 0 % corresponde a la muerte y no se solicita. Su valor principal es el seguimiento seriado: permite medir el declinar progresivo del paciente paliativo más que definir una conducta en una única medición.'
 },
@@ -1224,19 +1245,22 @@ ppi:{
   name:'PPI',
   full:'Índice Pronóstico Paliativo',
   blurb:'Estimación de supervivencia en enfermedad oncológica en estadio terminal. No requiere toma de laboratorios.',
-  max:15.5,
+  max:15,
   ref:'Morita T, Tsunoda J, Inoue S, Chihara S. The Palliative Prognostic Index: a scoring system for survival prediction of terminally ill cancer patients. Support Care Cancer. 1999;7:128-33.',
+  /* Puntajes de Morita 1999 (Support Care Cancer 7:128-33). Corregido en la
+     2.13.1: el delirium valía 4,5 (es 4), el máximo era 15,5 (es 15) y las
+     cifras de sensibilidad y especificidad estaban intercambiadas. */
   items:[
     {q:'Escala Funcional Paliativa (PPS)',
      o:[{l:'PPS de 10 a 20 %',v:4},{l:'PPS de 30 a 50 %',v:2.5},{l:'PPS de 60 % o más',v:0}]},
     {q:'Ingesta oral',
-     o:[{l:'Normal',v:0},{l:'Moderadamente reducida',v:1},{l:'Severamente reducida',v:2.5}]},
+     o:[{l:'Normal',v:0},{l:'Moderadamente reducida (más que unos bocados)',v:1},{l:'Severamente reducida (unos bocados o menos)',v:2.5}]},
     {q:'Edemas', o:[{l:'Ausentes',v:0},{l:'Presentes',v:1}]},
     {q:'Disnea de reposo', o:[{l:'Ausente',v:0},{l:'Presente',v:3.5}]},
-    {q:'Delirium', hint:'Confirme previamente con el CAM y descarte causas reversibles.', o:[{l:'Ausente',v:0},{l:'Presente',v:4.5}]}
+    {q:'Delirium', hint:'Confirme previamente con el CAM. No puntúe el delirium causado solo por un medicamento, como opioides o hipnóticos, que se espera revierta al retirarlo.', o:[{l:'Ausente',v:0},{l:'Presente',v:4}]}
   ],
-  interpret:s=> s>6 ? {t:'Supervivencia estimada menor de 3 semanas',tone:'alert',d:'Un PPI mayor de 6 predice supervivencia de 3 semanas, con sensibilidad del 80 % y especificidad del 77 %. Priorice control de síntomas, decisiones anticipadas y acompañamiento a la familia.'}
-             : s>4 ? {t:'Supervivencia estimada menor de 6 semanas',tone:'alert',d:'Un PPI mayor de 4 predice supervivencia de 6 semanas, con sensibilidad del 83 % y especificidad del 85 %. Revise objetivos de cuidado y necesidades del cuidador.'}
+  interpret:s=> s>6 ? {t:'Supervivencia estimada menor de 3 semanas',tone:'alert',d:'Un PPI mayor de 6 predice una supervivencia menor de 3 semanas, con sensibilidad del 80 % y especificidad del 85 % en la validación original. Priorice control de síntomas, decisiones anticipadas y acompañamiento a la familia.'}
+             : s>4 ? {t:'Supervivencia estimada menor de 6 semanas',tone:'alert',d:'Un PPI mayor de 4 predice una supervivencia menor de 6 semanas, con sensibilidad del 80 % y especificidad del 77 % en la validación original. Revise objetivos de cuidado y necesidades del cuidador.'}
                    : {t:'No alcanza los umbrales pronósticos',tone:'warn',d:'El índice no alcanza los puntos de corte de 4 ni de 6. Mantenga el seguimiento seriado, dado que la trayectoria puede cambiar en pocos días.'},
   note:'Desarrollado en pacientes con enfermedad oncológica en estadio terminal. En enfermedades no oncológicas su rendimiento pronóstico es limitado.'
 },
@@ -1399,19 +1423,24 @@ sppb:{
   blurb:'Tres pruebas de desempeño de miembros inferiores: equilibrio, velocidad de marcha y levantarse de una silla.',
   max:12,
   ref:'Guralnik JM, Simonsick EM, Ferrucci L, Glynn RJ, Berkman LF, Blazer DG, et al. J Gerontol. 1994;49:M85-94. Valores normativos colombianos: Ramírez-Vélez R, et al. Front Med (Lausanne). 2020;7:52.',
+  /* 2.13.1: el equilibrio es un solo ítem jerárquico de 0 a 4, como en
+     Guralnik 1994 (solo se avanza a la siguiente posición si se mantiene la
+     anterior 10 segundos), y los intervalos de marcha y silla son contiguos,
+     con los puntos de corte de la población comunitaria. */
   items:[
-    {q:'Equilibrio · pies juntos', hint:'Mantener la posición durante 10 segundos.',
-     o:[{l:'Menos de 10 segundos',v:0},{l:'10 segundos o más',v:1}]},
-    {q:'Equilibrio · semitándem', hint:'Talón de un pie al lado del dedo gordo del otro, durante 10 segundos.',
-     o:[{l:'Menos de 10 segundos',v:0},{l:'10 segundos o más',v:1}]},
-    {q:'Equilibrio · tándem', hint:'Un pie delante del otro, en línea, hasta 10 segundos.',
-     o:[{l:'Menos de 3 segundos',v:0},{l:'De 3 a 9,9 segundos',v:1},{l:'10 segundos o más',v:2}]},
-    {q:'Velocidad de marcha en 2,44 metros (8 pies)',
-     hint:'Se puede realizar con el dispositivo de ayuda para la marcha habitual. Se hacen dos recorridos y se toma el menor tiempo.',
-     o:[{l:'Incapaz',v:0},{l:'Más de 5,7 segundos',v:1},{l:'De 4,1 a 5,7 segundos',v:2},{l:'De 3,2 a 4 segundos',v:3},{l:'Menos de 3,1 segundos',v:4}]},
+    {q:'Equilibrio (pies juntos, semitándem y tándem, en ese orden)',
+     hint:'Solo se pasa a la siguiente posición si se mantiene la anterior 10 segundos. Semitándem: talón de un pie al lado del dedo gordo del otro. Tándem: un pie delante del otro, en línea.',
+     o:[{l:'No mantiene pies juntos 10 segundos o no puede realizarlo',v:0},
+        {l:'Pies juntos 10 segundos; no mantiene semitándem 10 segundos',v:1},
+        {l:'Semitándem 10 segundos; tándem menos de 3 segundos',v:2},
+        {l:'Tándem de 3 a 9 segundos',v:3},
+        {l:'Tándem 10 segundos',v:4}]},
+    {q:'Velocidad de marcha en 2,44 metros',
+     hint:'Se puede realizar con el dispositivo de ayuda habitual. Se hacen dos recorridos y se toma el menor tiempo, redondeado a una décima de segundo.',
+     o:[{l:'Incapaz',v:0},{l:'5,7 segundos o más',v:1},{l:'De 4,1 a 5,6 segundos',v:2},{l:'De 3,2 a 4,0 segundos',v:3},{l:'3,1 segundos o menos',v:4}]},
     {q:'Levantarse y sentarse 5 veces de una silla',
-     hint:'La prueba inicia sentado y termina en bípedo, sin apoyo de los brazos.',
-     o:[{l:'Más de 60 segundos o incapaz',v:0},{l:'Más de 16,7 segundos',v:1},{l:'De 13,7 a 16,6 segundos',v:2},{l:'De 11,2 a 13,6 segundos',v:3},{l:'Menos de 11,1 segundos',v:4}]}
+     hint:'La prueba inicia sentado y termina en bípedo, sin apoyo de los brazos. Registre el tiempo redondeado a una décima de segundo.',
+     o:[{l:'Más de 60 segundos o incapaz',v:0},{l:'De 16,7 a 60 segundos',v:1},{l:'De 13,7 a 16,6 segundos',v:2},{l:'De 11,2 a 13,6 segundos',v:3},{l:'11,1 segundos o menos',v:4}]}
   ],
   interpret:s=> s<=9 ? {t:'Movilidad limitada',tone:'alert',d:'Alto riesgo de caídas, fragilidad y sarcopenia. Proponga ejercicio multimodal con supervisión estrecha, evalúe derivación a rehabilitación, posible aumento de la ingesta proteica, dispositivos de apoyo a la movilidad y condiciones asociadas.'}
                      : {t:'Movilidad normal',tone:'ok',d:'Desempeño adecuado. Recomiende ejercicio multimodal en casa (estrategia Vivifrail) y repita la medición en 6 meses.'},
@@ -1435,8 +1464,8 @@ frail:{
     {q:'Enfermedades', type:'multi', score:'threshold', min:5,
      hint:'¿Algún médico le ha dicho que tiene alguna de estas? Puntúa 1 punto si son 5 o más.',
      chips:['Hipertensión arterial','Diabetes','Cáncer (excepto piel no melanoma)','Enfermedad pulmonar crónica','Cardiopatía isquémica','Insuficiencia cardiaca congestiva','Angina','Asma','Artritis (osteoartrosis o artritis reumatoide)','Enfermedad vascular cerebral','Enfermedad renal crónica']},
-    {q:'Pérdida de peso', type:'weight', hint:'Puntúa 1 punto si la pérdida en el último año es del 5 % o más.',
-     o:[{l:'Pérdida de peso del 5 % o más',v:1},{l:'Pérdida de peso del 4 % o menos',v:0}]}
+    {q:'Pérdida de peso', type:'weight', hint:'Puntúa 1 punto si la pérdida en el último año es mayor del 5 %.',
+     o:[{l:'Pérdida de peso mayor del 5 %',v:1},{l:'Pérdida de peso del 5 % o menos, o sin pérdida',v:0}]}
   ],
   interpret:s=> s===0 ? {t:'Sin alteración',tone:'ok',d:'Robusto: sin criterios de fragilidad. Refuerce actividad física y nutrición como prevención.'}
              : s<=2   ? {t:'Sospecha de prefragilidad',tone:'warn',d:'Estado dinámico y potencialmente reversible. Intervenga con ejercicio multicomponente, aporte proteico, revisión de medicamentos potencialmente inapropiados y evaluación de la esfera social.'}
@@ -1461,7 +1490,7 @@ fried:{
      hint:'Medida con dinamómetro y estratificada por sexo e IMC (quintil inferior). Hombres: IMC ≤24, ≤29 kg; IMC 24,1-26, ≤30 kg; IMC 26,1-28, ≤30 kg; IMC >28, ≤32 kg. Mujeres: IMC ≤23, ≤17 kg; IMC 23,1-26, ≤17,3 kg; IMC 26,1-29, ≤18 kg; IMC >29, ≤21 kg.',
      o:si_no},
     {q:'Velocidad de la marcha baja',
-     hint:'Tiempo en andar 15 pasos (4,6 metros), estratificado por altura y sexo (quintil inferior). Hombres: altura ≤173 cm, más de 7 s; altura >173 cm, más de 6 s. Mujeres: altura ≤159 cm, 7 s o más; altura >159 cm, 6 s o más.',
+     hint:'Tiempo en recorrer 4,57 metros, estratificado por altura y sexo (quintil inferior). Hombres: altura ≤173 cm, 7 s o más; altura >173 cm, 6 s o más. Mujeres: altura ≤159 cm, 7 s o más; altura >159 cm, 6 s o más.',
      o:si_no},
     {q:'Bajo nivel de actividad física',
      hint:'Kilocalorías gastadas por semana según el Minnesota Leisure Time Activity Questionnaire, quintil inferior: hombres menos de 383 kcal/semana, mujeres menos de 270 kcal/semana.',
@@ -1470,7 +1499,7 @@ fried:{
   interpret:s=> s===0 ? {t:'Robusto',tone:'ok',d:'No cumple ningún criterio del fenotipo. Mantenga ejercicio multicomponente y adecuado aporte proteico.'}
              : s<=2   ? {t:'Prefragilidad',tone:'warn',d:'Estado intermedio y potencialmente reversible. Establezca un plan de intervención con ejercicio, nutrición y revisión farmacológica.'}
                       : {t:'Fragilidad',tone:'alert',d:'Tres o más criterios confirman fragilidad. Establezca un plan de intervención multidimensional e individualizado, y considere el impacto pronóstico en las decisiones terapéuticas.'},
-  note:'Para cada población deben estimarse los puntos de corte según las diferencias antropométricas. Ante la dificultad de aplicar el cuestionario de Minnesota, algunos autores han propuesto alternativas como la limitación para caminar media milla.'
+  note:'Para cada población deben estimarse los puntos de corte según las diferencias antropométricas. Ante la dificultad de aplicar el cuestionario de Minnesota, algunos autores han propuesto alternativas como la limitación para caminar unos 800 metros.'
 },
 
 cfs:{
@@ -1495,11 +1524,16 @@ cfs:{
       {l:'9 · Situación terminal. Esperanza de vida inferior a 6 meses en personas que no son evidentemente débiles',v:9,ic:9}
      ]}
   ],
+  /* 2.13.1: el resultado conserva el nombre de cada categoría de la versión 2.0
+     (antes el 4 aparecía como "Prefragilidad" y el 9 como "Fragilidad"). */
   logic:a=>{
     const v=a[0];
-    if(v<=3) return {t:'Robusto',tone:'ok',display:'CFS '+v,d:'Sin criterios de fragilidad. Refuerce la actividad física regular y el control de las condiciones crónicas.'};
-    if(v===4) return {t:'Prefragilidad',tone:'warn',display:'CFS 4',d:'Estado potencialmente reversible. Intervenga con ejercicio multicomponente, revisión de fármacos y valoración nutricional.'};
-    return {t:'Fragilidad',tone:'alert',display:'CFS '+v,d:'Un puntaje de 5 o más define fragilidad, con mayor riesgo de declive funcional, hospitalización, institucionalización y muerte. Indique valoración geriátrica integral y plan de cuidado individualizado.'};
+    const nom={1:'Muy en forma',2:'En forma',3:'Buen manejo',4:'Vive con fragilidad muy leve',5:'Vive con fragilidad leve',
+      6:'Vive con fragilidad moderada',7:'Vive con fragilidad grave',8:'Vive con fragilidad muy grave',9:'Situación terminal'}[v];
+    if(v<=3) return {t:nom,tone:'ok',display:'CFS '+v,d:'Sin fragilidad. Refuerce la actividad física regular y el control de las condiciones crónicas.'};
+    if(v===4) return {t:nom,tone:'warn',display:'CFS 4',d:'Transición temprana desde la independencia completa: los síntomas limitan las actividades, sin depender de otros. Estado potencialmente reversible: intervenga con ejercicio multicomponente, revisión de fármacos y valoración nutricional.'};
+    if(v===9) return {t:nom,tone:'alert',display:'CFS 9',d:'Esperanza de vida menor de 6 meses en una persona que no vive con fragilidad grave por otros motivos; puede conservar actividad. Oriente los objetivos de cuidado y valore las necesidades paliativas.'};
+    return {t:nom,tone:'alert',display:'CFS '+v,d:'Un puntaje de 5 o más corresponde a fragilidad, con mayor riesgo de declive funcional, hospitalización, institucionalización y muerte. Indique valoración geriátrica integral y plan de cuidado individualizado.'};
   },
   note:'Se ha usado como herramienta de clasificación en decisiones clínicas mayores, incluida la asignación de recursos escasos. Por ello se insiste en su uso apropiado y siempre acompañado de juicio clínico.'
 },
@@ -1580,8 +1614,8 @@ barthel:{
   interpret:s=> s===100 ? {t:'Independiente',tone:'ok',d:'Autonomía completa para las actividades básicas de la vida diaria.'}
              : s>=60    ? {t:'Dependencia leve',tone:'warn',d:'Identifique las actividades comprometidas y compárelas con la situación previa a la enfermedad actual para orientar la rehabilitación y prevenir el deterioro de la movilidad.'}
              : s>=40    ? {t:'Dependencia moderada',tone:'warn',d:'Requiere apoyo estructurado. Defina plan de rehabilitación, necesidad de cuidador y el nivel asistencial más adecuado.'}
-             : s>=20    ? {t:'Dependencia grave',tone:'alert',d:'Alto consumo de recursos y riesgo de institucionalización. Evalúe red de apoyo y carga del cuidador. Un Barthel menor de 25 es criterio de severidad funcional en el NECPAL.'}
-                        : {t:'Dependencia total',tone:'alert',d:'Dependencia para prácticamente todas las actividades básicas. Priorice el cuidado, la prevención de lesiones por presión y el soporte al cuidador.'},
+             : s>=20    ? {t:'Dependencia grave',tone:'alert',d:'Alto consumo de recursos y riesgo de institucionalización. Evalúe red de apoyo y carga del cuidador.'}
+                        : {t:'Dependencia total',tone:'alert',d:'Dependencia para prácticamente todas las actividades básicas. Priorice el cuidado, la prevención de lesiones por presión y el soporte al cuidador. Un Barthel menor de 20 cumple el criterio de dependencia severa del NECPAL.'},
   note:'Puntaje máximo 100; 90 si utiliza silla de ruedas. Registre no solo la situación actual sino la evolución hasta llegar a ella.'
 },
 
@@ -1592,6 +1626,11 @@ lawton:{
   blurb:'Ocho actividades instrumentales. Apoya la detección precoz del deterioro funcional en domicilio o institución.',
   max:8,
   ref:'Lawton MP, Brody EM. Gerontologist. 1969;9:179-86. Ministerio de Salud de Colombia. Anexos de tests de valoración integral: instrumentos; 2018.',
+  /* 2.13.1: se separan las cinco opciones originales del cuidado de la casa.
+     Por decisión clínica del autor, "necesita ayuda en todas las labores" vale 0
+     (en Lawton y Brody 1969 y en el anexo de MinSalud vale 1): necesitar ayuda
+     en todas las labores no debe dar como resultado "independiente". La
+     adaptación se declara en la nota de la escala. */
   items:[
     {q:'Uso del teléfono',
      o:[{l:'Utiliza el teléfono por iniciativa propia',v:1},{l:'Marca bien unos cuantos números conocidos',v:1},{l:'Contesta el teléfono, pero no marca',v:1},{l:'No utiliza el teléfono',v:0}]},
@@ -1600,7 +1639,7 @@ lawton:{
     {q:'Preparación de la comida',
      o:[{l:'Organiza, prepara y sirve las comidas por sí solo adecuadamente',v:1},{l:'Prepara solo si le dan los ingredientes, no sigue dieta adecuada, o necesita que le preparen y sirvan',v:0}]},
     {q:'Cuidado de la casa',
-     o:[{l:'Mantiene la casa solo o con ayuda ocasional para trabajos pesados',v:1},{l:'No mantiene un adecuado nivel de limpieza, necesita ayuda en todas las labores',v:0},{l:'No participa en ninguna labor de la casa',v:0}]},
+     o:[{l:'Mantiene la casa solo o con ayuda ocasional para trabajos pesados',v:1},{l:'Realiza tareas ligeras, como lavar los platos o tender las camas',v:1},{l:'Realiza tareas ligeras, pero no puede mantener un adecuado nivel de limpieza',v:1},{l:'Necesita ayuda en todas las labores de la casa',v:0},{l:'No participa en ninguna labor de la casa',v:0}]},
     {q:'Lavado de ropa',
      o:[{l:'Lava por sí solo toda su ropa o las prendas pequeñas',v:1},{l:'Todo el lavado debe ser realizado por otra persona',v:0}]},
     {q:'Uso de medios de transporte',
@@ -1615,7 +1654,7 @@ lawton:{
              : s>=4   ? {t:'Dependencia moderada',tone:'warn',d:'Requiere apoyo para tareas complejas. Complete la valoración cognoscitiva y social, y seleccione el nivel asistencial adecuado.'}
              : s>=2   ? {t:'Dependencia grave',tone:'alert',d:'Compromiso instrumental extenso. Evalúe la capacidad de vivir solo y la seguridad en el domicilio.'}
                       : {t:'Dependencia total',tone:'alert',d:'Dependiente para todas las actividades instrumentales evaluadas.'},
-  note:'Puede haber interferencia por los recursos sociales disponibles (empleada, conductor) o por el contexto sociocultural y el aprendizaje de las actividades. En esos casos lo importante es describir el cambio o la pérdida y la razón de la no realización.'
+  note:'Puede haber interferencia por los recursos sociales disponibles (empleada, conductor) o por el contexto sociocultural y el aprendizaje de las actividades. En esos casos lo importante es describir el cambio o la pérdida y la razón de la no realización. Adaptación de esta herramienta: en el cuidado de la casa, necesitar ayuda en todas las labores puntúa 0, como no participar, para que una persona con esa necesidad no quede clasificada como independiente; el instrumento original y el anexo de MinSalud le asignan 1.'
 },
 
 pfeffer:{
@@ -1656,11 +1695,11 @@ eq5d:{
   max:null,
   ref:'Ramos Goñi J, Pinto Prades J, Oppe M, Cabasés Hita J, Rivero-Arias O. Estimación del conjunto de valores para los estados de salud del EQ-5D-5L basados en las preferencias de la población española. Madrid: Ministerio de Sanidad, Política Social e Igualdad; 2014. Normas poblacionales colombianas: Bailey HH, Janssen MF, Varela RO, Moreno JA. Value Health Reg Issues. 2021;26:24-32.',
   scaleOpts:[
-    {l:'0 · Sin problemas',v:0},
-    {l:'1 · Problemas leves',v:1},
-    {l:'2 · Problemas moderados',v:2},
-    {l:'3 · Problemas severos',v:3},
-    {l:'4 · Incapaz o con problemas extremos',v:4}
+    {l:'1 · Sin problemas',v:1},
+    {l:'2 · Problemas leves',v:2},
+    {l:'3 · Problemas moderados',v:3},
+    {l:'4 · Problemas graves',v:4},
+    {l:'5 · Incapaz o con problemas extremos',v:5}
   ],
   qs:['Movilidad','Autocuidado','Actividades cotidianas','Dolor o malestar','Ansiedad o depresión'],
   extraItems:[
@@ -1668,21 +1707,29 @@ eq5d:{
      hint:'La escala está numerada de 0 a 100. 100 representa la mejor salud que usted se pueda imaginar y 0 la peor salud que usted se pueda imaginar.',
      label:'Salud hoy (0 a 100)'}
   ],
+  /* 2.13.1: niveles codificados de 1 a 5 como en el instrumento oficial (perfil
+     11111 a 55555; antes 0 a 4) y sin clasificación por suma de niveles, que
+     EuroQol desaconseja porque los códigos no tienen propiedades aritméticas.
+     Se informa el perfil, las dimensiones con problemas y la EVA (0 a 100). */
   logic:a=>{
-    const perfil = a.slice(0,5).map(x=>x===undefined?'-':x).join('');
-    const suma = a.slice(0,5).reduce((n,x)=>n+(x||0),0);
-    const eva = STATE_EXTRA('eva');
-    const evaTxt = eva!=='' && eva!==undefined ? '\nEscala visual análoga: '+eva+'/100.' : '';
-    if(suma===0) return {t:'Sin problemas en los cinco dominios',tone:'ok',display:perfil,
-      d:'El perfil 00000 indica ausencia de problemas en la calidad de vida referida.'+evaTxt};
-    if(suma<=5)  return {t:'Afectación leve',tone:'warn',display:perfil,
-      d:'Perfil '+perfil+'. Contraste el perfil con la escala visual análoga y con la evolución en el tiempo, más que con un valor único.'+evaTxt+'\nEvalúe y aborde condiciones asociadas: revise medicamentos potencialmente inapropiados, evalúe y controle el dolor, y estabilice las condiciones médicas activas.'};
-    if(suma<=12) return {t:'Afectación moderada',tone:'warn',display:perfil,
-      d:'Perfil '+perfil+'. Identifique cuáles dominios pesan más en la percepción del paciente para dirigir la intervención.'+evaTxt+'\nEvalúe y aborde condiciones asociadas: revise medicamentos potencialmente inapropiados, evalúe y controle el dolor, y estabilice las condiciones médicas activas.'};
-    return {t:'Afectación severa',tone:'alert',display:perfil,
-      d:'Perfil '+perfil+'. Un perfil próximo a 44444 refleja una afectación severa de la calidad de vida.'+evaTxt+'\nPriorice el control del dolor, la revisión farmacológica y la estabilización de las condiciones médicas activas.'};
+    const dims = ['movilidad','autocuidado','actividades cotidianas','dolor o malestar','ansiedad o depresión'];
+    const niv = ['sin problemas','problemas leves','problemas moderados','problemas graves','incapaz o problemas extremos'];
+    const r = a.slice(0,5);
+    const perfil = r.map(x=>x===undefined?'-':x).join('');
+    const evaRaw = STATE_EXTRA('eva'), eva = num(evaRaw);
+    const evaTxt = String(evaRaw).trim()==='' ? '\nEscala visual analógica: no registrada.'
+      : (Number.isInteger(eva) && eva>=0 && eva<=100) ? '\nEscala visual analógica: '+eva+' de 100.'
+      : '\nEscala visual analógica: el valor ingresado no es válido (debe ser un número entero de 0 a 100) y no se registra.';
+    const con = r.map((x,i)=>({x,i})).filter(o=>o.x>1);
+    const peor = Math.max(...r.map(x=>x||1));
+    const lista = con.map(o=>dims[o.i]+': '+niv[o.x-1]).join('; ');
+    if(!con.length) return {t:'Sin problemas en las cinco dimensiones',tone:'ok',display:perfil,
+      d:'Perfil '+perfil+'.'+evaTxt};
+    return {t:'Problemas en '+con.length+' de 5 dimensiones; nivel más alto: '+niv[peor-1],tone:peor>=4?'alert':'warn',display:perfil,
+      d:'Perfil '+perfil+'. '+lista.charAt(0).toUpperCase()+lista.slice(1)+'.'+evaTxt
+        +'\nEl perfil describe el estado de salud; no es un puntaje. Si necesita un índice de utilidad, aplique un conjunto de valores identificado para la población. Revise medicamentos potencialmente inapropiados, controle el dolor y estabilice las condiciones médicas activas según las dimensiones afectadas.'};
   },
-  note:'La unión de los cinco dígitos genera un perfil de salud: 00000 corresponde a ausencia de problemas y 44444 a una afectación severa. El perfil se contrasta con la puntuación de la escala visual análoga.'
+  note:'La unión de los cinco dígitos genera el perfil de salud: 11111 corresponde a ausencia de problemas y 55555 al nivel extremo en las cinco dimensiones. Los dígitos son códigos, no puntos: no se suman. El perfil se contrasta con la escala visual analógica.'
 },
 
 /* ============================ MENTAL ============================= */
@@ -1874,8 +1921,8 @@ memoria:{
     '¿Se le pierden las cosas?',
     '¿Olvida inmediatamente lo que le acaban de decir?'
   ],
-  interpret:s=> s>=19 ? {t:'Sugestivo de deterioro cognoscitivo',tone:'alert',d:'Si la prueba se realiza al familiar y al paciente y ambos superan 19, el resultado es más significativo. Si el familiar puntúa por encima de 19 y el paciente por debajo, considere anosognosia. Correlacione con la tamización cognoscitiva, la escolaridad y los criterios diagnósticos.'}
-                      : {t:'No sugestivo de deterioro cognoscitivo',tone:'ok',d:'No alcanza el punto de corte. Si el paciente puntúa por encima de 19 y el familiar por debajo, descarte depresión en el paciente.'},
+  interpret:s=> s>=19 ? {t:'Sugestivo de deterioro cognoscitivo',tone:'alert',d:'Si la prueba se realiza al familiar y al paciente y ambos puntúan 19 o más, el resultado es más significativo. Si el familiar puntúa 19 o más y el paciente menos de 19, considere anosognosia. Correlacione con la tamización cognoscitiva, la escolaridad y los criterios diagnósticos.'}
+                      : {t:'No sugestivo de deterioro cognoscitivo',tone:'ok',d:'No alcanza el punto de corte. Si el paciente puntúa 19 o más y el familiar menos de 19, descarte depresión en el paciente.'},
   note:'Lea la pregunta tal como está en el enunciado y registre siempre a quién se aplicó: paciente o familiar.'
 },
 
@@ -1893,13 +1940,16 @@ cdr:{
     {l:'2 · Deterioro moderado',v:2},
     {l:'3 · Deterioro severo',v:3}
   ],
+  /* 2.13.1: el cuidado personal no tiene la categoría 0,5 (se califica 0, 1, 2
+     o 3). Ver optsPorItem en la expansión de qs. */
+  optsPorItem:{5:[{l:'0 · Ninguno',v:0},{l:'1 · Deterioro leve',v:1},{l:'2 · Deterioro moderado',v:2},{l:'3 · Deterioro severo',v:3}]},
   qs:[
     'Memoria — 0: sin pérdida o un olvido esporádico. 0,5: leve olvido persistente, recuerdo parcial de eventos, olvido benigno. 1: pérdida moderada, más marcada para eventos recientes, que interfiere con las actividades cotidianas. 2: pérdida severa, solo retiene material muy aprendido, pérdida rápida de material nuevo. 3: solo quedan fragmentos',
     'Orientación — 0: completamente orientado. 0,5: orientado salvo leve dificultad con relaciones temporales. 1: dificultad moderada con relaciones temporales, orientado en lugar y momento de la evaluación, puede desorientarse en otro lugar. 2: dificultad severa con relaciones temporales, generalmente desorientado en tiempo y con frecuencia en lugar. 3: orientado solamente en persona',
     'Juicio y solución de problemas — 0: soluciona problemas cotidianos, maneja bien negocios y finanzas. 0,5: leve deterioro en solución de problemas, semejanzas y diferencias. 1: dificultad moderada, juicio social conservado. 2: deterioro severo, juicio social generalmente deteriorado. 3: incapaz de realizar juicios o solucionar problemas',
     'Actividades sociales — 0: funcionamiento independiente y en el nivel habitual en trabajo, compras y grupos sociales. 0,5: leve deterioro en estas actividades. 1: incapaz de funcionar independientemente, aunque todavía puede estar involucrado; aparenta normalidad a simple vista. 2: sin pretensión de función independiente fuera del hogar, aparenta estar suficientemente bien para llevarse a actividades fuera. 3: demasiado enfermo como para llevarse a actividades fuera del hogar',
     'Hogar y pasatiempos — 0: vida hogareña, pasatiempos e intereses intelectuales conservados. 0,5: deterioro leve. 1: deterioro leve pero definitivo; se abandonan las tareas domésticas difíciles y los intereses complejos. 2: solo se conservan quehaceres simples, intereses muy restringidos y pobremente conservados. 3: no hay funcionamiento significativo dentro del hogar',
-    'Cuidado personal — 0: completamente capaz de cuidar de sí mismo. 0,5: completamente capaz. 1: necesita recordatorios. 2: requiere asistencia para vestirse, higiene y cuidado de sus efectos personales. 3: requiere mucha ayuda, incontinencia frecuente'
+    'Cuidado personal — 0: completamente capaz de cuidar de sí mismo. Esta área no tiene la categoría 0,5. 1: necesita recordatorios. 2: requiere asistencia para vestirse, higiene y cuidado de sus efectos personales. 3: requiere mucha ayuda, incontinencia frecuente'
   ],
   /* Puntaje global según las reglas de Washington University (Knight ADRC,
      "CDR Scoring Rules"; Morris 1993). Corregido en la 2.12.3: hasta la 2.12.2
@@ -2174,6 +2224,10 @@ vulnerabilidad:{
       d:bal+'\nAlta vulnerabilidad a un desenlace adverso, o presencia objetiva de una lesión física, emocional o de los bienes del paciente, que se expresa en una baja calidad de vida. Requiere una intervención formal, con valoración por trabajo social y seguimiento del caso. Exprese en la historia clínica qué situaciones concretas generan el riesgo.'};
     if(R>=1) return {t:'Factores protectores a fortalecer',tone:'warn',display:R+' / '+P,
       d:bal+'\nPresencia de redes de apoyo que aportan cuidados, pero no en suficiente cantidad o calidad. Requiere intervención en psicoeducación y seguimiento en un tiempo prudente.'};
+    /* 2.13.1: sin factores de riesgo ni protectores registrados no se afirma que
+       existan redes adecuadas. */
+    if(P===0) return {t:'Sin factores de riesgo identificados',tone:'ok',display:R+' / '+P,
+      d:bal+'\nNo se identificaron factores de riesgo social, pero tampoco se registraron factores protectores, de modo que no puede afirmarse que existan redes de apoyo adecuadas. Complete la valoración con la entrevista social.'};
     return {t:'Baja vulnerabilidad social',tone:'ok',display:R+' / '+P,
       d:bal+'\nAdecuadas redes y soporte social, expresados en una buena calidad de vida. Toda aproximación diagnóstica es dinámica y puede cambiar en el tiempo.'};
   },
@@ -2255,7 +2309,7 @@ Object.values(SCALES).forEach(s=>{
   if(s.qs){
     s.items = s.qs.map((q,i)=>{
       const p = q.split(' — ');
-      const it = {q:(i+1)+'. '+p[0], o:s.scaleOpts};
+      const it = {q:(i+1)+'. '+p[0], o:(s.optsPorItem && s.optsPorItem[i]) || s.scaleOpts};
       if(p[1]) it.hint = p.slice(1).join(' — ');
       return it;
     });
@@ -2370,6 +2424,7 @@ const OPI_MOTIVOS = [
   {id:'fragil', l:'Persona mayor frágil', r:50, d:'El instructivo del nomograma permite reducciones de hasta el 50 % en pacientes de edad avanzada médicamente frágiles.'}
 ];
 
+const OPI_MISMO = {id:'mismo', l:'Mismo opioide y vía', r:0, d:'Como no cambian el opioide ni la vía, no hay tolerancia cruzada incompleta que compensar y no se aplica reducción: la dosis de partida se conserva. Ajústela según el control del dolor y los efectos adversos.'};
 const opiGet = id => OPIOIDES.find(o=>o.id===id);
 const opiLabel = o => o.n+' · '+o.via;
 
@@ -2379,7 +2434,7 @@ function metadonaDesdeMorfina(emo){
   return {dosis: emo/r, razon: r,
     banda: emo>300 ? 'morfina oral mayor de 300 mg al día: razón 12:1'
          : emo>=90 ? 'morfina oral de 90 a 300 mg al día: razón 8:1'
-                   : 'morfina oral de 30 a 90 mg al día: razón 4:1'};
+                   : 'morfina oral menor de 90 mg al día: razón 4:1'};
 }
 
 function opiDptText(){
@@ -2408,10 +2463,18 @@ function opiCalc(){
   const dosisTotal = num(t.dose);
   if(!o || !d || !isFinite(dosisTotal) || dosisTotal<=0) return null;
   const emo = dosisTotal * o.f;
+  /* Mismo opioide y misma vía (corregido en la 2.13.1): no hay conversión ni
+     tolerancia cruzada incompleta, así que la dosis se conserva y no se aplica
+     reducción. Hasta la 2.13.0 la metadona de destino se recalculaba con las
+     razones dependientes de la dosis aunque el origen fuera la misma metadona
+     (60 mg al día daban 37,5 mg), y en los demás opioides se restaba la
+     reducción del motivo elegido. */
+  const mismo = o.id===d.id;
   let bruta, metaBanda = null;
-  if(d.metadona){ const m = metadonaDesdeMorfina(emo); bruta = m.dosis; metaBanda = m.banda; }
+  if(mismo) bruta = dosisTotal;
+  else if(d.metadona){ const m = metadonaDesdeMorfina(emo); bruta = m.dosis; metaBanda = m.banda; }
   else bruta = emo / d.f;
-  const motivo = OPI_MOTIVOS.find(m=>m.id===(t.motivo||'estand')) || OPI_MOTIVOS[2];
+  const motivo = mismo ? OPI_MISMO : (OPI_MOTIVOS.find(m=>m.id===(t.motivo||'estand')) || OPI_MOTIVOS[2]);
   const final = bruta * (1 - motivo.r/100);
   const rescate = final * 0.10;
   let parche = null;
@@ -2454,9 +2517,11 @@ function marcarReciente(id){
 }
 /* Acepta coma o punto como separador decimal y descarta separadores de miles */
 function num(v){
+  /* 2.13.1: solo acepta un número completo (coma o punto decimal); "60abc" ya
+     no se lee como 60. */
   if(v===undefined || v===null) return NaN;
-  const s = String(v).trim().replace(/\s/g,'').replace(',', '.');
-  return parseFloat(s);
+  const t = String(v).trim().replace(/\s/g,'').replace(',', '.');
+  return /^-?\d+(\.\d+)?$/.test(t) ? parseFloat(t) : NaN;
 }
 /* Redondeo con precisión adaptada a la magnitud de la dosis */
 function dfmt(n){
@@ -2510,12 +2575,16 @@ function ppsNivel(a){
 function initScale(){
   const s = SCALES[state.id]; if(!s) return;
   s.items.forEach((it,i)=>{
-    if(it.type==='multi'){ state.multi[i]=[]; state.ans[i]=0; }
+    /* 2.13.1: una pregunta de selección múltiple queda sin responder hasta que
+       se marca una opción o "Ninguna"; antes contaba como respondida con 0. */
+    if(it.type==='multi'){ state.multi[i]=[]; }
     if(it.type==='num'){ state.ans[i]=0; }
   });
 }
 function multiScore(it,sel){
   if(it.score==='threshold') return sel.length>=(it.min||5) ? 1 : 0;
+  if(it.score==='cap') return Math.min(sel.length, it.cap);
+  if(it.score==='any') return sel.length ? it.pts : 0;
   return sel.length;
 }
 function answered(){
@@ -2554,9 +2623,17 @@ function minimoEscala(s){
   return (m>0 && m<s.max) ? m : 0;
 }
 
+/* Paso entre puntajes posibles (2.13.1). Antes se deducía de si el máximo era
+   entero; al corregir el PPI su máximo pasó a 15 y los tramos se habrían
+   recorrido de 1 en 1 aunque el PPI admite medios puntos (4,5 o 6,5). Ahora
+   se deduce de los valores de las opciones. */
+function pasoEscala(s){
+  const vs = s.items.flatMap(it=>Array.isArray(it.o) ? it.o.map(o=>o.v) : []);
+  return vs.some(v=>typeof v==='number' && !Number.isInteger(v)) || !Number.isInteger(s.max) ? 0.5 : 1;
+}
 function cortes(s){
   if(!s.max || !s.interpret) return null;
-  const paso = Number.isInteger(s.max) ? 1 : 0.5;
+  const paso = pasoEscala(s);
   const minimo = minimoEscala(s);
   const bandas = [];
   for(let i=0; ; i++){
@@ -2744,7 +2821,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.1</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -2857,7 +2934,8 @@ function renderScale(){
     if(it.type==='multi'){
       const sel = state.multi[i] || [];
       html += '<div class="chips">'+it.chips.map((c,ci)=>
-        '<button class="chip" data-chip="'+ci+'" data-mi="'+i+'" aria-pressed="'+sel.includes(ci)+'">'+esc(c)+'</button>').join('')+'</div>'
+        '<button class="chip" data-chip="'+ci+'" data-mi="'+i+'" aria-pressed="'+sel.includes(ci)+'">'+esc(c)+'</button>').join('')
+        + '<button class="chip chip-ninguna" data-ninguna="'+i+'" aria-pressed="'+(state.ans[i]!==undefined && !sel.length)+'">Ninguna</button></div>'
         + '<div class="derived">Seleccionadas: <strong id="mc'+i+'">'+sel.length+'</strong> · Puntaje del ítem: <strong id="ms'+i+'">'+multiScore(it,sel)+'</strong></div>';
     } else if(it.type==='num'){
       html += '<div class="calc"><div class="field"><label>'+esc(it.label||'Valor')+'</label>'
@@ -2892,17 +2970,19 @@ function optsHTML(o,i){
 
 function bmiText(){
   const p = num(state.extra.peso), t = num(state.extra.talla);
-  if(!p || !t) return 'Ingrese peso y talla para calcular el IMC.';
+  if(!(p>0 && t>0)) return 'Ingrese peso (kg) y talla (cm) como números positivos para calcular el IMC.';
   const imc = p / Math.pow(t/100,2);
   const sug = imc<19?'IMC menor de 19 → 0 puntos':imc<21?'IMC 19 a menos de 21 → 1 punto':imc<23?'IMC 21 a menos de 23 → 2 puntos':'IMC 23 o mayor → 3 puntos';
   return 'IMC calculado: <strong>'+imc.toFixed(1)+' kg/m²</strong> · '+sug;
 }
 function weightText(){
   const a = num(state.extra.wPrev), b = num(state.extra.wNow);
-  if(!a || !b) return 'Opcional: ingrese ambos pesos para calcular el porcentaje de cambio.';
-  const pct = ((a-b)/a)*100;
-  return 'Cambio de peso: <strong>'+(pct>0?'-':'+')+Math.abs(pct).toFixed(1)+'%</strong> · '
-    + (pct>=5?'Pérdida del 5 % o más':'Pérdida del 4 % o menos');
+  if(!(a>0 && b>0)) return 'Opcional: ingrese ambos pesos (en kg, números positivos) para calcular el cambio.';
+  const pct = ((a-b)/a)*100, kg = a-b;
+  /* 2.13.1: solo informa el cambio; cada instrumento aplica su propio criterio
+     (antes una pérdida de 4,5 % se describía como "4 % o menos"). */
+  return 'Cambio de peso: <strong>'+(pct>0?'-':'+')+Math.abs(pct).toFixed(1).replace('.',',')+' %</strong> ('
+    +(kg>0?'-':'+')+Math.abs(kg).toFixed(1).replace('.',',')+' kg). Compárelo con el criterio de este instrumento y elija la opción.';
 }
 
 function renderResult(){
@@ -2957,7 +3037,7 @@ function renderResult(){
 function tocados(){
   const s = SCALES[state.id]; if(!s) return 0;
   return s.items.reduce((n,it,i)=>{
-    if(it.type==='multi') return n + ((state.multi[i]||[]).length ? 1 : 0);
+    if(it.type==='multi') return n + (state.ans[i]!==undefined ? 1 : 0);
     if(it.type==='num')   return n + (!s.max && String(state.extra[it.key] ?? '').trim()!=='' ? 1 : 0);
     return n + (state.ans[i]!==undefined ? 1 : 0);
   }, 0);
@@ -3080,7 +3160,7 @@ function renderOpiRes(){
     + (mismo?'<div class="verdict v-warn">Ajuste de dosis, no rotación</div>':'')
     + '<p class="detail">'+esc(
         (mismo
-          ? 'El opioide y la vía de origen coinciden con los de destino, de modo que el cálculo no es una rotación sino un ajuste de dosis. '
+          ? 'El opioide y la vía de origen coinciden con los de destino, de modo que no hay rotación: la dosis diaria se mantiene en '+dfmt(r.final)+(r.d.parche?' mcg/h':uni(r.d.u)+' al día')+'. '
           : dfmt(r.dosis)+uni(r.o.u)+(r.o.parche?'':' al día')+' de '+opiLabel(r.o)+' equivalen a '
              + (r.d.parche ? 'una liberación de '+dfmt(r.final)+' mcg/h de '+opiLabel(r.d)
                            : dfmt(r.final)+uni(r.d.u)+' al día de '+opiLabel(r.d))
@@ -3280,7 +3360,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3292,6 +3372,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.13.1</strong> · Correcciones contra las fuentes originales, a partir de dos revisiones externas. Cambian resultados: VES-13 (Saliba 2001: ayuda en alguna actividad funcional suma 4 en total, actividades físicas con tope de 2, máximo 10); PPI (delirium 4, máximo 15, sin contar el delirium causado solo por un medicamento); Charlson (enfermedad cerebrovascular 1 punto, máximo 37); Charlson Colombia (tumor con o sin metástasis como opciones excluyentes, máximo 26); Lawton (se separan las cinco opciones del cuidado de la casa); SPPB (equilibrio jerárquico de 0 a 4 e intervalos contiguos de marcha y silla según Guralnik); CDR (el cuidado personal no tiene 0,5); conversor (el mismo opioide por la misma vía conserva la dosis). EQ-5D-5L: niveles de 1 a 5 (perfil 11111 a 55555), sin clasificación por suma y con la EVA validada de 0 a 100. Las preguntas de selección múltiple ya no cuentan como respondidas sin tocarlas: se marca una opción o "Ninguna". Textos: PPS (puntos del PPI por nivel, NECPAL solo por debajo del 50 % e intervalo de mejor ajuste en perfiles discordantes), CFS (nombres de las categorías 4 y 9 de la versión 2.0), Fried (4,57 metros), FRAIL (pérdida mayor del 5 %), Barthel (criterio NECPAL menor de 20), G8, PAINAD, trastornos de memoria y vulnerabilidad social. Validación estricta de números. Nueva prueba contra las fuentes.</div>'
   + '<div class="cite"><strong>2.13.0</strong> · PPS por columnas: cinco ítems (deambulación, actividad y evidencia de enfermedad, autocuidado, ingesta y nivel de conciencia) en lugar de una sola lista de niveles. El nivel se calcula con la regla de lectura de la PPSv2: se baja por la deambulación y, desde ahí, columna por columna hacia la derecha; las columnas de la izquierda prevalecen. El resultado muestra el recorrido y avisa cuando una columna encaja en un nivel más alto. Se retira el 0 % (muerte) como opción. La Clinical Frailty Scale muestra un pictograma propio junto a cada nivel, en los verdes de la marca; la puntuación sigue dependiendo de la descripción.</div>'
   + '<div class="cite"><strong>2.12.3</strong> · Corrección del puntaje global del CDR. La lógica aplicaba solo las reglas generales, con el umbral "más de tres áreas" en lugar de "tres o más", y omitía los casos especiales de memoria 0, 0,5 y 1 o más; por ejemplo, memoria 0,5 con las demás áreas en 0 daba CDR 0 en vez de 0,5. Ahora sigue las reglas de Washington University, verificadas en las 15.625 combinaciones posibles. El resultado indica qué regla definió el estadio.</div>'
   + '<div class="cite"><strong>2.12.2</strong> · Ajustes de las transiciones: el puntaje del resultado se muestra fijo desde el primer momento, sin conteo desde 0, para que nunca aparezca un número distinto junto a la interpretación. Abrir la evidencia o añadir la escala a la VGI ya no repite la animación del resultado. La preferencia de movimiento reducido cubre también los indicadores de la navegación y de las opciones.</div>'
@@ -3329,7 +3410,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.13.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.13.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3484,6 +3565,19 @@ document.addEventListener('click', e=>{
     return;
   }
 
+  const ning = e.target.closest('[data-ninguna]');
+  if(ning){
+    const i = +ning.dataset.ninguna;
+    state.multi[i] = []; state.ans[i] = 0;
+    ning.parentElement.querySelectorAll('[data-chip]').forEach(b=>{ b.setAttribute('aria-pressed','false'); b.classList.remove('pick'); });
+    ning.setAttribute('aria-pressed','true');
+    clearPend(ning);
+    const c = document.getElementById('mc'+ning.dataset.ninguna), sc = document.getElementById('ms'+ning.dataset.ninguna);
+    if(c) c.textContent = 0; if(sc) sc.textContent = 0;
+    renderScorebar(); renderSpine();
+    return;
+  }
+
   const chip = e.target.closest('[data-chip]');
   if(chip){
     const i = +chip.dataset.mi, ci = +chip.dataset.chip;
@@ -3493,10 +3587,13 @@ document.addEventListener('click', e=>{
     if(at>=0) sel.splice(at,1); else sel.push(ci);
     chip.setAttribute('aria-pressed', at<0);
     chip.classList.toggle('pick', at<0);
-    state.ans[i] = multiScore(it, sel);
+    if(sel.length) state.ans[i] = multiScore(it, sel); else delete state.ans[i];
+    const ning = chip.parentElement.querySelector('[data-ninguna]');
+    if(ning) ning.setAttribute('aria-pressed','false');
+    clearPend(chip);
     const c = document.getElementById('mc'+i), sc = document.getElementById('ms'+i);
     if(c) c.textContent = sel.length;
-    if(sc) sc.textContent = state.ans[i];
+    if(sc) sc.textContent = state.ans[i] ?? 0;
     renderScorebar(); renderSpine();
   }
 });

@@ -59,13 +59,21 @@ del CDR); los recuentos no cambian y la lista de fallos sigue vacía.
 con 11 opciones a cinco ítems con 26 opciones: los ítems suben de 371 a 375 y las
 opciones de 1.264 a 1.279; escalas y umbrales no cambian y la lista de fallos
 sigue vacía.
+`resultado-2.13.1.json` corresponde a la 2.13.1 (correcciones contra las fuentes);
+los ítems pasan de 375 a 372 y las opciones de 1.279 a 1.277 (SPPB, Charlson
+Colombia, Lawton y CDR), y la lista de fallos sigue vacía. En esta versión el script incorpora dos formas de puntuar
+las preguntas de selección múltiple (con tope y "cualquiera suma", que usa el
+VES-13) y deduce el paso entre puntajes de los valores de las opciones y no de
+si el máximo es entero; así los tramos del PPI y del G8 recorren los medios puntos.
 
 ## Prueba del puntaje global del CDR
 
 Desde la 2.12.3, `verificar-cdr.mjs` compara la lógica del CDR de la
 aplicación con una transcripción aparte de las reglas de Washington University
-(Knight ADRC, "CDR Scoring Rules") en las 15.625 combinaciones posibles de las
-seis áreas, y comprueba nueve casos fijos tomados de esas reglas:
+(Knight ADRC, "CDR Scoring Rules") en todas las combinaciones de las seis
+áreas con las opciones que ofrece la aplicación (15.625 hasta la 2.13.0; 12.500
+desde la 2.13.1, en que el cuidado personal deja de tener 0,5), y comprueba
+nueve casos fijos tomados de esas reglas:
 
 ```
 node verificacion/verificar-cdr.mjs index.html > resultado-cdr.json
@@ -83,3 +91,32 @@ pruebas, pero no comprueba que los ítems y umbrales coincidan con las
 publicaciones originales ni sustituye una auditoría independiente. Se probó
 introduciendo errores deliberados (un máximo alterado, un tramo desplazado y un
 fallo en el resumen por esferas), y los tres se señalaron.
+
+## Prueba contra las fuentes primarias
+
+Desde la 2.13.1, `verificar-fuentes.mjs` compara la aplicación con una
+transcripción aparte de las reglas publicadas, en todas las combinaciones:
+
+- VES-13 (Saliba 2001): 12.288 combinaciones de edad, salud, actividades
+  físicas y actividades funcionales.
+- PPI (Morita 1999): las 72 combinaciones de sus cinco factores.
+- Coherencia PPS y PPI: cada nivel de la PPS debe citar los puntos que el PPI le
+  asigna, y el criterio del NECPAL solo por debajo del 50 %.
+- Conversor de opioides: 400 pares de origen y destino, 12 dosis y 4 motivos
+  (19.200 cálculos), la ida y vuelta entre opioides que no son metadona y el
+  dibujo del resultado de los 400 pares.
+- 45 comprobaciones de casos de referencia de la revisión externa de la 2.13.0 (Charlson,
+  Charlson Colombia, Lawton, EQ-5D, CFS, PPS, SPPB, Fried, pérdida de peso,
+  entradas numéricas, selección múltiple sin evaluar, vulnerabilidad social,
+  PPI y G8).
+
+```
+node verificacion/verificar-fuentes.mjs index.html > resultado-fuentes.json
+```
+
+Sobre la 2.13.0 señala 10.057 discrepancias (9.216 en el VES-13, 36 en el PPI,
+14 en la coherencia PPS y PPI, 752 en el conversor y 37 en los casos de
+referencia); sobre la 2.13.1, ninguna
+(`resultado-fuentes-2.13.1.json`). Las transcripciones de referencia se
+escribieron también con asistencia de un modelo de lenguaje y deben cotejarse
+con las publicaciones citadas.

@@ -1,0 +1,76 @@
+{
+  "archivo": "index.html",
+  "sha256": "dd7c3955a8a00eb47392ab7e48d89c946816eabc50c157ce035b0e81f7073aa2",
+  "fecha": "2026-10-08",
+  "version": "2.13.1",
+  "combinaciones": 12500,
+  "discrepancias": [],
+  "casos": [
+    {
+      "areas": "3 3 2 2 1 1",
+      "esperado": 2,
+      "regla": "empate en un lado: el puntaje más cercano a la memoria",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "0.5 0 0 0 0 0",
+      "esperado": 0.5,
+      "regla": "memoria 0,5: nunca 0",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "0.5 1 1 1 0.5 0",
+      "esperado": 1,
+      "regla": "memoria 0,5 con tres áreas en 1 o más",
+      "app": 1,
+      "ok": true
+    },
+    {
+      "areas": "0 0.5 0.5 0 0 0",
+      "esperado": 0.5,
+      "regla": "memoria 0 con dos áreas alteradas",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "0 0.5 0 0 0 0",
+      "esperado": 0,
+      "regla": "memoria 0 con una sola área alterada",
+      "app": 0,
+      "ok": true
+    },
+    {
+      "areas": "1 0 0 0 0.5 0",
+      "esperado": 0.5,
+      "regla": "memoria 1 o más: nunca 0",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "1 2 2 2 0.5 0",
+      "esperado": 1,
+      "regla": "reparto tres y dos a cada lado",
+      "app": 1,
+      "ok": true
+    },
+    {
+      "areas": "1 2 2 2 1 0",
+      "esperado": 2,
+      "regla": "tres o más por encima de la memoria",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "2 2 1 3 1 3",
+      "esperado": 2,
+      "regla": "una o dos iguales y no más de dos a cada lado",
+      "app": 2,
+      "ok": true
+    }
+  ],
+  "cuidadoPersonalSinCeroCinco": true,
+  "numDiscrepancias": 0,
+  "erroresJS": []
+}

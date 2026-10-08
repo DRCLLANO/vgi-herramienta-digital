@@ -3,6 +3,96 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.13.1
+
+Correcciones contra las fuentes originales, a partir de dos revisiones externas
+de la 2.13.0. Cambian resultados en varios instrumentos.
+
+Cambios que modifican puntajes o clasificaciones:
+
+- VES-13 (Saliba 2001). Necesitar ayuda en una o más de las cinco actividades
+  funcionales suma 4 puntos en total, no 1 por actividad; las seis actividades
+  físicas suman 1 punto cada una con un máximo de 2; el máximo es 10 y no 15.
+  Una persona menor de 75 años, con buena salud y que solo necesita ayuda para
+  bañarse sumaba 1 (no vulnerable); ahora suma 4 (vulnerable). Los ítems siguen
+  la redacción original ("mucha dificultad o no puede"; "caminar de un lado a
+  otro de la habitación" en lugar de "transportarse").
+- PPI (Morita 1999). Delirium 4 y no 4,5; máximo 15. Un delirium aislado cruzaba
+  el umbral de supervivencia menor de 6 semanas. No se puntúa el delirium
+  causado solo por un medicamento. Se corrigen la sensibilidad y especificidad
+  citadas (80/85 % para mayor de 6; 80/77 % para mayor de 4).
+- Charlson original. Enfermedad cerebrovascular 1 punto (valía 2, el peso de la
+  versión colombiana); máximo 37.
+- Charlson Colombia. Tumor sin metástasis (3) y con metástasis (4) son opciones
+  excluyentes de un mismo ítem; antes podían sumarse por el mismo proceso.
+  Máximo 26. El texto del tramo alto dice "5 puntos o más".
+- Lawton y Brody. El cuidado de la casa separa las cinco opciones originales
+  (antes se agrupaban estados distintos en una misma respuesta). Adaptación
+  declarada por decisión clínica: "necesita ayuda en todas las labores" vale 0,
+  como "no participar", para que no dé como resultado "independiente"; en el
+  instrumento original y en el anexo de MinSalud vale 1. Las tareas ligeras,
+  aun sin una limpieza adecuada, valen 1. La adaptación consta en la nota de la
+  escala.
+- SPPB (Guralnik 1994). El equilibrio es un solo ítem jerárquico de 0 a 4 (solo
+  se avanza si se mantiene la posición anterior 10 segundos); antes podían
+  puntuarse semitándem y tándem tras fallar pies juntos. Los intervalos de
+  marcha y silla son contiguos (marcha: 3,1 s o menos = 4; 5,7 s o más = 1;
+  silla: 11,1 s o menos = 4; 16,7 a 60 s = 1); antes tiempos como 3,1, 11,1 o
+  16,7 s no tenían categoría y 5,7 s caía en 2.
+- CDR. El cuidado personal no tiene la categoría 0,5.
+- Conversor de opioides. El mismo opioide por la misma vía conserva la dosis y
+  no aplica reducción (la metadona de 60 mg daba 37,5 mg). La razón 4:1 de la
+  metadona se rotula "morfina oral menor de 90 mg".
+- EQ-5D-5L. Niveles codificados de 1 a 5 (perfil 11111 a 55555, antes 00000 a
+  44444) y sin clasificación leve, moderada o severa por suma de niveles, que
+  EuroQol desaconseja: se informan el perfil, las dimensiones con problemas y
+  el nivel más alto. La EVA solo admite enteros de 0 a 100.
+- Selección múltiple. Las preguntas de selección múltiple ya no cuentan como
+  respondidas al abrir la escala: se marca al menos una opción o "Ninguna".
+  Antes, por ejemplo, vulnerabilidad social sin responder daba "baja
+  vulnerabilidad". Afecta a todas las escalas con este tipo de pregunta.
+
+Cambios de texto o presentación:
+
+- PPS. Cada nivel cita los puntos que le asigna el PPI (30 % suma 2,5, no 4); el
+  criterio del NECPAL solo por debajo del 50 %; en perfiles discordantes el
+  resultado muestra el intervalo de mejor ajuste (por ejemplo, "30 % (mejor
+  ajuste entre 30 y 50 %)").
+- CFS. El resultado conserva el nombre de cada categoría de la versión 2.0 (el 4
+  aparecía como "Prefragilidad" y el 9 como "Fragilidad").
+- Unidades métricas: Fried (4,57 metros, antes "15 pasos (4,6 metros)"), SPPB
+  (2,44 metros) y VES-13 (4,5 kg y 400 metros), sin unidades imperiales. Fried:
+  límites "o más" en ambos sexos. FRAIL: pérdida de
+  peso mayor del 5 %. El cálculo auxiliar de pérdida de peso informa el
+  porcentaje sin clasificarlo (describía 4,5 % como "4 % o menos").
+- Barthel: el criterio de dependencia severa del NECPAL es menor de 20 (decía
+  25). G8: los tramos muestran el 14,5 y el texto dice "más de 14 puntos".
+  PAINAD: no se presenta como equivalente individual de una EVA. Trastornos de
+  memoria: "19 o más" en todos los textos. Vulnerabilidad social: sin factores
+  de ningún tipo ya no afirma redes adecuadas.
+- Números: solo se aceptan cifras completas ("60abc" ya no se lee como 60) y el
+  IMC exige peso y talla positivos.
+- Motor: puntuación con tope y "cualquiera suma" para la selección múltiple;
+  opciones propias por ítem en las escalas de respuesta común; el paso entre
+  puntajes se deduce de las opciones.
+
+Verificación:
+
+- Nueva prueba `verificacion/verificar-fuentes.mjs`, contra las fuentes y en
+  todas las combinaciones de VES-13, PPI, coherencia PPS y PPI y conversor, más
+  45 comprobaciones de casos de referencia de la revisión externa: 10.057 discrepancias en la
+  2.13.0 y ninguna en la 2.13.1.
+- `verificar-cdr.mjs` usa ahora las opciones de cada área (12.500
+  combinaciones) y sigue sin discrepancias.
+- `trazabilidad-instrumentos.csv`: máximos, tramos y recuentos de VES-13, PPI,
+  G8, Charlson, Charlson Colombia, SPPB, Lawton y CDR.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.13.1`. El script general (`resultado-2.13.1.json`) pasa sin fallos.
+- Quedan pendientes de cotejar con el manual de referencia: NPI (versión,
+  dominios y corte de 9), Downton modificada, autopercepción de salud, regla de
+  vulnerabilidad social, corte de trastornos de memoria, cortes del MOS,
+  variante del Zarit, FTS y ajuste por edad del Charlson colombiano.
+
 ## 2.13.0
 
 Rediseño de la PPS y pictogramas en la Clinical Frailty Scale. Ninguna otra
