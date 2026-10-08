@@ -533,6 +533,26 @@ dependen de la versión que adopta el manual (NPI, Downton modificada,
 autopercepción, vulnerabilidad social, trastornos de memoria, MOS, Zarit, FTS
 y Charlson colombiano) y quedan pendientes de cotejo.
 
+### 8.10 Referencia de prueba con la misma lectura que el código
+
+El 8 de octubre de 2026, al revisar de nuevo el CDR de la 2.13.1, se advirtió que
+la regla de memoria 1 o más ("el CDR no puede ser 0; es 0,5 cuando la mayoría de
+las áreas secundarias están en 0") se aplicaba antes de las reglas generales. En
+la página de Knight ADRC figura entre las excepciones y su propósito es impedir
+un CDR de 0, de modo que actúa como piso sobre el resultado de las reglas
+generales. Aplicada antes, anulaba el reparto tres y dos: memoria 1 con las
+demás áreas en 0, 0, 0, 2 y 2 daba 0,5 en lugar de 1. Afectaba a 50 de las
+12.500 combinaciones y siempre rebajaba el estadio.
+
+La prueba exhaustiva de la sección 8.8 no lo detectó porque su transcripción de
+las reglas, escrita aparte pero con la misma lectura, ponía la regla en el mismo
+orden. Coincidían en las 12.500 combinaciones porque compartían el error. La
+lección completa la de la sección 8.8: una comparación exhaustiva solo es tan
+independiente como la interpretación de la regla en que se apoya, y conviene
+añadir casos fijos en los límites entre reglas, no solo en su centro. Se
+corrigió en la versión 2.13.2, en la aplicación y en la referencia, con tres
+casos fijos nuevos.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la

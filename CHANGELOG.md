@@ -3,6 +3,35 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.13.2
+
+Corrección del puntaje global del CDR. Solo cambia el CDR.
+
+- Con memoria 1 o más, la regla "el CDR no puede ser 0; es 0,5 cuando la
+  mayoría de las áreas secundarias están en 0" se aplicaba antes de las reglas
+  generales y anulaba el reparto tres y dos, en el que prevalece la memoria.
+  Memoria 1 con las demás áreas en 0, 0, 0, 2 y 2 daba 0,5 en lugar de 1;
+  memoria 2 con 0, 0, 0, 3 y 3 daba 0,5 en lugar de 2. Afectaba a 50 de las
+  12.500 combinaciones, siempre rebajando el estadio. Ahora la regla actúa como
+  piso: solo corrige un resultado que sería 0.
+- El estadio 0,5 se rotula "Demencia cuestionable o muy leve" (antes "Deterioro
+  cognitivo leve"), como en Morris 1993: abarca tanto el deterioro cognitivo
+  leve como la demencia muy leve. El texto del resultado lo explica y recuerda
+  que la repercusión en las actividades cotidianas orienta la distinción.
+
+Verificación:
+
+- `verificar-cdr.mjs` transcribía la regla en el mismo orden que la aplicación,
+  de modo que compartía el error y no podía señalarlo. La referencia aplica
+  ahora la regla como piso y hay tres casos fijos nuevos (dos de reparto con
+  tres áreas en 0 y uno de piso de 0,5). Sobre la 2.13.1 la prueba corregida
+  señala 50 discrepancias y falla dos casos fijos; sobre la 2.13.2, ninguna
+  (`resultado-cdr-2.13.2.json`).
+- El script general (`resultado-2.13.2.json`) y la prueba contra las fuentes
+  (`resultado-fuentes-2.13.2.json`) pasan sin fallos; recuentos sin cambios.
+- Se actualizan los metadatos de versión y la caché del service worker a
+  `v2.13.2`.
+
 ## 2.13.1
 
 Correcciones contra las fuentes originales, a partir de dos revisiones externas
