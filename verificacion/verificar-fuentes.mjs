@@ -13,28 +13,31 @@
 //   PPS y PPI  Coherencia: el texto de cada nivel de la PPS debe citar los
 //              puntos que el PPI asigna a ese nivel, y el criterio del NECPAL
 //              (PPS menor del 50 %) solo debe aparecer por debajo del 50 %.
-//   Conversor  Los 400 pares de origen y destino, 12 dosis y los cuatro
-//              motivos de reducción (19.200 cálculos): mismo opioide y vía
+//   Conversor  Todos los pares de origen y destino (361 desde la 2.13.4; 400 antes), 12 dosis y los cuatro
+//              motivos de reducción (17.328 cálculos; 19.200 antes): mismo opioide y vía
 //              conservan la dosis; metadona de destino con razones 4:1, 8:1 y
 //              12:1 según la morfina oral (umbrales 90 y 300 mg); el resto,
 //              equivalente de morfina dividido por el factor de destino; y la
 //              ida y vuelta entre dos opioides que no sean metadona, sin
 //              reducción, devuelve la dosis de partida. Además se dibuja el
-//              resultado de los 400 pares en la pantalla real del conversor.
+//              resultado de todos los pares en la pantalla real del conversor.
 //   Casos      Los casos de referencia de la revisión externa de la 2.13.0:
 //              Charlson y Charlson Colombia, Lawton, EQ-5D (11111, 55555,
 //              11151 y EVA fuera de rango), CFS 4 y 9, PPS discordante, SPPB
 //              (equilibrio y tiempos límite), Fried, pérdida de peso, entradas
 //              numéricas, selección múltiple sin evaluar, vulnerabilidad social,
 //              PPI (exclusión de delirium por medicamento) y G8.
-//   Seguridad  Desde la 2.13.3, conversor con parche de destino: los 20
+//   Seguridad  Desde la 2.13.3, conversor con parche de destino: los
 //   (conv.)    orígenes por los dos parches, 15 dosis y cuatro motivos. La
 //              presentación sugerida es la mayor que no supera la liberación
 //              calculada; por debajo del parche mínimo se avisa "Sin
 //              presentación compatible" sin posología ni rescate; con
 //              fentanilo transdérmico se advierte la falta de tolerancia a
 //              opioides por debajo de 60 mg de morfina oral. Además, al cambiar
-//              el origen en la pantalla real la dosis se vacía.
+//              el origen en la pantalla real la dosis se vacía. Desde la
+//              2.13.4: el rescate del parche se calcula sobre la presentación
+//              sugerida; con metadona de destino el rescate se da con morfina
+//              o hidromorfona; la meperidina ya no figura.
 // Termina con código 0 si no hay discrepancias y con 1 si las hay.
 import { chromium } from 'playwright';
 import { createHash } from 'node:crypto';
@@ -127,6 +130,10 @@ const r = await page.evaluate(() => {
   // ---------------- Conversor de opioides ----------------
   {
     const dif = [], ids = OPIOIDES.map(o => o.id);
+    // Desde la 2.13.4 la lista tiene 19 opioides (se retiró la meperidina IV).
+    // Se prevén un factor de origen distinto (fOrigen) y opioides solo de origen
+    // (soloOrigen), aunque hoy ninguno los usa.
+    const destinos = OPIOIDES.filter(o => !o.soloOrigen).map(o => o.id);
     const dosis = [1, 5, 10, 25, 37.5, 60, 89, 90, 100, 300, 301, 500];
     const calc = (from, to, dose, motivo) => {
       state.tool = { from, to, dose: String(dose), dpt: '', tomas: '', motivo };
@@ -134,33 +141,35 @@ const r = await page.evaluate(() => {
     };
     const ref = (o, d, dose, red) => {
       if (o.id === d.id) return dose;
-      const emo = dose * o.f;
+      const emo = dose * (o.fOrigen || o.f);
       const bruta = d.metadona ? emo / (emo > 300 ? 12 : emo >= 90 ? 8 : 4) : emo / d.f;
       return bruta * (1 - red / 100);
     };
     let n = 0;
-    for (const a of ids) for (const b of ids) for (const dose of dosis) for (const mot of OPI_MOTIVOS) {
+    for (const a of ids) for (const b of destinos) for (const dose of dosis) for (const mot of OPI_MOTIVOS) {
       n++;
       const o = opiGet(a), d = opiGet(b), res = calc(a, b, dose, mot.id);
       const esperado = ref(o, d, dose, mot.r);
       if (!res || !isFinite(res.final) || res.final <= 0 || Math.abs(res.final - esperado) > 1e-9 * Math.max(1, esperado))
         dif.push({ origen: a, destino: b, dosis: dose, motivo: mot.id, app: res && res.final, esperado });
     }
-    // Ida y vuelta sin reducción entre opioides que no son metadona.
+    // Ida y vuelta sin reducción entre opioides que no son metadona ni tienen
+    // factor distinto según la dirección.
     let vueltas = 0;
+    const asim = o => o.metadona || o.fOrigen || o.soloOrigen;
     for (const a of ids) for (const b of ids) {
-      if (opiGet(a).metadona || opiGet(b).metadona) continue;
+      if (asim(opiGet(a)) || asim(opiGet(b))) continue;
       vueltas++;
       const ida = calc(a, b, 60, 'dolor').final, vuelta = calc(b, a, ida, 'dolor').final;
       if (Math.abs(vuelta - 60) > 1e-9) dif.push({ origen: a, destino: b, problema: 'ida y vuelta da ' + vuelta });
     }
-    // Dibujo real del resultado para los 400 pares.
+    // Dibujo real del resultado para todos los pares.
     const prev = state;
     state = { view: 'tool', eje: 'paliativo', id: 'opioides', ans: {}, sel: {}, multi: {}, extra: {}, q: '', dom: null,
       evid: false, showResult: false, tool: { from: 'mor_vo', dose: '60', dpt: '', tomas: '', to: 'oxi_vo', motivo: 'estand' } };
     render();
     let dibujados = 0;
-    for (const a of ids) for (const b of ids) {
+    for (const a of ids) for (const b of destinos) {
       Object.assign(state.tool, { from: a, to: b, dose: '60' });
       try {
         renderOpiRes();
@@ -305,6 +314,33 @@ const r = await page.evaluate(() => {
     const inp = document.querySelector('input[data-op="dose"]');
     if (state.tool.dose !== '' || (inp && inp.value !== '') || opiCalc() !== null)
       dif.push({ problema: 'cambio de origen: la dosis se conserva (' + state.tool.dose + ')' });
+    // 2.13.4: rescate del parche sobre la presentación sugerida; rescate con
+    // metadona de destino con morfina o hidromorfona y sin cifra de metadona;
+    // meperidina retirada.
+    for (const a of ids) for (const d of parches) for (const dose of dosis) {
+      Object.assign(state.tool, { from: a, to: d.id, dose: String(dose), motivo: 'estand' });
+      const r = opiCalc();
+      if (r.parche !== null && !(r.rescIR && r.rescIR.parche === r.parche))
+        dif.push({ origen: a, destino: d.id, dosis: dose, problema: 'rescate no calculado sobre el parche sugerido' });
+    }
+    for (const a of ids) for (const dose of dosis) for (const mot of OPI_MOTIVOS) {
+      Object.assign(state.tool, { from: a, to: 'met_vo', dose: String(dose), motivo: mot.id });
+      renderOpiRes();
+      const txt = document.getElementById('opires').innerText;
+      if (!/Dosis de rescate: con morfina o hidromorfona de liberación inmediata/.test(txt) || /Dosis de rescate:\s*[\d,]+\s*mg/.test(txt))
+        dif.push({ origen: a, dosis: dose, motivo: mot.id, problema: 'rescate con metadona' });
+    }
+    Object.assign(state.tool, { from: 'mor_vo', to: 'fen_td', dose: '200', motivo: 'estand' });
+    let rr = opiCalc();
+    if (!(rr.parche === 25 && rr.rescIR && Math.abs(rr.rescIR.emo - 90) < 1e-9)) dif.push({ problema: 'morfina 200 a fentanilo: rescate sobre ' + (rr.rescIR && rr.rescIR.parche) });
+    Object.assign(state.tool, { from: 'met_vo', to: 'met_vo', dose: '60', motivo: 'estand' });
+    rr = opiCalc();
+    if (!(rr.rescIR && rr.rescIR.sinCifra)) dif.push({ problema: 'metadona a metadona: cifra de rescate' });
+    Object.assign(state.tool, { from: 'mor_vo', to: 'met_vo', dose: '60', motivo: 'estand' });
+    rr = opiCalc();
+    if (!(rr.rescIR && Math.abs(rr.rescIR.emo - 42) < 1e-9)) dif.push({ problema: 'morfina 60 a metadona: base del rescate' });
+    if (opiGet('mep_iv') || /Meperidina/.test(document.getElementById('view').innerText))
+      dif.push({ problema: 'la meperidina sigue en el conversor' });
     state = prev;
     out.seguridadConversor = { combinaciones: n, discrepancias: dif.length, ejemplos: dif.slice(0, 15) };
   }

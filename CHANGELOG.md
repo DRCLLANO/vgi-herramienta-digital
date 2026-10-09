@@ -3,6 +3,35 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.13.4
+
+Conversor de opioides. Los factores de conversión no cambian: siguen el
+nomograma y el taller de referencia. No cambia ninguna escala.
+
+- Se retira la meperidina, que no debe usarse en la persona mayor. El conversor
+  queda con 19 opioides y vías.
+- Rescate con parche. Se calcula sobre la presentación sugerida y no sobre la
+  liberación calculada, que la supera desde que el redondeo es hacia abajo
+  (2.13.3): morfina oral 200 mg con la reducción estándar da 38,9 mcg/h, se
+  sugiere el parche de 25 y el rescate pasa a 9 mg de morfina oral. Con el mismo
+  parche de origen y destino se usa la liberación actual.
+- Rescate con metadona de destino. Ya no se da como 10 % de la metadona (60 mg
+  al día daban 6 mg de metadona). En Colombia la metadona se dispensa en
+  tabletas de 10 y 40 mg (Fondo Nacional de Estupefacientes), que no permiten
+  fraccionar un rescate del 10 %, de modo que se indica con morfina o
+  hidromorfona de liberación inmediata, como 10 % del equivalente de morfina oral
+  de origen con la reducción del motivo. Si solo se ajusta la dosis de metadona,
+  no se calcula cifra. El cálculo de la dosis de metadona no cambia.
+
+Verificación:
+
+- `verificar-fuentes.mjs`: el conversor pasa a 361 pares (17.328 cálculos) y la
+  sección de seguridad a 2.280 combinaciones, más el rescate sobre el parche
+  sugerido, el rescate con metadona de destino y la ausencia de la meperidina.
+  Sobre la 2.13.3 señala 1.444 discrepancias; sobre la 2.13.4, ninguna
+  (`resultado-fuentes-2.13.4.json`).
+- El script general y la prueba del CDR pasan sin fallos.
+
 ## 2.13.3
 
 Conversor de opioides: tres correcciones de seguridad, a partir de una revisión

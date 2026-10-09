@@ -69,6 +69,8 @@ si el máximo es entero; así los tramos del PPI y del G8 recorren los medios pu
 recuentos no cambian y la lista de fallos sigue vacía.
 `resultado-2.13.3.json` corresponde a la 2.13.3 (seguridad del conversor); los
 recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.13.4.json` corresponde a la 2.13.4 (meperidina retirada y rescates
+del conversor); los recuentos no cambian y la lista de fallos sigue vacía.
 
 ## Prueba del puntaje global del CDR
 
@@ -146,3 +148,12 @@ dosis se vacía. Son 2.400 combinaciones más tres casos. Sobre la 2.13.2 señal
 5.535 discrepancias; sobre la 2.13.3, ninguna (`resultado-fuentes-2.13.3.json`).
 Las comprobaciones anteriores del conversor validaban la cifra calculada, pero
 no lo que la pantalla proponía a partir de ella.
+
+En la 2.13.4 se retiró la meperidina, de modo que el conversor tiene 361 pares
+(17.328 cálculos) y la sección de seguridad 2.280 combinaciones. Esa sección
+comprueba además que el rescate con parche se calcule sobre la presentación
+sugerida y que, con metadona de destino, el rescate se indique con morfina o
+hidromorfona. Sobre la 2.13.3 señala 1.444 discrepancias; sobre la 2.13.4,
+ninguna (`resultado-fuentes-2.13.4.json`). Estas comprobaciones parten de los
+factores que fija la aplicación: verifican que se apliquen como se decidió, no
+que sean farmacológicamente correctos.

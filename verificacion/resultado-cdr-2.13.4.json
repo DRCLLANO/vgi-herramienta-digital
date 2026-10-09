@@ -1,0 +1,97 @@
+{
+  "archivo": "index.html",
+  "sha256": "14d9b376bf56c885fa654fbabd730f0d8db8c1383d061b31da37363ea3b702a7",
+  "fecha": "2026-10-09",
+  "version": "2.13.4",
+  "combinaciones": 12500,
+  "discrepancias": [],
+  "casos": [
+    {
+      "areas": "3 3 2 2 1 1",
+      "esperado": 2,
+      "regla": "empate en un lado: el puntaje más cercano a la memoria",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "0.5 0 0 0 0 0",
+      "esperado": 0.5,
+      "regla": "memoria 0,5: nunca 0",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "0.5 1 1 1 0.5 0",
+      "esperado": 1,
+      "regla": "memoria 0,5 con tres áreas en 1 o más",
+      "app": 1,
+      "ok": true
+    },
+    {
+      "areas": "0 0.5 0.5 0 0 0",
+      "esperado": 0.5,
+      "regla": "memoria 0 con dos áreas alteradas",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "0 0.5 0 0 0 0",
+      "esperado": 0,
+      "regla": "memoria 0 con una sola área alterada",
+      "app": 0,
+      "ok": true
+    },
+    {
+      "areas": "1 0 0 0 0.5 0",
+      "esperado": 0.5,
+      "regla": "memoria 1 o más: nunca 0",
+      "app": 0.5,
+      "ok": true
+    },
+    {
+      "areas": "1 2 2 2 0.5 0",
+      "esperado": 1,
+      "regla": "reparto tres y dos a cada lado",
+      "app": 1,
+      "ok": true
+    },
+    {
+      "areas": "1 2 2 2 1 0",
+      "esperado": 2,
+      "regla": "tres o más por encima de la memoria",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "2 2 1 3 1 3",
+      "esperado": 2,
+      "regla": "una o dos iguales y no más de dos a cada lado",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "1 0 0 0 2 2",
+      "esperado": 1,
+      "regla": "tres áreas en 0 y dos por encima: reparto tres y dos, prevalece la memoria",
+      "app": 1,
+      "ok": true
+    },
+    {
+      "areas": "2 0 0 0 3 3",
+      "esperado": 2,
+      "regla": "tres áreas en 0 y dos por encima: reparto tres y dos, prevalece la memoria",
+      "app": 2,
+      "ok": true
+    },
+    {
+      "areas": "1 0 0 0 0 2",
+      "esperado": 0.5,
+      "regla": "memoria 1 o más con la mayoría en 0: piso de 0,5",
+      "app": 0.5,
+      "ok": true
+    }
+  ],
+  "cuidadoPersonalSinCeroCinco": true,
+  "numDiscrepancias": 0,
+  "erroresJS": []
+}

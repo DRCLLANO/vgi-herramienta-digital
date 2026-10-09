@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.13.3",
+  "softwareVersion": "2.13.4",
   "datePublished": "2026-09-10",
   "dateModified": "2026-10-08",
   "inLanguage": "es",
@@ -2370,6 +2370,8 @@ const ALL_IDS = Object.values(ORDER).flatMap(gs=>gs.flatMap(g=>g.ids));
    2016), derivado de la separación entre marcas de cada escala; T =
    taller de opioides (tabla de ratios). Se anota siempre que ambas
    difieran. */
+/* 2.13.4: se retira la meperidina, que no debe usarse en la persona mayor
+   (su metabolito normeperidina se acumula y produce neurotoxicidad). */
 const OPIOIDES = [
   {id:'mor_vo', n:'Morfina', via:'oral', u:'mg', f:1, pos:'Liberación inmediata cada 4 horas; liberación prolongada cada 12 horas.', frac:6,
    src:'Nomograma y taller coinciden: es el patrón de referencia.'},
@@ -2409,8 +2411,6 @@ const OPIOIDES = [
    src:'Taller: ÷5 en el esquema simplificado. Para convertir DESDE morfina el propio taller usa razones dependientes de la dosis (÷4, ÷8 o ÷12), que es el método que aplica esta herramienta.'},
   {id:'nal_iv', n:'Nalbufina', via:'intravenosa', u:'mg', f:3, pos:'Cada 4 a 6 horas.', frac:6,
    src:'Nomograma.'},
-  {id:'mep_iv', n:'Meperidina', via:'intravenosa', u:'mg', f:0.1, pos:'Cada 3 a 4 horas.', frac:6,
-   src:'Taller ÷10.'},
   {id:'dex_vo', n:'Dextropropoxifeno', via:'oral', u:'mg', f:0.23, pos:'Cada 6 a 8 horas.', frac:4,
    src:'Nomograma.'}
 ];
@@ -2420,7 +2420,6 @@ const OPI_ALERTA = {
   bup_sl:'La buprenorfina es agonista parcial con efecto techo y alta afinidad por el receptor mu: puede desplazar a un agonista puro y precipitar abstinencia o pérdida de analgesia. La rotación requiere planeación específica.',
   bup_td:'La buprenorfina es agonista parcial con efecto techo y alta afinidad por el receptor mu. Los parches solo existen en presentaciones fijas y su ajuste no es lineal.',
   nal_iv:'La nalbufina es agonista-antagonista: en un paciente que viene recibiendo un agonista puro puede precipitar abstinencia y pérdida de la analgesia. No se recomienda para rotación en dolor crónico oncológico.',
-  mep_iv:'La meperidina no se recomienda en personas mayores. Su metabolito normeperidina se acumula, sobre todo con falla renal, y produce neurotoxicidad y convulsiones. Considere otro opioide.',
   dex_vo:'El dextropropoxifeno fue retirado del mercado en numerosos países por toxicidad cardiaca y figura en los criterios de medicamentos potencialmente inapropiados en el adulto mayor.',
   fen_td:'El parche transdérmico solo existe en presentaciones fijas y tarda entre 12 y 24 horas en alcanzar concentraciones útiles, por lo que requiere cubrimiento analgésico durante ese periodo. La absorción es errática en caquexia, fiebre, sudoración profusa y edema, situaciones frecuentes en el paciente paliativo.'
 };
@@ -2497,7 +2496,20 @@ function opiCalc(){
     const caben = d.pres.filter(p=>p<=final+1e-9);
     if(caben.length) parche = Math.max(...caben); else sinParche = true;
   }
-  return {o,d,dosis:dosisTotal,emo,bruta,motivo,final,rescate,metaBanda,parche,sinParche};
+  /* 2.13.4: rescate con morfina o hidromorfona de liberación inmediata cuando
+     el destino es un parche o metadona. Con parche se calcula sobre la
+     presentación sugerida (antes sobre la liberación calculada, que la supera)
+     o, con el mismo parche, sobre la liberación actual. Con metadona, sobre el
+     equivalente de morfina oral de origen con la reducción del motivo: en
+     Colombia la metadona solo se dispensa en tabletas de 10 y 40 mg, que no
+     permiten dar un rescate del 10 %. Si solo se ajusta la metadona, no se
+     calcula cifra porque su equivalencia con la morfina no es recíproca. */
+  let rescIR = null;
+  const opIR = [['Morfina oral','mor_vo'],['Morfina subcutánea o intravenosa','mor_sc'],['Hidromorfona oral','hidm_vo'],['Hidromorfona subcutánea o intravenosa','hidm_sc']];
+  const conIR = e => ({emo:e, op:opIR.map(([l,id])=>[l, e*0.10/opiGet(id).f])});
+  if(d.parche && !sinParche) rescIR = Object.assign(conIR((mismo ? final : parche) * d.f), {parche: mismo ? final : parche});
+  else if(d.metadona) rescIR = mismo ? {sinCifra:true} : conIR(emo * (1 - motivo.r/100));
+  return {o,d,dosis:dosisTotal,emo,bruta,motivo,final,rescate,metaBanda,parche,sinParche,rescIR};
 }
 
 /* ---------------------------- ESTADO ---------------------------- */
@@ -2837,7 +2849,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.3</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.4</small></div></div>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3208,19 +3220,16 @@ function renderOpiRes(){
     + (r.sinParche ? '' : !r.d.parche && r.d.frac>1 ? '<p class="detail">Posología sugerida: '+esc(r.d.pos)+' Repartida en '+r.d.frac+' tomas queda en '+dfmt(r.final/r.d.frac)+uni(r.d.u)+' por dosis.</p>'
       : '<p class="detail">Posología sugerida: '+esc(r.d.pos)+'</p>')
 
-    + (r.sinParche ? '' : r.d.parche
-      ? (()=>{ /* Con parche el rescate no se da en mcg/h: se da con un opioide de liberación
-                  inmediata, calculado sobre la liberación calculada (10 % de su equivalente diario de morfina oral).
-                  Se usa la cifra calculada y no la presentación más cercana, que en dosis altas puede
-                  quedarse corta (por ejemplo, 166 mcg/h se aproxima a un solo parche de 100). */
-          const emoParche = r.final * r.d.f, base = emoParche*0.10;
-          const op = [['mor_vo','Morfina oral'],['mor_sc','Morfina subcutánea o intravenosa'],['hidm_vo','Hidromorfona oral'],['hidm_sc','Hidromorfona subcutánea o intravenosa']];
-          return '<p class="detail"><strong>Dosis de rescate:</strong> con parche transdérmico el rescate se da con un opioide de liberación inmediata, por lo general morfina o hidromorfona, por vía oral, subcutánea o intravenosa según el contexto. '
-            + 'Para una liberación de '+dfmt(r.final)+' mcg/h, que equivale a '+String(Math.round(emoParche)).replace('.',',')+' mg de morfina oral al día, el 10 % según el paso 5 del taller corresponde a:</p>'
-            + '<div class="breakdown" style="margin:-4px 0 14px">'
-            + op.map(([id,l])=>{ const v=base/opiGet(id).f, rd=v>=1?Math.round(v*10)/10:Math.round(v*100)/100; return '<div><span>'+l+'</span><span style="white-space:nowrap">'+String(rd).replace('.',',')+' mg</span></div>'; }).join('')
-            + '</div>'
-            + '<p class="detail">Si el paciente requiere más de 3 rescates al día, reevalúe la dosis del parche. Durante las primeras 12 a 24 horas, mientras el parche alcanza concentraciones útiles, los rescates cobran especial importancia.</p>'; })()
+    + (r.sinParche ? '' : r.rescIR && r.rescIR.sinCifra
+      ? '<p class="detail"><strong>Dosis de rescate:</strong> con morfina o hidromorfona de liberación inmediata, a dosis individualizada. Si el paciente requiere más de 3 rescates al día, reevalúe la dosis de base.</p>'
+      : r.rescIR
+      ? '<p class="detail"><strong>Dosis de rescate:</strong> '
+          + (r.d.parche
+            ? 'con morfina o hidromorfona de liberación inmediata. Para '+(r.o.id===r.d.id?'la liberación actual de ':'el parche de ')+dfmt(r.rescIR.parche)+' mcg/h ('+String(Math.round(r.rescIR.emo)).replace('.',',')+' mg de morfina oral al día), el 10 % según el paso 5 del taller corresponde a:'
+            : 'con morfina o hidromorfona de liberación inmediata, porque las tabletas de metadona (10 y 40 mg) no permiten fraccionar el rescate. El 10 % del equivalente de morfina oral de origen ('+String(Math.round(r.rescIR.emo)).replace('.',',')+' mg al día) corresponde a:')
+          + '</p><div class="breakdown" style="margin:-4px 0 14px">'
+          + r.rescIR.op.map(([l,v])=>{ const rd=v>=1?Math.round(v*10)/10:Math.round(v*100)/100; return '<div><span>'+l+'</span><span style="white-space:nowrap">'+String(rd).replace('.',',')+' mg</span></div>'; }).join('')
+          + '</div><p class="detail">Si el paciente requiere más de 3 rescates al día, reevalúe la dosis de base.'+(r.d.parche?' Durante las primeras 12 a 24 horas, mientras el parche alcanza concentraciones útiles, los rescates cobran especial importancia.':'')+'</p>'
       : '<p class="detail"><strong>Dosis de rescate:</strong> '+dfmt(r.rescate)+uni(r.d.u)+', equivalente al 10 % de la dosis total diaria, según el paso 5 del taller. Si el paciente requiere más de 3 rescates al día, reevalúe la dosis de base.</p>')
 
     /* 2.13.3: la ficha técnica del fentanilo transdérmico lo restringe a
@@ -3388,7 +3397,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.3) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.4) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3400,6 +3409,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.13.4</strong> · Conversor de opioides. Se retira la meperidina, que no debe usarse en la persona mayor. Con parche de destino, el rescate se calcula sobre la presentación sugerida y no sobre la liberación calculada, que la supera (morfina oral 200 mg: parche de 25 mcg/h y rescate de 9 mg de morfina oral). Con metadona de destino, el rescate se indica con morfina o hidromorfona de liberación inmediata, como 10 % del equivalente de morfina oral de origen, porque las tabletas de metadona disponibles en Colombia (10 y 40 mg) no permiten fraccionar un rescate del 10 %. Los factores de conversión no cambian. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.3</strong> · Conversor de opioides, tres correcciones de seguridad. (1) Al cambiar el opioide o la vía de origen se vacía la dosis: antes se conservaba y pasaba a leerse en la nueva unidad (500 mcg de fentanilo IV quedaban como 500 mg de morfina oral). (2) La presentación de parche sugerida es la mayor que no supera la liberación calculada; antes era la más cercana aunque quedara por encima (morfina oral 30 mg con reducción del 30 % daba un parche de buprenorfina de 35 mcg/h, unas dos veces la dosis de origen), y por debajo del parche mínimo se proponía el mínimo. Ahora, si el cálculo no alcanza la menor presentación, se indica "Sin presentación compatible" y se retiran la posología y el rescate. (3) Con fentanilo transdérmico de destino se comprueba la tolerancia a opioides que exige su ficha técnica (60 mg de morfina oral al día durante una semana o más) y se advierte el riesgo de depresión respiratoria grave por debajo de ese umbral. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.2</strong> · Corrección del puntaje global del CDR. Con memoria 1 o más, la regla "el CDR no puede ser 0; es 0,5 cuando la mayoría de las áreas secundarias están en 0" se aplicaba antes de las reglas generales y anulaba el reparto tres y dos. Por ejemplo, memoria 1 con las demás áreas en 0, 0, 0, 2 y 2 daba 0,5 en lugar de 1, y memoria 2 con 0, 0, 0, 3 y 3 daba 0,5 en lugar de 2 (50 de las 12.500 combinaciones). Ahora la regla actúa como piso: solo corrige un resultado que sería 0. El estadio 0,5 se rotula "Demencia cuestionable o muy leve" (antes "Deterioro cognitivo leve"), porque abarca tanto el deterioro cognitivo leve como la demencia muy leve. No cambia ninguna otra escala.</div>'
   + '<div class="cite"><strong>2.13.1</strong> · Correcciones contra las fuentes originales, a partir de dos revisiones externas. Cambian resultados: VES-13 (Saliba 2001: ayuda en alguna actividad funcional suma 4 en total, actividades físicas con tope de 2, máximo 10); PPI (delirium 4, máximo 15, sin contar el delirium causado solo por un medicamento); Charlson (enfermedad cerebrovascular 1 punto, máximo 37); Charlson Colombia (tumor con o sin metástasis como opciones excluyentes, máximo 26); Lawton (se separan las cinco opciones del cuidado de la casa); SPPB (equilibrio jerárquico de 0 a 4 e intervalos contiguos de marcha y silla según Guralnik); CDR (el cuidado personal no tiene 0,5); conversor (el mismo opioide por la misma vía conserva la dosis). EQ-5D-5L: niveles de 1 a 5 (perfil 11111 a 55555), sin clasificación por suma y con la EVA validada de 0 a 100. Las preguntas de selección múltiple ya no cuentan como respondidas sin tocarlas: se marca una opción o "Ninguna". Textos: PPS (puntos del PPI por nivel, NECPAL solo por debajo del 50 % e intervalo de mejor ajuste en perfiles discordantes), CFS (nombres de las categorías 4 y 9 de la versión 2.0), Fried (4,57 metros), FRAIL (pérdida mayor del 5 %), Barthel (criterio NECPAL menor de 20), G8, PAINAD, trastornos de memoria y vulnerabilidad social. Validación estricta de números. Nueva prueba contra las fuentes.</div>'
@@ -3440,7 +3450,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.13.3 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.13.4 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 

@@ -575,6 +575,26 @@ las secciones 8.8 a 8.10: no una regla mal transcrita, sino una salida
 secundaria sin verificar junto a una salida principal verificada. Se corrigió
 en la versión 2.13.3 y las comprobaciones quedaron en `verificar-fuentes.mjs`.
 
+### 8.12 Revisión externa de los factores y decisión clínica
+
+Una segunda revisión externa de la 2.13.3, el 8 de octubre de 2026, propuso
+cambiar varios factores del conversor por los de otras fuentes (fentanilo
+transdérmico de origen, meperidina IV y tramadol IV) y añadir restricciones a la
+rotación hacia metadona. El autor decidió mantener los factores del nomograma y
+del taller, que son las referencias declaradas de la herramienta, y no añadir
+más advertencias. Sí adoptó tres cambios: retirar la meperidina, que no debe
+usarse en la persona mayor; calcular el rescate con parche sobre la presentación
+sugerida, que había quedado inconsistente tras el redondeo hacia abajo de la
+2.13.3; e indicar el rescate con metadona de destino con morfina o hidromorfona,
+porque las tabletas de metadona disponibles en Colombia (10 y 40 mg) no
+permiten fraccionar un rescate del 10 %.
+
+La revisión señaló además un límite que conviene dejar escrito: las pruebas del
+conversor usan como referencia los mismos factores que la aplicación, así que
+confirman que el programa hace lo que se decidió, no que lo decidido sea
+farmacológicamente correcto. Esa validación depende de la revisión clínica de
+las fuentes. Se publicó como 2.13.4.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la
