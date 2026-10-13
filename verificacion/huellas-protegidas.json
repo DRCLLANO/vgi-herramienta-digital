@@ -1,0 +1,30 @@
+{
+  "_nota": "Huellas aprobadas que verificar-integridad.mjs compara en cada cambio. Se tomaron de la versión 2.13.4. Si un cambio intencional altera alguno de estos valores, se actualizan aquí en el mismo cambio y se explica en el CHANGELOG; si cambian sin que este archivo cambie, la prueba falla.",
+  "version": "2.13.4",
+  "fichasEsperadas": 48,
+  "archivos": {
+    "LICENSE": "c3356ca80d3bc12b4e82166da85ce2618b8ea79ac2f8eb3875936a8b3852eb2d",
+    "NOTICE.md": "bc412c294a1c19656c305096cc0805ef206b11d07290f70cbb9a149277cae5d1"
+  },
+  "conversor": {
+    "mor_vo": 1,
+    "mor_sc": 2,
+    "mor_iv": 2,
+    "oxi_vo": 1.5,
+    "oxi_iv": 3,
+    "hidm_vo": 5,
+    "hidm_sc": 10,
+    "tra_vo": 0.1,
+    "tra_iv": 0.1,
+    "cod_vo": 0.15,
+    "hidc_vo": 1,
+    "tap_vo": 0.3,
+    "fen_iv": 0.15,
+    "fen_td": 3.6,
+    "bup_td": 1.71,
+    "bup_sl": 75,
+    "met_vo": 5,
+    "nal_iv": 3,
+    "dex_vo": 0.23
+  }
+}

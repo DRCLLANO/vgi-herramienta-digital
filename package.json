@@ -1,0 +1,17 @@
+{
+  "name": "vgi-herramienta-digital",
+  "private": true,
+  "description": "Pruebas automáticas de VGI Digital. La aplicación no usa este archivo: es solo para verificarla.",
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "scripts": {
+    "test": "node verificacion/verificar-todo.mjs",
+    "sumas": "node verificacion/generar-sumas.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
