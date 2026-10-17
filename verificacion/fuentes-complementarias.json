@@ -1,0 +1,400 @@
+{
+  "_nota": "Transcripción independiente de las escalas complementarias (las que no proceden del manual), hecha leyendo cada fuente original antes de abrir el código de la aplicación. La usa verificar-cortes.mjs junto con fuentes-manual-2024.json. No se edita para que coincida con la aplicación: las diferencias se reportan y el autor decide.",
+  "fuente": "Fuente original de cada escala, indicada en su ficha.",
+  "transcrito": "2026-10-17",
+  "convenciones": {
+    "tramos": "Igual que en fuentes-manual-2024.json. Cuando la fuente define grupos de riesgo sin nombre (por ejemplo clases I a IV o grupos A a C), la clave queda vacía y solo se exige la partición: que cada grupo de la fuente corresponda a un único veredicto de la aplicación y que dos grupos vecinos no compartan veredicto."
+  },
+  "sumativas": {
+    "painad": {
+      "fuente": "Warden V, Hurley AC, Volicer L. J Am Med Dir Assoc. 2003;4(1):9-15. García-Soler Á, et al. Rev Esp Geriatr Gerontol. 2014;49(1):10-4 (PAINAD-Sp).",
+      "min": 0,
+      "max": 10,
+      "paso": 1,
+      "items": [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]],
+      "sinCortes": "Ninguna de las dos fuentes define puntos de corte del total. Warden 2003 solo describe promedios por situación; García-Soler 2014 rotula cada ítem como 0 ausencia, 1 dolor moderado y 2 dolor severo, pero no clasifica el total."
+    },
+    "pap": {
+      "fuente": "Pirovano M, Maltoni M, Nanni O, et al. J Pain Symptom Manage. 1999;17(4):231-9, tabla 3.",
+      "min": 0,
+      "max": 17.5,
+      "paso": 0.5,
+      "items": [[0, 1], [0, 1.5], [0, 2.5], [0, 2, 2.5, 4.5, 6, 8.5], [0, 0.5, 1.5], [0, 1, 2.5]],
+      "ordenItems": "disnea, anorexia, Karnofsky (50 o más y 30 a 40 = 0; 10 a 20 = 2,5), predicción clínica de supervivencia en semanas (más de 12 = 0; 11-12 = 2; 9-10 = 2,5; 7-8 = 2,5; 5-6 = 4,5; 3-4 = 6; 1-2 = 8,5), leucocitos totales (4.800-8.500 = 0; 8.501-11.000 = 0,5; más de 11.000 = 1,5), porcentaje de linfocitos (20-40 % = 0; 12-19,9 % = 1; 0-11,9 % = 2,5)",
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 5.5,
+          "clave": [
+            ""
+          ],
+          "manual": "Grupo A: supervivencia a 30 días mayor del 70 %"
+        },
+        {
+          "desde": 6,
+          "hasta": 11,
+          "clave": [
+            ""
+          ],
+          "manual": "Grupo B: supervivencia a 30 días del 30 al 70 % (5,6 a 11,0)"
+        },
+        {
+          "desde": 11.5,
+          "hasta": 17.5,
+          "clave": [
+            ""
+          ],
+          "manual": "Grupo C: supervivencia a 30 días menor del 30 % (11,1 a 17,5)"
+        }
+      ],
+      "notaFuente": "Una guía secundaria (RNAO) asigna 1 punto a la anorexia; el original asigna 1,5. Se transcribe el original. El original no clasifica leucocitos por debajo de 4.800 ni linfocitos por encima del 40 %."
+    },
+    "walter": {
+      "fuente": "Walter LC, Brand RJ, Counsell SR, et al. JAMA. 2001;285(23):2987-94.",
+      "min": 0,
+      "max": 20,
+      "paso": 1,
+      "items": [[0, 1], [0, 2, 5], [0, 2], [0, 3, 8], [0, 2], [0, 1, 2]],
+      "ordenItems": "sexo masculino 1; dependencia en 1 a 4 ABVD 2, en las 5 ABVD 5; insuficiencia cardiaca 2; cáncer solitario 3, metastásico 8; creatinina mayor de 3,0 mg/dl 2; albúmina 3,0-3,4 g/dl 1, menor de 3,0 g/dl 2",
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 1,
+          "clave": [
+            ""
+          ],
+          "manual": "0-1 puntos: mortalidad a 1 año 13 % (derivación) y 4 % (validación)"
+        },
+        {
+          "desde": 2,
+          "hasta": 3,
+          "clave": [
+            ""
+          ],
+          "manual": "2-3 puntos: 20 % y 19 %"
+        },
+        {
+          "desde": 4,
+          "hasta": 6,
+          "clave": [
+            ""
+          ],
+          "manual": "4-6 puntos: 37 % y 34 %"
+        },
+        {
+          "desde": 7,
+          "hasta": 20,
+          "clave": [
+            ""
+          ],
+          "manual": "Más de 6 puntos: 68 % y 64 %"
+        }
+      ]
+    },
+    "lee": {
+      "fuente": "Lee SJ, Lindquist K, Segal MR, Covinsky KE. JAMA. 2006;295(7):801-8, tablas 3 y 4.",
+      "min": 0,
+      "max": 26,
+      "paso": 1,
+      "items": null,
+      "puntosItems": "edad 60-64 1, 65-69 2, 70-74 3, 75-79 4, 80-84 5, 85 o más 7; sexo masculino 2; diabetes 1; cáncer 2; enfermedad pulmonar 2; insuficiencia cardiaca 2; IMC menor de 25 1; fumador actual 2; dificultad para bañarse 2, para manejar las finanzas 2, para caminar varias cuadras 2, para empujar o halar objetos pesados 1",
+      "valoresPorItem": [[0, 1, 2, 3, 4, 5, 7], [0, 2], [0, 1], [0, 2], [0, 2], [0, 2], [0, 1], [0, 2], [0, 2], [0, 2], [0, 2], [0, 1]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 5,
+          "clave": [
+            ""
+          ],
+          "manual": "0-5 puntos: menos del 4 % de mortalidad a 4 años"
+        },
+        {
+          "desde": 6,
+          "hasta": 9,
+          "clave": [
+            ""
+          ],
+          "manual": "6-9 puntos: 15 %"
+        },
+        {
+          "desde": 10,
+          "hasta": 13,
+          "clave": [
+            ""
+          ],
+          "manual": "10-13 puntos: 42 % (40 % en derivación)"
+        },
+        {
+          "desde": 14,
+          "hasta": 26,
+          "clave": [
+            ""
+          ],
+          "manual": "14 o más puntos: 64 % (67 % en derivación)"
+        }
+      ],
+      "notaFuente": "El ejemplo del texto asigna 3 puntos a una persona de 78 años; la tabla 3 asigna 4 a la franja 75-79. Se transcribe la tabla."
+    },
+    "at4": {
+      "fuente": "Bellelli G, et al. Age Ageing. 2014;43(4):496-502. Hoja oficial del 4AT (the4at.com).",
+      "min": 0,
+      "max": 12,
+      "paso": 1,
+      "items": [[0, 4], [0, 1, 2], [0, 1, 2], [0, 4]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 0,
+          "clave": [
+            "improbable|poco probable|sin "
+          ],
+          "manual": "Delirium o deterioro cognitivo grave improbables"
+        },
+        {
+          "desde": 1,
+          "hasta": 3,
+          "clave": [
+            "cognitiv"
+          ],
+          "excluye": [
+            "improbable"
+          ],
+          "manual": "Posible deterioro cognitivo"
+        },
+        {
+          "desde": 4,
+          "hasta": 12,
+          "clave": [
+            "delirium"
+          ],
+          "excluye": [
+            "improbable"
+          ],
+          "manual": "Posible delirium (con o sin deterioro cognitivo)"
+        }
+      ]
+    },
+    "zarit": {
+      "fuente": "Martín M, et al. Rev Gerontol. 1996;6:338-46 (versión española, citada en Gac Sanit. 2008;22(6):618-9). Barreto-Osorio RV, et al. Aquichan. 2015;15(3):368-80.",
+      "min": 22,
+      "max": 110,
+      "paso": 1,
+      "valoresItem": [1, 2, 3, 4, 5],
+      "numeroItems": 22,
+      "tramos": [
+        {
+          "desde": 22,
+          "hasta": 46,
+          "clave": [
+            "no |sin |ausencia"
+          ],
+          "manual": "Sin sobrecarga (46 o menos)"
+        },
+        {
+          "desde": 47,
+          "hasta": 55,
+          "clave": [
+            "leve"
+          ],
+          "manual": "Sobrecarga leve"
+        },
+        {
+          "desde": 56,
+          "hasta": 110,
+          "clave": [
+            "intensa"
+          ],
+          "manual": "Sobrecarga intensa (56 o más)"
+        }
+      ],
+      "notaFuente": "La versión original de Zarit puntúa de 0 a 4 (0 a 88) y su autor no propuso puntos de corte; los cortes 46 y 56 corresponden a la versión española de 1 a 5."
+    },
+    "rcri": {
+      "fuente": "Lee TH, Marcantonio ER, Mangione CM, et al. Circulation. 1999;100(10):1043-9. Tasas a 30 días de la guía canadiense: Duceppe E, et al. Can J Cardiol. 2017;33(1):17-32.",
+      "min": 0,
+      "max": 6,
+      "paso": 1,
+      "items": [[0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 0,
+          "clave": [
+            ""
+          ],
+          "manual": "Clase I (0 factores): 0,4 a 0,5 % en Lee 1999; 3,9 % a 30 días en la guía canadiense"
+        },
+        {
+          "desde": 1,
+          "hasta": 1,
+          "clave": [
+            ""
+          ],
+          "manual": "Clase II (1 factor): 0,9 a 1,3 %; 6,0 %"
+        },
+        {
+          "desde": 2,
+          "hasta": 2,
+          "clave": [
+            ""
+          ],
+          "manual": "Clase III (2 factores): 3,6 a 6,6 %; 10,1 %"
+        },
+        {
+          "desde": 3,
+          "hasta": 6,
+          "clave": [
+            ""
+          ],
+          "manual": "Clase IV (3 o más): 9,1 a 11,0 %; 15,0 %"
+        }
+      ],
+      "notaFuente": "Factores: cirugía de alto riesgo (intraperitoneal, intratorácica o vascular suprainguinal), cardiopatía isquémica, insuficiencia cardiaca, enfermedad cerebrovascular, insulina, creatinina mayor de 2,0 mg/dl."
+    },
+    "fts": {
+      "fuente": "Lantelme P, Lacour T, Bisson A, et al. Am J Cardiol. 2020;130:100-7, tablas 3 y 4.",
+      "min": 0,
+      "max": 19,
+      "paso": 1,
+      "items": null,
+      "puntosItems": "edad mayor de 80 años 1, mayor de 84 2, mayor de 87 3; insuficiencia cardiaca 1; antecedente de edema pulmonar 3; ictus 1; fibrilación auricular 1; enfermedad vascular 1; función renal anormal 1; enfermedad hepática 1; enfermedad pulmonar 1; anemia 1; cáncer en los 5 años previos 1; antecedente de metástasis 2; depresión 1; desnutrición 1",
+      "numeroItems": 14,
+      "valoresPorItem": [[0, 1, 2, 3], [0, 1], [0, 3], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 2], [0, 1], [0, 1]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 4,
+          "clave": [
+            "bajo"
+          ],
+          "manual": "Riesgo bajo (0-4): mortalidad a 1 año 11 %"
+        },
+        {
+          "desde": 5,
+          "hasta": 8,
+          "clave": [
+            "intermedio|medio"
+          ],
+          "manual": "Riesgo medio (5-8): 22 %"
+        },
+        {
+          "desde": 9,
+          "hasta": 19,
+          "clave": [
+            "alto"
+          ],
+          "manual": "Riesgo alto (más de 8): 43 %"
+        }
+      ]
+    },
+    "eft": {
+      "fuente": "Afilalo J, Lauck S, Kim DH, et al. J Am Coll Cardiol. 2017;70(6):689-700.",
+      "min": 0,
+      "max": 5,
+      "paso": 1,
+      "items": [[0, 1, 2], [0, 1], [0, 1], [0, 1]],
+      "ordenItems": "levantarse 5 veces de la silla sin brazos (15 s o más 1; incapaz 2); MMSE menor de 24 1; hemoglobina menor de 13 g/dl en hombres o de 12 g/dl en mujeres 1; albúmina menor de 3,5 g/dl (o MNA menor de 8 si no se midió) 1",
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 2,
+          "clave": [
+            ""
+          ],
+          "excluye": [],
+          "manual": "No frágil (el artículo dicotomiza en 3 o más)"
+        },
+        {
+          "desde": 3,
+          "hasta": 5,
+          "clave": [
+            "fragil"
+          ],
+          "manual": "Frágil (3 o más de 5)"
+        }
+      ],
+      "notaFuente": "El artículo solo dicotomiza (3 o más de 5). Si la aplicación divide 0 a 2 en más tramos, se informa como fallo de partición para que el autor lo clasifique."
+    }
+  },
+  "algoritmicas": {
+    "necpal": {
+      "fuente": "Instrumento NECPAL CCOMS-ICO© versión 3.1 (2017), formulario oficial (anexo 4, IB-Salut). Para la versión anterior: Tripodoro VA. Tesis doctoral, Universitat de Vic; 2016 (versión 3.0).",
+      "parametros": 13,
+      "regla": "El formulario 3.1 clasifica por separado la pregunta sorpresa (PS+ cuando el profesional responde que no le sorprendería) y los parámetros (NECPAL + de 1+ a 13+; NECPAL - sin ningún parámetro), sin enunciar si la PS es condición. En la versión 3.0 (tesis de Tripodoro) y en estudios que aplican el instrumento (por ejemplo Rev Esp Cardiol. 2019;72(10):825-31) el resultado positivo exige PS+ y al menos un parámetro. La prueba exige: sin parámetros, negativo; PS+ con cualquier parámetro, positivo. Lo que la aplicación hace con parámetros sin PS+ se informa como aviso.",
+      "correccion": "17-oct-2026: la primera transcripción decía que en la 3.1 la PS no condiciona el resultado. Era una inferencia, no un texto de la fuente; se corrigió antes de usarla para juzgar la aplicación.",
+      "umbrales": {
+        "declive nutricional": "pérdida de peso mayor del 10 % en 6 meses",
+        "declive funcional": "deterioro de Karnofsky o Barthel mayor del 30 % o pérdida de más de 2 ABVD",
+        "declive cognitivo": "pérdida de 5 o más puntos en el MMSE o de 3 o más en el Pfeiffer",
+        "dependencia severa": "Karnofsky menor de 50 o Barthel menor de 20",
+        "síndromes geriátricos": "2 o más",
+        "síntomas persistentes": "2 o más",
+        "malestar emocional": "DME mayor de 9",
+        "multimorbilidad": "más de 2 enfermedades crónicas avanzadas",
+        "uso de recursos": "más de 2 ingresos urgentes o no programados en 6 meses, o aumento de la demanda"
+      },
+      "notaFuente": "Los indicadores por enfermedad (anexo 1) no se transcriben: la aplicación los operativiza con los criterios de la NHPCO por decisión del autor."
+    },
+    "preopger": {
+      "fuente": "Chow WB, Rosenthal RA, Merkow RP, Ko CY, Esnaola NF. J Am Coll Surg. 2012;215(4):453-66 (ACS NSQIP/AGS).",
+      "dominios": [
+        "cognici",
+        "capacidad",
+        "depresi",
+        "delirium",
+        "alcohol|sustancia",
+        "card",
+        "pulmon",
+        "funcional|caida",
+        "fragil",
+        "nutrici",
+        "medicament",
+        "objetivos|metas|voluntades|directivas",
+        "familia|apoyo"
+      ],
+      "umbrales": {
+        "Mini-Cog": "0 a 2 posible deterioro; 3 a 5 sin deterioro",
+        "PHQ-2": "sí a cualquiera de las dos preguntas: evaluar",
+        "nutrición": "riesgo grave con IMC menor de 18,5, albúmina menor de 3,0 g/dl o pérdida de peso involuntaria mayor del 10 a 15 % en 6 meses",
+        "fragilidad (Fried)": "0-1 no frágil, 2-3 intermedio, 4-5 frágil",
+        "capacidad funcional cardiaca": "menos de 4 MET es mala capacidad"
+      },
+      "regla": "Es una lista de verificación de buenas prácticas, sin puntaje ni clasificación global."
+    }
+  },
+  "decisiones": {
+    "painad:cortes-propios": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+    },
+    "necpal:sin-ps": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: el resultado positivo exige pregunta sorpresa positiva y al menos un parámetro."
+    },
+    "eft:parte:0-2": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen \"Sin fragilidad\" (0) y \"Prefragilidad\" (1 a 2)."
+    },
+    "eft:parte:3-5": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen \"Fragilidad\" (3 a 4) y \"Fragilidad grave\" (5)."
+    }
+  },
+  "porCorregir": {
+    "_nota": "Hallazgos que el autor decidió corregir en una versión futura. Se informan aparte y no hacen fallar la prueba. Cuando la aplicación se corrija, el hallazgo cambiará o desaparecerá y la entrada se revisa.",
+    "preopger:dominios": {
+      "fecha": "2026-10-17",
+      "correccion": "Añadir los dominios cardiaco y pulmonar según la guía original (Chow 2012, ACS NSQIP/AGS).",
+      "estado": "pendiente para la próxima versión; la 2.13.4 no se modifica"
+    },
+    "preopger:regla": {
+      "fecha": "2026-10-17",
+      "correccion": "Se mantiene el resumen por número de dominios con prioridad para la capacidad comprometida, acotado a 12 dominios (los 10 actuales más el cardiaco y el pulmonar).",
+      "estado": "pendiente para la próxima versión; la 2.13.4 no se modifica"
+    }
+  }
+}

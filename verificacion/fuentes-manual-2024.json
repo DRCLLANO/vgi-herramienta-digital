@@ -1,0 +1,724 @@
+{
+  "_nota": "Transcripción independiente de los puntos de corte del manual de referencia, hecha leyendo el PDF y antes de abrir el código de la aplicación. La usa verificar-cortes.mjs. No se edita para que coincida con la aplicación: si la aplicación difiere, la diferencia se reporta y el autor decide si es un error o una decisión suya, y en ese caso se registra en \"decisiones\", con fecha y motivo.",
+  "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds. Abordaje geriátrico integral: escalas de uso frecuente en geriatría. Bogotá: Editorial PUJ; 2024. Las páginas son las impresas en el libro.",
+  "transcrito": "2026-10-17",
+  "convenciones": {
+    "tramos": "Cada tramo es [desde, hasta] inclusivo, con la palabra clave que debe aparecer en el veredicto de la aplicación (sin tildes ni mayúsculas). \"excluye\" lista palabras que no deben aparecer, para distinguir tramos vecinos.",
+    "vacios": "Puntajes posibles que el manual no asigna a ningún tramo. La prueba informa qué muestra la aplicación, sin juzgarlo.",
+    "items": "Valores posibles de cada ítem, en el orden del manual; en los de selección múltiple, los puntajes que puede dar el ítem. null si la escala agrupa los ítems de otra forma en la aplicación y solo se comparan el rango y los tramos.",
+    "multi": "Ítems de selección múltiple con umbral: número de opciones y desde cuántas marcadas puntúa."
+  },
+  "sumativas": {
+    "mna": {
+      "tabla": "Tabla 11",
+      "pagina": "70-71",
+      "min": 0,
+      "max": 14,
+      "paso": 1,
+      "items": [[0, 1, 2], [0, 1, 2, 3], [0, 1, 2], [0, 2], [0, 1, 2], [0, 1, 2, 3]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 7,
+          "clave": [
+            "malnutrici"
+          ],
+          "excluye": [
+            "riesgo"
+          ],
+          "manual": "Malnutrición"
+        },
+        {
+          "desde": 8,
+          "hasta": 11,
+          "clave": [
+            "riesgo"
+          ],
+          "manual": "Riesgo de malnutrición"
+        },
+        {
+          "desde": 12,
+          "hasta": 14,
+          "clave": [
+            "satisfactorio|normal"
+          ],
+          "manual": "Estado nutricional satisfactorio"
+        }
+      ]
+    },
+    "eat10": {
+      "tabla": "Tabla 12",
+      "pagina": "72-73",
+      "min": 0,
+      "max": 40,
+      "paso": 1,
+      "items": [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 2,
+          "clave": [
+            "sin disfagia|no sugiere|normal"
+          ],
+          "manual": "Sin disfagia"
+        },
+        {
+          "desde": 3,
+          "hasta": 40,
+          "clave": [
+            "disfagia"
+          ],
+          "excluye": [
+            "sin disfagia"
+          ],
+          "manual": "Sugiere disfagia"
+        }
+      ]
+    },
+    "downton": {
+      "tabla": "Tabla 13",
+      "pagina": "77",
+      "min": 0,
+      "max": 10,
+      "paso": 1,
+      "items": null,
+      "tramos": [
+        {
+          "desde": 1,
+          "hasta": 3,
+          "clave": [
+            "bajo"
+          ],
+          "manual": "Riesgo bajo de caídas"
+        },
+        {
+          "desde": 4,
+          "hasta": 10,
+          "clave": [
+            "alto"
+          ],
+          "manual": "Riesgo alto de caídas"
+        }
+      ],
+      "vacios": [
+        {
+          "desde": 0,
+          "hasta": 0,
+          "nota": "El manual define 1-3 y 4 o más; no dice nada del 0."
+        }
+      ]
+    },
+    "fesi": {
+      "tabla": "Tabla 14",
+      "pagina": "79",
+      "min": 7,
+      "max": 28,
+      "paso": 1,
+      "items": [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]],
+      "tramos": [
+        {
+          "desde": 7,
+          "hasta": 10,
+          "clave": [
+            "bajo"
+          ],
+          "manual": "Bajo temor a caer"
+        },
+        {
+          "desde": 11,
+          "hasta": 28,
+          "clave": [
+            "alto"
+          ],
+          "manual": "Alto temor a caer"
+        }
+      ]
+    },
+    "norton": {
+      "tabla": "Tabla 15",
+      "pagina": "80-81",
+      "min": 5,
+      "max": 20,
+      "paso": 1,
+      "items": [[4, 3, 2, 1], [4, 3, 2, 1], [4, 3, 2, 1], [4, 3, 2, 1], [4, 3, 2, 1]],
+      "tramos": [
+        {
+          "desde": 5,
+          "hasta": 14,
+          "clave": [
+            "alto"
+          ],
+          "manual": "Alto riesgo de lesiones por presión"
+        },
+        {
+          "desde": 15,
+          "hasta": 20,
+          "clave": [
+            "bajo"
+          ],
+          "manual": "Bajo riesgo de lesiones por presión"
+        }
+      ]
+    },
+    "mrc": {
+      "tabla": "Tabla 17",
+      "pagina": "89",
+      "min": 0,
+      "max": 60,
+      "paso": 1,
+      "items": [[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 35,
+          "clave": [
+            "sever|grave"
+          ],
+          "manual": "Debilidad adquirida en UCI severa (menos de 36)"
+        },
+        {
+          "desde": 36,
+          "hasta": 47,
+          "clave": [
+            "moderad"
+          ],
+          "manual": "Debilidad adquirida en UCI moderada (menos de 48)"
+        },
+        {
+          "desde": 48,
+          "hasta": 60,
+          "clave": [
+            ""
+          ],
+          "excluye": [
+            "sever",
+            "moderad"
+          ],
+          "manual": "Sin debilidad adquirida en UCI (el manual solo nombra el 60 como normal)"
+        }
+      ]
+    },
+    "frail": {
+      "tabla": "Tabla 21",
+      "pagina": "93-94",
+      "min": 0,
+      "max": 5,
+      "paso": 1,
+      "items": [[0, 1], [0, 1], [0, 1], [0, 1], [0, 1]],
+      "multi": [
+        {
+          "item": 4,
+          "opciones": 11,
+          "umbral": 5,
+          "manual": "Once enfermedades; puntúa si tiene 5 o más"
+        }
+      ],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 0,
+          "clave": [
+            "sin alteraci|robust|no fragil"
+          ],
+          "manual": "Sin alteración"
+        },
+        {
+          "desde": 1,
+          "hasta": 2,
+          "clave": [
+            "prefragil"
+          ],
+          "manual": "Sospecha de prefragilidad"
+        },
+        {
+          "desde": 3,
+          "hasta": 5,
+          "clave": [
+            "fragil"
+          ],
+          "excluye": [
+            "prefragil"
+          ],
+          "manual": "Sospecha de fragilidad"
+        }
+      ]
+    },
+    "sarcf": {
+      "tabla": "Tabla 24",
+      "pagina": "101",
+      "min": 0,
+      "max": 10,
+      "paso": 1,
+      "items": [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 3,
+          "clave": [
+            "sin alteraci|baja probabilidad|sin sospecha|no sugiere"
+          ],
+          "manual": "Sin alteración (3 o menos)"
+        },
+        {
+          "desde": 4,
+          "hasta": 10,
+          "clave": [
+            "sarcopenia"
+          ],
+          "excluye": [
+            "sin sospecha",
+            "baja probabilidad"
+          ],
+          "manual": "Sospecha de sarcopenia (4 o más)"
+        }
+      ],
+      "notaManual": "El texto bajo la tabla dice \"menor a 3\" y \"mayores a 4\", lo que deja sin asignar el 3 y el 4; se transcribe la tabla, que es explícita."
+    },
+    "barthel": {
+      "tabla": "Tabla 25",
+      "pagina": "103-104",
+      "min": 0,
+      "max": 100,
+      "paso": 5,
+      "items": [[0, 5, 10], [0, 5], [0, 5, 10], [0, 5], [0, 5, 10], [0, 5, 10], [0, 5, 10], [0, 5, 10, 15], [0, 5, 10, 15], [0, 5, 10]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 15,
+          "clave": [
+            "total"
+          ],
+          "manual": "Dependencia total (menos de 20)"
+        },
+        {
+          "desde": 20,
+          "hasta": 35,
+          "clave": [
+            "grave|sever"
+          ],
+          "manual": "Dependencia grave"
+        },
+        {
+          "desde": 40,
+          "hasta": 55,
+          "clave": [
+            "moderad"
+          ],
+          "manual": "Dependencia moderada"
+        },
+        {
+          "desde": 65,
+          "hasta": 95,
+          "clave": [
+            "leve"
+          ],
+          "manual": "Dependencia leve (más de 60)"
+        },
+        {
+          "desde": 100,
+          "hasta": 100,
+          "clave": [
+            "independ"
+          ],
+          "manual": "Independiente"
+        }
+      ],
+      "vacios": [
+        {
+          "desde": 60,
+          "hasta": 60,
+          "nota": "El manual define 40-55 y más de 60; el 60 no queda en ningún tramo."
+        }
+      ]
+    },
+    "pfeffer": {
+      "tabla": "Tabla 27",
+      "pagina": "107",
+      "min": 0,
+      "max": 30,
+      "paso": 1,
+      "items": [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 5,
+          "clave": [
+            "independ|sin compromiso|normal"
+          ],
+          "manual": "Independiente (menos de 6)"
+        },
+        {
+          "desde": 6,
+          "hasta": 30,
+          "clave": [
+            "compromiso|dependen|alterad"
+          ],
+          "excluye": [
+            "sin compromiso"
+          ],
+          "manual": "Compromiso en actividades avanzadas de la vida diaria"
+        }
+      ]
+    },
+    "minicog": {
+      "tabla": "Tabla 31",
+      "pagina": "119-121",
+      "min": 0,
+      "max": 5,
+      "paso": 1,
+      "items": [[0, 1, 2, 3], [0, 2]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 2,
+          "clave": [
+            "probable"
+          ],
+          "excluye": [
+            "poco probable"
+          ],
+          "manual": "Probable deterioro cognitivo"
+        },
+        {
+          "desde": 3,
+          "hasta": 5,
+          "clave": [
+            "poco probable|negativ|normal"
+          ],
+          "manual": "Muy poco probable que exista deterioro cognitivo"
+        }
+      ],
+      "notaManual": "El texto menciona además un corte de mayor sensibilidad (menos de 4) como opción; la tabla de interpretación usa 0-2 y 3-5."
+    },
+    "mmse": {
+      "tabla": "Tabla 32",
+      "pagina": "122-123",
+      "min": 0,
+      "max": 30,
+      "paso": 1,
+      "items": null,
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 23,
+          "clave": [
+            "deterioro"
+          ],
+          "excluye": [
+            "leve",
+            "normal"
+          ],
+          "manual": "Deterioro cognitivo (menos de 24)"
+        },
+        {
+          "desde": 24,
+          "hasta": 26,
+          "clave": [
+            "leve"
+          ],
+          "manual": "Déficit leve (26-24)"
+        },
+        {
+          "desde": 30,
+          "hasta": 30,
+          "clave": [
+            "normal"
+          ],
+          "manual": "Normal"
+        }
+      ],
+      "vacios": [
+        {
+          "desde": 27,
+          "hasta": 29,
+          "nota": "El manual define menos de 24, 24-26 y 30; del 27 al 29 no hay tramo."
+        }
+      ]
+    },
+    "memoria": {
+      "tabla": "Tabla 33",
+      "pagina": "124-125",
+      "min": 0,
+      "max": 45,
+      "paso": 1,
+      "items": [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 18,
+          "clave": [
+            "no sugestivo|sin "
+          ],
+          "manual": "No sugestivo de deterioro cognoscitivo (18 o menos)"
+        },
+        {
+          "desde": 19,
+          "hasta": 45,
+          "clave": [
+            "sugestivo|sugiere"
+          ],
+          "excluye": [
+            "no sugestivo"
+          ],
+          "manual": "Sugestivo de deterioro cognoscitivo (19 o más)"
+        }
+      ],
+      "notaManual": "Las notas bajo la tabla usan \"mayor de 19\" y \"menor de 19\"; la tabla dice 19 o más y 18 o menos."
+    },
+    "npi": {
+      "tabla": "Tabla 37",
+      "pagina": "133",
+      "min": 0,
+      "max": 33,
+      "paso": 1,
+      "items": [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]],
+      "sinCortes": "El manual dice expresamente que no existen puntos de corte para esta prueba. Once dominios: ausente 0, leve 1, moderado 2, severo 3."
+    },
+    "yesavage": {
+      "tabla": "Tabla 38",
+      "pagina": "134-135",
+      "min": 0,
+      "max": 15,
+      "paso": 1,
+      "items": [[0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 5,
+          "clave": [
+            "normal|sin "
+          ],
+          "manual": "Tamizaje normal"
+        },
+        {
+          "desde": 6,
+          "hasta": 10,
+          "clave": [
+            "moderad"
+          ],
+          "manual": "Tamizaje con depresión moderada"
+        },
+        {
+          "desde": 11,
+          "hasta": 15,
+          "clave": [
+            "sever|grave"
+          ],
+          "manual": "Tamizaje con depresión severa"
+        }
+      ],
+      "notaManual": "El orden de las columnas Sí/No de la tabla no coincide con la clave publicada en los ítems 1, 6 y 13. La clave de respuestas ya la vigila verificar-integridad.mjs (decisión del autor: puntúa No en 1, 5, 7, 11 y 13)."
+    },
+    "gad7": {
+      "tabla": "Tabla 40",
+      "pagina": "136",
+      "min": 0,
+      "max": 21,
+      "paso": 1,
+      "items": [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]],
+      "tramos": [
+        {
+          "desde": 0,
+          "hasta": 4,
+          "clave": [
+            "sin |minim|normal|ausen"
+          ],
+          "manual": "Sin alteración"
+        },
+        {
+          "desde": 5,
+          "hasta": 9,
+          "clave": [
+            "leve"
+          ],
+          "manual": "Leve"
+        },
+        {
+          "desde": 10,
+          "hasta": 14,
+          "clave": [
+            "moderad"
+          ],
+          "manual": "Moderado"
+        },
+        {
+          "desde": 15,
+          "hasta": 21,
+          "clave": [
+            "grave|sever"
+          ],
+          "manual": "Grave"
+        }
+      ]
+    },
+    "autoperc": {
+      "tabla": "Tabla 43",
+      "pagina": "146",
+      "items": null,
+      "sinCortes": "El manual no da puntaje: tres preguntas categóricas (percepción general sí/no, escala ordinal de cinco niveles y salud comparada). Señala como grupo de riesgo a quien no se siente saludable, califica su salud como regular o mala y la considera peor que la de otros."
+    }
+  },
+  "algoritmicas": {
+    "ashworth": {
+      "tabla": "Tabla 18",
+      "pagina": "90",
+      "grados": [
+        "0",
+        "1",
+        "1+",
+        "2",
+        "3",
+        "4"
+      ],
+      "regla": "Seis grados de 0 a 4 (con 1+). El manual no da tramos de interpretación."
+    },
+    "cam": {
+      "tabla": "Figura 11",
+      "pagina": "116",
+      "criterios": [
+        "Inicio agudo y curso fluctuante",
+        "Falta de atención",
+        "Pensamiento desorganizado",
+        "Nivel de conciencia alterado"
+      ],
+      "regla": "Delirium si están los criterios 1 y 2 y cualquiera de 3 o 4. Ningún criterio: sin delirium. El manual rotula \"1 o 2\" como delirium subsindrómico, sin precisar si se refiere a los criterios 1 o 2 o a uno o dos criterios; esos casos se informan sin juzgar."
+    },
+    "dsmdelirium": {
+      "tabla": "Tabla 30",
+      "pagina": "117",
+      "criterios": 5,
+      "regla": "El manual lista los cinco criterios del DSM 5-TR sin enunciar la regla; el DSM 5-TR exige los cinco (A a E) para el diagnóstico."
+    },
+    "gdsreisberg": {
+      "tabla": "Tabla 36",
+      "pagina": "130-131",
+      "estadios": [
+        "normal",
+        "muy leve",
+        "leve",
+        "moderado",
+        "moderadamente grave",
+        "grave",
+        "muy grave"
+      ],
+      "regla": "Siete estadios; se elige la descripción que mejor corresponde."
+    },
+    "mos": {
+      "tabla": "Tabla 45",
+      "pagina": "148-150",
+      "itemsPuntuables": 19,
+      "valores": [1, 2, 3, 4, 5],
+      "subescalas": {
+        "emocional": {
+          "items": [3, 4, 8, 9, 13, 16, 17, 19],
+          "min": 8,
+          "max": 40,
+          "medio": 24
+        },
+        "material": {
+          "items": [2, 5, 12, 15],
+          "min": 4,
+          "max": 20,
+          "medio": 12
+        },
+        "ocio": {
+          "items": [7, 11, 14, 18],
+          "min": 4,
+          "max": 20,
+          "medio": 12
+        },
+        "afectivo": {
+          "items": [6, 10, 20],
+          "min": 3,
+          "max": 15,
+          "medio": 9
+        }
+      },
+      "global": {
+        "min": 19,
+        "max": 95,
+        "medio": 57
+      },
+      "regla": "Índice global: suma de las respuestas 2 a 20; subescalas con los ítems indicados. El manual da máximo, medio y mínimo de referencia, no tramos.",
+      "notaManual": "La tabla del manual da 94 como máximo del índice global; con 19 ítems de 1 a 5 el máximo es 95. Se transcribe 95 y se deja constancia de la errata."
+    },
+    "maltrato": {
+      "tabla": "Tabla 48",
+      "pagina": "154",
+      "tipos": [
+        "físico",
+        "psicológico",
+        "estructural",
+        "sexual",
+        "patrimonial"
+      ],
+      "regla": "Lista de signos de alarma agrupados en cinco tipos de maltrato; no tiene puntaje."
+    }
+  },
+  "complementariasPendientes": {
+    "_nota": "Escalas de la aplicación que no proceden del manual. Se transcriben de su fuente original en fuentes-complementarias.json; la prueba informa las que queden sin transcripción.",
+    "ids": [
+      "painad",
+      "necpal",
+      "pap",
+      "walter",
+      "lee",
+      "at4",
+      "zarit",
+      "preopger",
+      "rcri",
+      "fts",
+      "eft"
+    ]
+  },
+  "decisiones": {
+    "barthel:vacio:60-60": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "60 o más es dependencia leve; de 40 a 59, dependencia moderada."
+    },
+    "downton:vacio:0-0": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "0 puntos corresponde a sin riesgo de caída."
+    },
+    "npi:cortes-propios": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+    },
+    "autoperc:cortes-propios": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+    },
+    "ashworth:cortes-propios": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantiene la interpretación por grado."
+    },
+    "cam:subsindromico": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: cualquier criterio presente que no complete el patrón se rotula delirium subsindrómico."
+    },
+    "gdsreisberg:agrupacion": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantiene la agrupación del resultado."
+    },
+    "mmse:vacio:27-29": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Se mantiene la interpretación de la aplicación: de 27 a 30 puntos, normal. Reemplaza la corrección anotada antes el mismo día."
+    },
+    "mos:cortes-propios": {
+      "fecha": "2026-10-17",
+      "decision": "se mantiene",
+      "motivo": "Sin cambios: se mantienen los tramos del índice global, incluido el corte de 38."
+    }
+  },
+  "porCorregir": {
+    "_nota": "Hallazgos que el autor decidió corregir en una versión futura. Se informan aparte y no hacen fallar la prueba. Cuando la aplicación se corrija, el hallazgo cambiará o desaparecerá y la entrada se revisa."
+  }
+}
