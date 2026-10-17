@@ -1,0 +1,618 @@
+{
+  "archivo": "index.html",
+  "sha256": "14d9b376bf56c885fa654fbabd730f0d8db8c1383d061b31da37363ea3b702a7",
+  "version": "2.13.4",
+  "fecha": "2026-10-17T06:01:53.225Z",
+  "escalasRevisadas": 34,
+  "fuentes": [
+    "verificacion/fuentes-manual-2024.json",
+    "verificacion/fuentes-complementarias.json"
+  ],
+  "escalasPendientes": [],
+  "totalFallos": 0,
+  "totalAvisos": 0,
+  "totalDecididos": 13,
+  "totalPorCorregir": 2,
+  "fallos": [],
+  "avisos": [],
+  "porCorregir": [
+    {
+      "id": "preopger",
+      "tipo": "aviso",
+      "clave": "preopger:dominios",
+      "texto": "la guía incluye dominios que no encontré en la lista de la aplicación: card, pulmon",
+      "correccion": {
+        "fecha": "2026-10-17",
+        "correccion": "Añadir los dominios cardiaco y pulmonar según la guía original (Chow 2012, ACS NSQIP/AGS).",
+        "estado": "pendiente para la próxima versión; la 2.13.4 no se modifica"
+      }
+    },
+    {
+      "id": "preopger",
+      "tipo": "aviso",
+      "clave": "preopger:regla",
+      "texto": "la guía es una lista de verificación sin puntaje ni clasificación global; la aplicación resume así: ninguno: Sin dominios por intervenir | solo el ítem 1, 3, 4, 5, 6, 7, 8, 9, 10: Requiere intervención en 1 dominio | solo el ítem 2: Capacidad para decidir comprometida | todos menos capacidad: Requiere intervención en 9 dominios | todos: Capacidad para decidir comprometida",
+      "correccion": {
+        "fecha": "2026-10-17",
+        "correccion": "Se mantiene el resumen por número de dominios con prioridad para la capacidad comprometida, acotado a 12 dominios (los 10 actuales más el cardiaco y el pulmonar).",
+        "estado": "pendiente para la próxima versión; la 2.13.4 no se modifica"
+      }
+    }
+  ],
+  "decididos": [
+    {
+      "id": "downton",
+      "tipo": "aviso",
+      "clave": "downton:vacio:0-0",
+      "texto": "El manual define 1-3 y 4 o más; no dice nada del 0. La aplicación muestra 0: \"Sin criterios de riesgo\"",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "0 puntos corresponde a sin riesgo de caída."
+      }
+    },
+    {
+      "id": "barthel",
+      "tipo": "aviso",
+      "clave": "barthel:vacio:60-60",
+      "texto": "El manual define 40-55 y más de 60; el 60 no queda en ningún tramo. La aplicación muestra 60: \"Dependencia leve\"",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "60 o más es dependencia leve; de 40 a 59, dependencia moderada."
+      }
+    },
+    {
+      "id": "mmse",
+      "tipo": "aviso",
+      "clave": "mmse:vacio:27-29",
+      "texto": "El manual define menos de 24, 24-26 y 30; del 27 al 29 no hay tramo. La aplicación muestra 27: \"Normal\", 28: \"Normal\", 29: \"Normal\"",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Se mantiene la interpretación de la aplicación: de 27 a 30 puntos, normal. Reemplaza la corrección anotada antes el mismo día."
+      }
+    },
+    {
+      "id": "npi",
+      "tipo": "aviso",
+      "clave": "npi:cortes-propios",
+      "texto": "la fuente no da puntos de corte; la aplicación muestra 3 tramos: 0: Sin síntomas neuropsiquiátricos referidos | 1 a 8: Síntomas de baja intensidad | 9 a 33: Síntomas de intensidad significativa",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+      }
+    },
+    {
+      "id": "autoperc",
+      "tipo": "aviso",
+      "clave": "autoperc:cortes-propios",
+      "texto": "la fuente no da puntos de corte; la aplicación muestra 3 tramos: 0: Autopercepción favorable | 1 a 2: Autopercepción parcialmente comprometida | 3 a 4: Grupo de riesgo",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+      }
+    },
+    {
+      "id": "painad",
+      "tipo": "aviso",
+      "clave": "painad:cortes-propios",
+      "texto": "la fuente no da puntos de corte; la aplicación muestra 4 tramos: 0: Sin indicadores de dolor | 1 a 3: Dolor leve | 4 a 6: Dolor moderado | 7 a 10: Dolor intenso",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen los tramos de la aplicación."
+      }
+    },
+    {
+      "id": "eft",
+      "tipo": "fallo",
+      "clave": "eft:parte:0-2",
+      "texto": "la aplicación parte el tramo 0 a 2 de la fuente en 2: Sin fragilidad / Prefragilidad",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen \"Sin fragilidad\" (0) y \"Prefragilidad\" (1 a 2)."
+      }
+    },
+    {
+      "id": "eft",
+      "tipo": "fallo",
+      "clave": "eft:parte:3-5",
+      "texto": "la aplicación parte el tramo 3 a 5 de la fuente en 2: Fragilidad / Fragilidad grave",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen \"Fragilidad\" (3 a 4) y \"Fragilidad grave\" (5)."
+      }
+    },
+    {
+      "id": "ashworth",
+      "tipo": "aviso",
+      "clave": "ashworth:cortes-propios",
+      "texto": "el manual no da tramos; la aplicación interpreta cada grado así: 0: Tono muscular normal | 1: Espasticidad leve | 1+: Espasticidad leve | 2: Espasticidad moderada | 3: Espasticidad severa | 4: Rigidez",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantiene la interpretación por grado."
+      }
+    },
+    {
+      "id": "cam",
+      "tipo": "aviso",
+      "clave": "cam:subsindromico",
+      "texto": "el manual rotula \"1 o 2\" como delirium subsindrómico sin precisar; la aplicación da \"Delirium subsindrómico\" con 1, 2, 1+2, 3, 1+3, 2+3, 4, 1+4, 2+4, 3+4, 1+3+4, 2+3+4",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: cualquier criterio presente que no complete el patrón se rotula delirium subsindrómico."
+      }
+    },
+    {
+      "id": "gdsreisberg",
+      "tipo": "aviso",
+      "clave": "gdsreisberg:agrupacion",
+      "texto": "el manual nombra cada estadio por separado; la aplicación agrupa el resultado así: GDS 1 (normal): Sin deterioro objetivable | GDS 2 (muy leve): Sin deterioro objetivable | GDS 3 (leve): Deterioro leve | GDS 4 (moderado): Deterioro moderado | GDS 5 (moderadamente grave): Deterioro moderado | GDS 6 (grave): Deterioro grave | GDS 7 (muy grave): Deterioro grave",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantiene la agrupación del resultado."
+      }
+    },
+    {
+      "id": "mos",
+      "tipo": "aviso",
+      "clave": "mos:cortes-propios",
+      "texto": "el manual da solo máximo, medio (57) y mínimo; la aplicación clasifica el índice global así: 19 a 37: Apoyo social bajo | 38 a 56: Apoyo social por debajo del promedio | 57 a 95: Apoyo social adecuado",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: se mantienen los tramos del índice global, incluido el corte de 38."
+      }
+    },
+    {
+      "id": "necpal",
+      "tipo": "aviso",
+      "clave": "necpal:sin-ps",
+      "texto": "el formulario 3.1 registra la pregunta sorpresa y los parámetros por separado sin decir si la primera es condición; con parámetros pero sin pregunta sorpresa positiva la aplicación da \"NECPAL negativo\" (ítems 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14), como en la versión 3.0 y en los estudios que aplican el instrumento",
+      "decision": {
+        "fecha": "2026-10-17",
+        "decision": "se mantiene",
+        "motivo": "Sin cambios: el resultado positivo exige pregunta sorpresa positiva y al menos un parámetro."
+      }
+    }
+  ],
+  "decisionesSinHallazgo": [],
+  "escalas": {
+    "mna": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 11, p. 70-71)",
+      "tramosAplicacion": [
+        "0 a 7: Malnutrición",
+        "8 a 11: Riesgo de malnutrición",
+        "12 a 14: Estado nutricional satisfactorio"
+      ],
+      "tramosManual": [
+        "0 a 7: Malnutrición",
+        "8 a 11: Riesgo de malnutrición",
+        "12 a 14: Estado nutricional satisfactorio"
+      ]
+    },
+    "eat10": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 12, p. 72-73)",
+      "tramosAplicacion": [
+        "0 a 2: Sin disfagia",
+        "3 a 40: Sugiere disfagia"
+      ],
+      "tramosManual": [
+        "0 a 2: Sin disfagia",
+        "3 a 40: Sugiere disfagia"
+      ]
+    },
+    "downton": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 13, p. 77)",
+      "tramosAplicacion": [
+        "0: Sin criterios de riesgo",
+        "1 a 3: Riesgo bajo de caídas",
+        "4 a 10: Riesgo alto de caídas"
+      ],
+      "tramosManual": [
+        "1 a 3: Riesgo bajo de caídas",
+        "4 a 10: Riesgo alto de caídas"
+      ]
+    },
+    "fesi": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 14, p. 79)",
+      "tramosAplicacion": [
+        "7 a 10: Bajo temor a caer",
+        "11 a 28: Alto temor a caer"
+      ],
+      "tramosManual": [
+        "7 a 10: Bajo temor a caer",
+        "11 a 28: Alto temor a caer"
+      ]
+    },
+    "norton": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 15, p. 80-81)",
+      "tramosAplicacion": [
+        "5 a 14: Alto riesgo de lesiones por presión",
+        "15 a 20: Bajo riesgo de lesiones por presión"
+      ],
+      "tramosManual": [
+        "5 a 14: Alto riesgo de lesiones por presión",
+        "15 a 20: Bajo riesgo de lesiones por presión"
+      ]
+    },
+    "mrc": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 17, p. 89)",
+      "tramosAplicacion": [
+        "0 a 35: Debilidad adquirida severa",
+        "36 a 47: Debilidad adquirida moderada",
+        "48 a 60: Sin criterios de debilidad adquirida"
+      ],
+      "tramosManual": [
+        "0 a 35: Debilidad adquirida en UCI severa (menos de 36)",
+        "36 a 47: Debilidad adquirida en UCI moderada (menos de 48)",
+        "48 a 60: Sin debilidad adquirida en UCI (el manual solo nombra el 60 como normal)"
+      ]
+    },
+    "frail": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 21, p. 93-94)",
+      "tramosAplicacion": [
+        "0: Sin alteración",
+        "1 a 2: Sospecha de prefragilidad",
+        "3 a 5: Sospecha de fragilidad"
+      ],
+      "tramosManual": [
+        "0: Sin alteración",
+        "1 a 2: Sospecha de prefragilidad",
+        "3 a 5: Sospecha de fragilidad"
+      ]
+    },
+    "sarcf": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 24, p. 101)",
+      "tramosAplicacion": [
+        "0 a 3: Sin alteración",
+        "4 a 10: Sospecha de sarcopenia"
+      ],
+      "tramosManual": [
+        "0 a 3: Sin alteración (3 o menos)",
+        "4 a 10: Sospecha de sarcopenia (4 o más)"
+      ]
+    },
+    "barthel": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 25, p. 103-104)",
+      "tramosAplicacion": [
+        "0 a 15: Dependencia total",
+        "20 a 35: Dependencia grave",
+        "40 a 55: Dependencia moderada",
+        "60 a 95: Dependencia leve",
+        "100: Independiente"
+      ],
+      "tramosManual": [
+        "0 a 15: Dependencia total (menos de 20)",
+        "20 a 35: Dependencia grave",
+        "40 a 55: Dependencia moderada",
+        "65 a 95: Dependencia leve (más de 60)",
+        "100: Independiente"
+      ]
+    },
+    "pfeffer": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 27, p. 107)",
+      "tramosAplicacion": [
+        "0 a 5: Independiente",
+        "6 a 30: Compromiso en actividades avanzadas"
+      ],
+      "tramosManual": [
+        "0 a 5: Independiente (menos de 6)",
+        "6 a 30: Compromiso en actividades avanzadas de la vida diaria"
+      ]
+    },
+    "minicog": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 31, p. 119-121)",
+      "tramosAplicacion": [
+        "0 a 2: Probable deterioro cognitivo",
+        "3 a 5: Poco probable que exista deterioro cognitivo"
+      ],
+      "tramosManual": [
+        "0 a 2: Probable deterioro cognitivo",
+        "3 a 5: Muy poco probable que exista deterioro cognitivo"
+      ]
+    },
+    "mmse": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 32, p. 122-123)",
+      "tramosAplicacion": [
+        "0 a 23: Deterioro cognitivo",
+        "24 a 26: Déficit leve",
+        "27 a 30: Normal"
+      ],
+      "tramosManual": [
+        "0 a 23: Deterioro cognitivo (menos de 24)",
+        "24 a 26: Déficit leve (26-24)",
+        "30: Normal"
+      ]
+    },
+    "memoria": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 33, p. 124-125)",
+      "tramosAplicacion": [
+        "0 a 18: No sugestivo de deterioro cognoscitivo",
+        "19 a 45: Sugestivo de deterioro cognoscitivo"
+      ],
+      "tramosManual": [
+        "0 a 18: No sugestivo de deterioro cognoscitivo (18 o menos)",
+        "19 a 45: Sugestivo de deterioro cognoscitivo (19 o más)"
+      ]
+    },
+    "npi": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 37, p. 133)",
+      "tramosAplicacion": [
+        "0: Sin síntomas neuropsiquiátricos referidos",
+        "1 a 8: Síntomas de baja intensidad",
+        "9 a 33: Síntomas de intensidad significativa"
+      ],
+      "tramosManual": "sin puntos de corte"
+    },
+    "yesavage": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 38, p. 134-135)",
+      "tramosAplicacion": [
+        "0 a 5: Tamizaje normal",
+        "6 a 10: Tamizaje con depresión moderada",
+        "11 a 15: Tamizaje con depresión severa"
+      ],
+      "tramosManual": [
+        "0 a 5: Tamizaje normal",
+        "6 a 10: Tamizaje con depresión moderada",
+        "11 a 15: Tamizaje con depresión severa"
+      ]
+    },
+    "gad7": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 40, p. 136)",
+      "tramosAplicacion": [
+        "0 a 4: Sin alteración",
+        "5 a 9: Ansiedad leve",
+        "10 a 14: Ansiedad moderada",
+        "15 a 21: Ansiedad grave"
+      ],
+      "tramosManual": [
+        "0 a 4: Sin alteración",
+        "5 a 9: Leve",
+        "10 a 14: Moderado",
+        "15 a 21: Grave"
+      ]
+    },
+    "autoperc": {
+      "tipo": "sumativa",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 43, p. 146)",
+      "tramosAplicacion": [
+        "0: Autopercepción favorable",
+        "1 a 2: Autopercepción parcialmente comprometida",
+        "3 a 4: Grupo de riesgo"
+      ],
+      "tramosManual": "sin puntos de corte"
+    },
+    "painad": {
+      "tipo": "sumativa",
+      "fuente": "Warden V, Hurley AC, Volicer L. J Am Med Dir Assoc. 2003;4(1):9-15. García-Soler Á, et al. Rev Esp Geriatr Gerontol. 2014;49(1):10-4 (PAINAD-Sp).",
+      "tramosAplicacion": [
+        "0: Sin indicadores de dolor",
+        "1 a 3: Dolor leve",
+        "4 a 6: Dolor moderado",
+        "7 a 10: Dolor intenso"
+      ],
+      "tramosManual": "sin puntos de corte"
+    },
+    "pap": {
+      "tipo": "sumativa",
+      "fuente": "Pirovano M, Maltoni M, Nanni O, et al. J Pain Symptom Manage. 1999;17(4):231-9, tabla 3.",
+      "tramosAplicacion": [
+        "0 a 5.5: Grupo A",
+        "6 a 11: Grupo B",
+        "11.5 a 17.5: Grupo C"
+      ],
+      "tramosManual": [
+        "0 a 5.5: Grupo A: supervivencia a 30 días mayor del 70 %",
+        "6 a 11: Grupo B: supervivencia a 30 días del 30 al 70 % (5,6 a 11,0)",
+        "11.5 a 17.5: Grupo C: supervivencia a 30 días menor del 30 % (11,1 a 17,5)"
+      ]
+    },
+    "walter": {
+      "tipo": "sumativa",
+      "fuente": "Walter LC, Brand RJ, Counsell SR, et al. JAMA. 2001;285(23):2987-94.",
+      "tramosAplicacion": [
+        "0 a 1: Riesgo bajo",
+        "2 a 3: Riesgo intermedio",
+        "4 a 6: Riesgo alto",
+        "7 a 20: Riesgo muy alto"
+      ],
+      "tramosManual": [
+        "0 a 1: 0-1 puntos: mortalidad a 1 año 13 % (derivación) y 4 % (validación)",
+        "2 a 3: 2-3 puntos: 20 % y 19 %",
+        "4 a 6: 4-6 puntos: 37 % y 34 %",
+        "7 a 20: Más de 6 puntos: 68 % y 64 %"
+      ]
+    },
+    "lee": {
+      "tipo": "sumativa",
+      "fuente": "Lee SJ, Lindquist K, Segal MR, Covinsky KE. JAMA. 2006;295(7):801-8, tablas 3 y 4.",
+      "tramosAplicacion": [
+        "0 a 5: Riesgo bajo",
+        "6 a 9: Riesgo intermedio",
+        "10 a 13: Riesgo alto",
+        "14 a 26: Riesgo muy alto"
+      ],
+      "tramosManual": [
+        "0 a 5: 0-5 puntos: menos del 4 % de mortalidad a 4 años",
+        "6 a 9: 6-9 puntos: 15 %",
+        "10 a 13: 10-13 puntos: 42 % (40 % en derivación)",
+        "14 a 26: 14 o más puntos: 64 % (67 % en derivación)"
+      ]
+    },
+    "at4": {
+      "tipo": "sumativa",
+      "fuente": "Bellelli G, et al. Age Ageing. 2014;43(4):496-502. Hoja oficial del 4AT (the4at.com).",
+      "tramosAplicacion": [
+        "0: Delirium o deterioro cognitivo grave poco probables",
+        "1 a 3: Posible deterioro cognitivo",
+        "4 a 12: Posible delirium con o sin deterioro cognitivo"
+      ],
+      "tramosManual": [
+        "0: Delirium o deterioro cognitivo grave improbables",
+        "1 a 3: Posible deterioro cognitivo",
+        "4 a 12: Posible delirium (con o sin deterioro cognitivo)"
+      ]
+    },
+    "zarit": {
+      "tipo": "sumativa",
+      "fuente": "Martín M, et al. Rev Gerontol. 1996;6:338-46 (versión española, citada en Gac Sanit. 2008;22(6):618-9). Barreto-Osorio RV, et al. Aquichan. 2015;15(3):368-80.",
+      "tramosAplicacion": [
+        "22 a 46: Sin sobrecarga",
+        "47 a 55: Sobrecarga leve",
+        "56 a 110: Sobrecarga intensa"
+      ],
+      "tramosManual": [
+        "22 a 46: Sin sobrecarga (46 o menos)",
+        "47 a 55: Sobrecarga leve",
+        "56 a 110: Sobrecarga intensa (56 o más)"
+      ]
+    },
+    "rcri": {
+      "tipo": "sumativa",
+      "fuente": "Lee TH, Marcantonio ER, Mangione CM, et al. Circulation. 1999;100(10):1043-9. Tasas a 30 días de la guía canadiense: Duceppe E, et al. Can J Cardiol. 2017;33(1):17-32.",
+      "tramosAplicacion": [
+        "0: Clase I · riesgo bajo",
+        "1: Clase II · riesgo bajo",
+        "2: Clase III · riesgo intermedio",
+        "3 a 6: Clase IV · riesgo alto"
+      ],
+      "tramosManual": [
+        "0: Clase I (0 factores): 0,4 a 0,5 % en Lee 1999; 3,9 % a 30 días en la guía canadiense",
+        "1: Clase II (1 factor): 0,9 a 1,3 %; 6,0 %",
+        "2: Clase III (2 factores): 3,6 a 6,6 %; 10,1 %",
+        "3 a 6: Clase IV (3 o más): 9,1 a 11,0 %; 15,0 %"
+      ]
+    },
+    "fts": {
+      "tipo": "sumativa",
+      "fuente": "Lantelme P, Lacour T, Bisson A, et al. Am J Cardiol. 2020;130:100-7, tablas 3 y 4.",
+      "tramosAplicacion": [
+        "0 a 4: Riesgo bajo de futilidad",
+        "5 a 8: Riesgo intermedio de futilidad",
+        "9 a 19: Riesgo alto de futilidad"
+      ],
+      "tramosManual": [
+        "0 a 4: Riesgo bajo (0-4): mortalidad a 1 año 11 %",
+        "5 a 8: Riesgo medio (5-8): 22 %",
+        "9 a 19: Riesgo alto (más de 8): 43 %"
+      ]
+    },
+    "eft": {
+      "tipo": "sumativa",
+      "fuente": "Afilalo J, Lauck S, Kim DH, et al. J Am Coll Cardiol. 2017;70(6):689-700.",
+      "tramosAplicacion": [
+        "0: Sin fragilidad",
+        "1 a 2: Prefragilidad",
+        "3 a 4: Fragilidad",
+        "5: Fragilidad grave"
+      ],
+      "tramosManual": [
+        "0 a 2: No frágil (el artículo dicotomiza en 3 o más)",
+        "3 a 5: Frágil (3 o más de 5)"
+      ]
+    },
+    "ashworth": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 18, p. 90)",
+      "gradosAplicacion": [
+        "0",
+        "1",
+        "1+",
+        "2",
+        "3",
+        "4"
+      ],
+      "veredictos": [
+        "0: Tono muscular normal",
+        "1: Espasticidad leve",
+        "1+: Espasticidad leve",
+        "2: Espasticidad moderada",
+        "3: Espasticidad severa",
+        "4: Rigidez"
+      ]
+    },
+    "cam": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Figura 11, p. 116)",
+      "combinaciones": 16
+    },
+    "dsmdelirium": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 30, p. 117)",
+      "combinaciones": 32
+    },
+    "gdsreisberg": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 36, p. 130-131)",
+      "veredictos": [
+        "GDS 1 (normal): Sin deterioro objetivable",
+        "GDS 2 (muy leve): Sin deterioro objetivable",
+        "GDS 3 (leve): Deterioro leve",
+        "GDS 4 (moderado): Deterioro moderado",
+        "GDS 5 (moderadamente grave): Deterioro moderado",
+        "GDS 6 (grave): Deterioro grave",
+        "GDS 7 (muy grave): Deterioro grave"
+      ]
+    },
+    "mos": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 45, p. 148-150)",
+      "tramosAplicacion": [
+        "19 a 37: Apoyo social bajo",
+        "38 a 56: Apoyo social por debajo del promedio",
+        "57 a 95: Apoyo social adecuado"
+      ]
+    },
+    "maltrato": {
+      "tipo": "algoritmica",
+      "fuente": "Chavarro-Carvajal DA, Heredia Ramírez RA, Cano-Gutiérrez CA, eds (Tabla 48, p. 154)"
+    },
+    "necpal": {
+      "tipo": "algoritmica",
+      "fuente": "Instrumento NECPAL CCOMS-ICO© versión 3.1 (2017), formulario oficial (anexo 4, IB-Salut). Para la versión anterior: Tripodoro VA. Tesis doctoral, Universitat de Vic; 2016 (versión 3.0).",
+      "soloPreguntaSorpresa": "NECPAL negativo",
+      "veredictos": {
+        "ninguno": "NECPAL negativo",
+        "todos": "NECPAL positivo"
+      }
+    },
+    "preopger": {
+      "tipo": "algoritmica",
+      "fuente": "Chow WB, Rosenthal RA, Merkow RP, Ko CY, Esnaola NF. J Am Coll Surg. 2012;215(4):453-66 (ACS NSQIP/AGS).",
+      "veredictos": [
+        "ninguno: Sin dominios por intervenir",
+        "solo el ítem 1, 3, 4, 5, 6, 7, 8, 9, 10: Requiere intervención en 1 dominio",
+        "solo el ítem 2: Capacidad para decidir comprometida",
+        "todos menos capacidad: Requiere intervención en 9 dominios",
+        "todos: Capacidad para decidir comprometida"
+      ]
+    }
+  },
+  "erroresJS": [],
+  "aprobado": true
+}
