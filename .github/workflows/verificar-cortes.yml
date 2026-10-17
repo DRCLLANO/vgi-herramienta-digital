@@ -1,0 +1,64 @@
+# Verificación de puntos de corte contra las fuentes.
+# Corre aparte de "Verificar VGI Digital" para no modificar ese flujo ni su
+# script. Compara la aplicación con las transcripciones de verificacion/
+# (fuentes-manual-2024.json y fuentes-complementarias.json). Si la aplicación
+# contradice una fuente en algo que el autor no ha registrado como decisión,
+# queda en rojo. No publica nada ni modifica el repositorio.
+name: Verificar puntos de corte
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cortes:
+    name: Puntos de corte contra las fuentes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar Playwright y Chromium
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Comparar con las fuentes
+        run: |
+          mkdir -p resultados
+          set +e
+          node verificacion/verificar-cortes.mjs index.html verificacion/fuentes-manual-2024.json verificacion/fuentes-complementarias.json > resultados/resultado-cortes.json
+          estado=$?
+          set -e
+          node -e '
+            const r = require("./resultados/resultado-cortes.json");
+            const l = [`## Puntos de corte de VGI Digital ${r.version}: ${r.aprobado ? "sin contradicciones con las fuentes" : "hay contradicciones con las fuentes"}`, "",
+              `Escalas revisadas: ${r.escalasRevisadas}. Fallos: ${r.totalFallos}. Avisos: ${r.totalAvisos}. Por corregir: ${r.totalPorCorregir}. Decisiones del autor ya registradas: ${r.totalDecididos}.`, ""];
+            if (r.fallos.length) l.push("### Fallos (contradicen la fuente)", "", ...r.fallos.map(h => `- **${h.id}**: ${h.texto} (clave \`${h.clave}\`)`), "");
+            if (r.avisos.length) l.push("### Avisos (la fuente no lo define)", "", ...r.avisos.map(h => `- **${h.id}**: ${h.texto} (clave \`${h.clave}\`)`), "");
+            if (r.porCorregir.length) l.push("### Por corregir en la próxima versión", "", ...r.porCorregir.map(h => `- **${h.id}**: ${h.correccion.correccion}`), "");
+            if (r.escalasPendientes.length) l.push(`Escalas sin transcripción de su fuente: ${r.escalasPendientes.join(", ")}.`);
+            console.log(l.join("\n"));
+            if (process.env.GITHUB_STEP_SUMMARY) require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, l.join("\n") + "\n");
+          '
+          exit $estado
+
+      - name: Guardar el resultado
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-cortes
+          path: resultados/
+          retention-days: 90
