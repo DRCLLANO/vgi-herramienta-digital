@@ -3,6 +3,17 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.14.1
+
+Ajuste de las transiciones entre pantallas. Ninguna escala, puntaje, punto de
+corte ni interpretación cambia; el conversor no cambia.
+
+- Las transiciones con la View Transitions API quedan solo en escritorio con
+  puntero fino. En pantallas táctiles, el fundido de la vista anterior (con su
+  desplazamiento) se superponía a la entrada escalonada de la nueva y producía
+  un pequeño sobresalto al cambiar de pestaña; el celular recupera la entrada
+  limpia que traía desde la 2.12.1.
+
 ## 2.14.0
 
 Rediseño de la interfaz. Ninguna escala, puntaje, punto de corte ni
