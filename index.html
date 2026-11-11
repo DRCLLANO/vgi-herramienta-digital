@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.14.0",
+  "softwareVersion": "2.14.1",
   "datePublished": "2026-09-10",
   "dateModified": "2026-11-11",
   "inLanguage": "es",
@@ -2873,10 +2873,15 @@ document.addEventListener('pointermove', e=>{
   }
 });
 
-/* Transición de pantalla con la View Transitions API: solo al
-   cambiar de pantalla, nunca en actualizaciones dentro de la misma (responder
-   un ítem, abrir la evidencia ya con data-anim propio), y nunca con movimiento
-   reducido. Donde el navegador no la admite, render se comporta como siempre. */
+/* Transición de pantalla con la View Transitions API: solo en escritorio
+   con puntero fino (en pantallas táctiles el fundido de la vista anterior se
+   superponía a la entrada de la nueva y producía un sobresalto; 2.14.1), solo
+   al cambiar de pantalla, nunca en actualizaciones dentro de la misma, y
+   nunca con movimiento reducido. Sin la API, render se comporta como siempre. */
+function vtEscritorio(){
+  try{ return matchMedia('(min-width: 960px) and (pointer: fine)').matches; }
+  catch(e){ return false; }
+}
 let vtClave = null;
 let vtGesto = 0; /* marca de tiempo del último toque real del usuario */
 function render(){
@@ -2886,7 +2891,7 @@ function render(){
   /* La transición solo acompaña una navegación iniciada por un gesto del
      usuario: un render programático (pruebas, restauraciones) sigue siendo
      síncrono, de modo que quien llame a render() puede leer el DOM de inmediato. */
-  if(cambia && !MOV_REDUCIDO && document.startViewTransition && (performance.now() - vtGesto) < 150){
+  if(cambia && !MOV_REDUCIDO && document.startViewTransition && vtEscritorio() && (performance.now() - vtGesto) < 150){
     document.startViewTransition(()=>renderBase());
   } else { renderBase(); }
 }
@@ -2964,7 +2969,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.14.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.14.1</small></div></div>'
     + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
@@ -3514,7 +3519,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.14.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.14.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3526,6 +3531,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.14.1</strong> · Las transiciones entre pantallas quedan solo en escritorio con puntero fino. En el celular, el fundido de la vista anterior se superponía a la entrada de la nueva y producía un pequeño sobresalto al cambiar de pestaña; el celular recupera su entrada limpia. Ninguna escala, puntaje ni interpretación cambia.</div>'
   + '<div class="cite"><strong>2.14.0</strong> · Rediseño de la interfaz. Pantalla nueva de Inicio con buscador global, los cinco dominios como puertas de entrada, accesos al Resumen VGI y al conversor, y favoritas y recientes. El símbolo de la marca, animado, recibe en el Inicio y encabeza Acerca de. Tema oscuro automático según la preferencia del sistema. Transiciones entre pantallas solo ante gestos del usuario. Capa visual nueva (ui-v4.css) con tipografía de títulos unificada; todas las animaciones respetan la preferencia de movimiento reducido. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.13.4</strong> · Conversor de opioides. Se retira la meperidina, que no debe usarse en la persona mayor. Con parche de destino, el rescate se calcula sobre la presentación sugerida y no sobre la liberación calculada, que la supera (morfina oral 200 mg: parche de 25 mcg/h y rescate de 9 mg de morfina oral). Con metadona de destino, el rescate se indica con morfina o hidromorfona de liberación inmediata, como 10 % del equivalente de morfina oral de origen, porque las tabletas de metadona disponibles en Colombia (10 y 40 mg) no permiten fraccionar un rescate del 10 %. Los factores de conversión no cambian. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.3</strong> · Conversor de opioides, tres correcciones de seguridad. (1) Al cambiar el opioide o la vía de origen se vacía la dosis: antes se conservaba y pasaba a leerse en la nueva unidad (500 mcg de fentanilo IV quedaban como 500 mg de morfina oral). (2) La presentación de parche sugerida es la mayor que no supera la liberación calculada; antes era la más cercana aunque quedara por encima (morfina oral 30 mg con reducción del 30 % daba un parche de buprenorfina de 35 mcg/h, unas dos veces la dosis de origen), y por debajo del parche mínimo se proponía el mínimo. Ahora, si el cálculo no alcanza la menor presentación, se indica "Sin presentación compatible" y se retiran la posología y el rescate. (3) Con fentanilo transdérmico de destino se comprueba la tolerancia a opioides que exige su ficha técnica (60 mg de morfina oral al día durante una semana o más) y se advierte el riesgo de depresión respiratoria grave por debajo de ese umbral. Ninguna escala cambia.</div>'
@@ -3568,7 +3574,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.14.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.14.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
