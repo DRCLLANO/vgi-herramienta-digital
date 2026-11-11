@@ -3,6 +3,28 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.14.0
+
+Rediseño de la interfaz. Ninguna escala, puntaje, punto de corte ni
+interpretación cambia; el conversor no cambia.
+
+- Pantalla nueva de Inicio: buscador global, los cinco dominios como puertas
+  de entrada, accesos al Resumen VGI y al conversor, y favoritas y recientes.
+  En escritorio es la primera pestaña de la barra lateral; en el celular se
+  llega con el botón de casa de la cabecera y al abrir la aplicación.
+- El símbolo de la marca, animado (flota sobre un disco con halo y tres nodos,
+  y en escritorio se inclina hacia el puntero), recibe en el Inicio y encabeza
+  "Acerca de". Archivo nuevo: simbolo-marca.webp.
+- Tema oscuro automático según la preferencia del sistema, con los colores de
+  los cinco ejes aclarados para conservar el contraste.
+- Transiciones entre pantallas (View Transitions API), solo ante gestos del
+  usuario; en navegadores sin la API el comportamiento no cambia.
+- Capa visual nueva ui-v4.css: tipografía de títulos unificada (Fraunces),
+  radios y sombras coherentes, encabezado de eje editorial y tarjetas sin
+  flecha decorativa.
+- Todas las animaciones respetan la preferencia de movimiento reducido y los
+  pictogramas de la CFS se conservan sin cambios.
+
 ## 2.13.4
 
 Conversor de opioides. Los factores de conversión no cambian: siguen el

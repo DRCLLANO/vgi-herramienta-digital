@@ -32,7 +32,7 @@ jobs:
       - name: Instalar Playwright y Chromium
         run: |
           npm ci --no-audit --no-fund
-          npx playwright install --with-deps chromium
+          npx playwright install chromium
 
       - name: Correr las pruebas
         run: npm test
