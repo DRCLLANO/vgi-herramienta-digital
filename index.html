@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.13.4",
+  "softwareVersion": "2.14.0",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-10-08",
+  "dateModified": "2026-11-11",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -615,6 +615,7 @@ body.tg2 .card h2{font-size:20px;}
 </style>
 <link rel="stylesheet" href="ui-v3.css">
 <link rel="stylesheet" href="ui-motion.css">
+<link rel="stylesheet" href="ui-v4.css">
 <!-- Estadísticas anónimas de uso (GoatCounter, desde la 2.10.11): sin cookies ni datos personales. Nunca se envían respuestas ni resultados de las escalas. -->
 <script data-goatcounter="https://vgidigitalco.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2513,7 +2514,7 @@ function opiCalc(){
 }
 
 /* ---------------------------- ESTADO ---------------------------- */
-let state = {view:'list', eje:'clinico', id:null, ans:{}, sel:{}, multi:{}, extra:{}, q:'', dom:null, evid:false, showResult:false};
+let state = {view:'home', eje:'clinico', id:null, ans:{}, sel:{}, multi:{}, extra:{}, q:'', dom:null, evid:false, showResult:false};
 
 const $ = s=>document.querySelector(s);
 const esc = t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -2788,12 +2789,115 @@ function animarLista(){
   clearTimeout(animarLista.t);
   animarLista.t = setTimeout(()=>list.removeAttribute('data-anim'), 900);
 }
+/* ---------- Escena de marca: disco, halo, símbolo y nodos ---------- */
+function escenaMarca(){
+  return '<div class="cab-escena" id="cab-escena" aria-hidden="true">'
+    + '<div class="cab-flota"><div class="cab-incl" id="cab-incl">'
+    + '<span class="cab-halo"></span>'
+    + '<span class="cab-nodo n3"></span>'
+    + '<span class="cab-disco"></span>'
+    + '<span class="cab-marca"></span>'
+    + '<span class="cab-nodo n2"></span>'
+    + '<span class="cab-nodo n1"></span>'
+    + '</div></div></div>';
+}
+
+/* ---------- Inicio: tres puertas sobre la misma biblioteca ---------- */
+function renderHome(){
+  const nVGI = Object.keys(VGI).length;
+  /* Cinco hilos, una valoración: los ejes convergen en un solo trazo.
+     Se dibuja una sola vez por sesión y nunca con movimiento reducido. */
+  const dibuja = !renderHome.hecho && !MOV_REDUCIDO;
+  renderHome.hecho = true;
+  /* El símbolo de la marca flota centrado sobre un disco y se inclina hacia
+     el puntero (escena tomada de la guía "Cómo se construyó VGI Digital"). */
+  const teje = '<div class="home-marca'+(dibuja?' anima':'')+'">' + escenaMarca() + '</div>';
+  const icoConv = '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13M17 8l-3.5-3.5M20 16H7M7 16l3.5 3.5"/></svg>';
+  const doors = EJES.map(e=>{
+    const n = ORDER[e.id].reduce((a,g)=>a+g.ids.length,0);
+    return '<button class="door" data-tab="'+e.id+'" style="--eje:var(--'+e.id+')">'
+      + '<span class="door-ico">'+tabIcon(e.id)+'</span>'
+      + '<span class="door-body"><span class="door-head"><span class="door-eje">'+esc(e.largo || e.label)+'</span>'
+      + '<span class="door-n">'+n+'</span></span>'
+      + '<span class="door-txt">'+esc(EJE_INTRO[e.id])+'</span></span>'
+      + '</button>';
+  }).join('');
+  $('#view').innerHTML =
+    '<div class="home-hero">'
+    + teje
+    + '<h2>¿Qué necesitas hacer?</h2>'
+    + '<p>Busca una escala concreta, recorre los dominios de la valoración o retoma los instrumentos que ya usas.</p>'
+    + '</div>'
+    + '<button class="search home-search" data-act="gosearch">'
+    + '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+    + '<span>Buscar entre las '+(ALL_IDS.length-1)+' escalas</span></button>'
+    + quickHTML()
+    + '<div class="home-lbl">Dominios de la valoración</div>'
+    + '<div class="doors">'+doors+'</div>'
+    + '<div class="home-lbl">Durante la valoración</div>'
+    + '<div class="doors doors-util">'
+    + '<button class="door door-vgi" data-tab="vgi">'
+    + '<span class="door-ico">'+tabIcon('vgi')+'</span>'
+    + '<span class="door-body"><span class="door-head"><span class="door-eje">Resumen VGI</span>'
+    + (nVGI ? '<span class="door-n">'+nVGI+'</span>' : '')
+    + '</span><span class="door-txt">Reúne los resultados de esta valoración y cópialos a la historia clínica.</span></span></button>'
+    + '<button class="door door-opi" data-open="opioides">'
+    + '<span class="door-ico">'+icoConv+'</span>'
+    + '<span class="door-body"><span class="door-head"><span class="door-eje">Conversor de opioides</span></span>'
+    + '<span class="door-txt">Dosis equianalgésicas, reducción por tolerancia cruzada incompleta y rescates.</span></span></button>'
+    + '</div>';
+}
+
+/* La escena del símbolo se inclina hacia el puntero (solo con puntero fino
+   y sin movimiento reducido); al alejarse, vuelve a su posición. */
+document.addEventListener('pointermove', e=>{
+  if(MOV_REDUCIDO || e.pointerType==='touch') return;
+  const esc = document.getElementById('cab-escena');
+  const incl = document.getElementById('cab-incl');
+  if(!esc || !incl) return;
+  const r = esc.getBoundingClientRect();
+  if(!r.width) return;
+  const dx = (e.clientX - (r.left + r.width/2)) / r.width;
+  const dy = (e.clientY - (r.top + r.height/2)) / r.height;
+  if(Math.abs(dx) > 3 || Math.abs(dy) > 3){
+    incl.style.setProperty('--rx','0deg'); incl.style.setProperty('--ry','0deg');
+    return;
+  }
+  const lim = v => Math.max(-1, Math.min(1, v));
+  incl.style.setProperty('--ry', (lim(dx)*10).toFixed(2)+'deg');
+  incl.style.setProperty('--rx', (-lim(dy)*10).toFixed(2)+'deg');
+  const disco = esc.querySelector('.cab-disco');
+  if(disco){
+    disco.style.setProperty('--gx', (34 + lim(dx)*24).toFixed(1)+'%');
+    disco.style.setProperty('--gy', (24 + lim(dy)*24).toFixed(1)+'%');
+  }
+});
+
+/* Transición de pantalla con la View Transitions API: solo al
+   cambiar de pantalla, nunca en actualizaciones dentro de la misma (responder
+   un ítem, abrir la evidencia ya con data-anim propio), y nunca con movimiento
+   reducido. Donde el navegador no la admite, render se comporta como siempre. */
+let vtClave = null;
+let vtGesto = 0; /* marca de tiempo del último toque real del usuario */
 function render(){
-  setEjeColor(state.view==='vgi' ? 'ink' : state.eje);
+  const clave = pantallaClave();
+  const cambia = vtClave!==null && vtClave!==clave;
+  vtClave = clave;
+  /* La transición solo acompaña una navegación iniciada por un gesto del
+     usuario: un render programático (pruebas, restauraciones) sigue siendo
+     síncrono, de modo que quien llame a render() puede leer el DOM de inmediato. */
+  if(cambia && !MOV_REDUCIDO && document.startViewTransition && (performance.now() - vtGesto) < 150){
+    document.startViewTransition(()=>renderBase());
+  } else { renderBase(); }
+}
+
+function renderBase(){
+  setEjeColor(state.view==='vgi' ? 'ink' : state.view==='home' ? 'marca-verde' : state.eje);
   document.body.dataset.view = state.view;
-  document.body.dataset.eje = state.view==='vgi' ? 'vgi' : state.eje;
+  document.body.dataset.eje = state.view==='vgi' ? 'vgi' : state.view==='home' ? 'home' : state.eje;
   renderTop(); renderTabs();
-  if(state.view==='list') renderList();
+  if(state.view==='home') renderHome();
+  else if(state.view==='list') renderList();
   else if(state.view==='vgi') renderVGI();
   else if(state.view==='about') renderAbout();
   else if(state.view==='tool') renderTool();
@@ -2807,13 +2911,22 @@ function render(){
   marcarEntrada();
 }
 
+const ICO_HOME = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px"><path d="M3.5 11.5 12 4.5l8.5 7"/><path d="M6 10.5V19.5h12v-9"/></svg>';
+
 function renderTop(){
   const t = $('#topbar');
-  if(state.view==='list'){
+  const homeBtn = '<button class="glyph" data-act="home" aria-label="Volver al inicio">'+ICO_HOME+'</button>';
+  if(state.view==='home'){
+    t.innerHTML = '<div style="flex:1">'
+      + '<span class="eyebrow">Valoración geriátrica integral</span>'
+      + '<h1>VGI Digital</h1></div>'
+      + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
+  } else if(state.view==='list'){
     const e = EJES.find(x=>x.id===state.eje);
     t.innerHTML = '<div style="flex:1">'
       + '<span class="eyebrow">'+esc(e.largo || ('Eje '+e.label))+'</span>'
       + '<h1>Biblioteca de instrumentos</h1></div>'
+      + homeBtn
       + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
   } else if(state.view==='about'){
     t.innerHTML = '<button class="back" data-act="back"><svg viewBox="0 0 9 15" fill="none"><path d="M8 1L1.5 7.5L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Volver</button>'
@@ -2822,6 +2935,7 @@ function renderTop(){
     t.innerHTML = '<div style="flex:1">'
       + '<span class="eyebrow" style="color:var(--ink-2)">Los cuatro ejes</span>'
       + '<h1>Resumen multidimensional</h1></div>'
+      + homeBtn
       + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
   } else {
     const s = SCALES[state.id];
@@ -2835,6 +2949,7 @@ function renderTop(){
 
 function tabIcon(id){
   const icons = {
+    inicio:'<path d="M3.5 11.5 12 4.5l8.5 7"/><path d="M6 10.5V19.5h12v-9"/>',
     clinico:'<path d="M12 3v18M3 12h18"/>',
     funcional:'<path d="M8 4.5a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z"/><path d="m10 7.5 3 3 3.5 1.5M10 8l-2 5-4 2M8 13l3 2 1 5M8 13l-1 6"/>',
     mental:'<path d="M9.5 4.5A3.5 3.5 0 0 0 6 8v.5a3 3 0 0 0-1 5.7A3.5 3.5 0 0 0 9.5 19V4.5ZM14.5 4.5A3.5 3.5 0 0 1 18 8v.5a3 3 0 0 1 1 5.7 3.5 3.5 0 0 1-4.5 4.8V4.5Z"/><path d="M9.5 9H7M14.5 9H17M9.5 14H7.5M14.5 14h2"/>',
@@ -2849,7 +2964,9 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.13.4</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.14.0</small></div></div>'
+    + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
+    + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
     + EJES.map(e=>
     '<button data-tab="'+e.id+'" aria-label="Eje '+esc(e.label)+'" style="--tab:var(--'+e.id+')" '+(state.view==='list'&&state.eje===e.id?'aria-current="true"':'')+'>'
@@ -3325,8 +3442,8 @@ function renderVGI(){
 /* ---------------------------- ABOUT ---------------------------- */
 function renderAbout(){
   $('#view').innerHTML = '<div class="about">'
+  + '<div class="marca-escena">' + escenaMarca() + '</div>'
   + '<p class="lede">Calculadora de las escalas de uso más frecuente en la valoración geriátrica integral, organizada según los cuatro ejes de la evaluación: clínico, funcional, mental y social. Esta versión incluye '+(ALL_IDS.length-1)+' escalas y una calculadora de conversión de opioides, distribuidas en los cuatro ejes del manual y en una quinta sección de paliativos y pronóstico.</p>'
-  + '<div class="brand-showcase"><img src="vgi-digital-logo-verde.png" alt="VGI Digital"></div>'
 
   + '<h3>Fuente del contenido</h3>'
   + '<p>Los ítems, puntajes, puntos de corte y la organización por ejes provienen de la primera edición del manual:</p>'
@@ -3397,7 +3514,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.13.4) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.14.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3409,6 +3526,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.14.0</strong> · Rediseño de la interfaz. Pantalla nueva de Inicio con buscador global, los cinco dominios como puertas de entrada, accesos al Resumen VGI y al conversor, y favoritas y recientes. El símbolo de la marca, animado, recibe en el Inicio y encabeza Acerca de. Tema oscuro automático según la preferencia del sistema. Transiciones entre pantallas solo ante gestos del usuario. Capa visual nueva (ui-v4.css) con tipografía de títulos unificada; todas las animaciones respetan la preferencia de movimiento reducido. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.13.4</strong> · Conversor de opioides. Se retira la meperidina, que no debe usarse en la persona mayor. Con parche de destino, el rescate se calcula sobre la presentación sugerida y no sobre la liberación calculada, que la supera (morfina oral 200 mg: parche de 25 mcg/h y rescate de 9 mg de morfina oral). Con metadona de destino, el rescate se indica con morfina o hidromorfona de liberación inmediata, como 10 % del equivalente de morfina oral de origen, porque las tabletas de metadona disponibles en Colombia (10 y 40 mg) no permiten fraccionar un rescate del 10 %. Los factores de conversión no cambian. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.3</strong> · Conversor de opioides, tres correcciones de seguridad. (1) Al cambiar el opioide o la vía de origen se vacía la dosis: antes se conservaba y pasaba a leerse en la nueva unidad (500 mcg de fentanilo IV quedaban como 500 mg de morfina oral). (2) La presentación de parche sugerida es la mayor que no supera la liberación calculada; antes era la más cercana aunque quedara por encima (morfina oral 30 mg con reducción del 30 % daba un parche de buprenorfina de 35 mcg/h, unas dos veces la dosis de origen), y por debajo del parche mínimo se proponía el mínimo. Ahora, si el cálculo no alcanza la menor presentación, se indica "Sin presentación compatible" y se retiran la posología y el rescate. (3) Con fentanilo transdérmico de destino se comprueba la tolerancia a opioides que exige su ficha técnica (60 mg de morfina oral al día durante una semana o más) y se advierte el riesgo de depresión respiratoria grave por debajo de ese umbral. Ninguna escala cambia.</div>'
   + '<div class="cite"><strong>2.13.2</strong> · Corrección del puntaje global del CDR. Con memoria 1 o más, la regla "el CDR no puede ser 0; es 0,5 cuando la mayoría de las áreas secundarias están en 0" se aplicaba antes de las reglas generales y anulaba el reparto tres y dos. Por ejemplo, memoria 1 con las demás áreas en 0, 0, 0, 2 y 2 daba 0,5 en lugar de 1, y memoria 2 con 0, 0, 0, 3 y 3 daba 0,5 en lugar de 2 (50 de las 12.500 combinaciones). Ahora la regla actúa como piso: solo corrige un resultado que sería 0. El estadio 0,5 se rotula "Demencia cuestionable o muy leve" (antes "Deterioro cognitivo leve"), porque abarca tanto el deterioro cognitivo leve como la demencia muy leve. No cambia ninguna otra escala.</div>'
@@ -3450,7 +3568,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.13.4 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.14.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3547,8 +3665,10 @@ function openScale(id){
 }
 
 document.addEventListener('click', e=>{
+  vtGesto = performance.now();
   const tab = e.target.closest('[data-tab]');
   if(tab){
+    if(tab.dataset.tab==='inicio'){ state = {...state, view:'home', id:null, q:'', dom:null, showResult:false}; render(); return; }
     if(tab.dataset.tab==='vgi'){ state = {...state, view:'vgi', id:null, q:'', dom:null, showResult:false}; render(); return; }
     state = {view:'list', eje:tab.dataset.tab, id:null, ans:{}, sel:{}, multi:{}, extra:{}, q:'', dom:null, showResult:false};
     render(); return;
@@ -3561,6 +3681,8 @@ document.addEventListener('click', e=>{
   if(act){
     const a = act.dataset.act;
     if(a==='about'){ state.view='about'; render(); }
+    if(a==='home'){ state = {...state, view:'home', id:null, q:'', dom:null, showResult:false}; render(); }
+    if(a==='gosearch'){ state = {...state, view:'list', id:null, dom:null, q:'', showResult:false}; render(); const qi=document.getElementById('q'); if(qi) qi.focus(); }
     if(a==='back'){ state.view='list'; state.showResult=false; render(); }
     if(a==='result'){
       if(!complete()){ flagPending(); return; }

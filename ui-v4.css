@@ -1,0 +1,317 @@
+/*
+ * VGI Digital — ui-v4.css: capa visual del rediseño 2.14
+ * Capa aislada sobre la base y ui-v3: no modifica escalas, puntajes ni
+ * interpretaciones. Conserva la marca (verde bosque, lima, aguamarina),
+ * los colores de los cinco ejes y los pictogramas de la CFS.
+ *
+ * Qué aporta:
+ *  1. Fraunces como única voz de los títulos (tarjetas, fichas, resultado);
+ *     IBM Plex Sans para la interfaz e IBM Plex Mono para los datos.
+ *  2. Jerarquía de radios unificada: 12 (controles), 14 (tarjetas), 20 (resultado).
+ *  3. Encabezado de eje editorial, sin caja decorada.
+ *  4. Vista de Inicio y escena de marca (disco, halo, símbolo y nodos).
+ *  5. Tema oscuro automático (prefers-color-scheme).
+ * Todas las animaciones respetan prefers-reduced-motion.
+ */
+
+/* ---------- 1 · Tipografía: una sola voz de títulos ---------- */
+.top h1{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.015em;}
+.card h2{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:19px;letter-spacing:-.012em;}
+.scale-head h2{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.02em;}
+.score .n{font-family:'Fraunces',Georgia,serif;font-weight:700;letter-spacing:-.03em;}
+.scorebar .val{font-family:'Fraunces',Georgia,serif;}
+
+/* ---------- 2 · Radios y sombras coherentes ---------- */
+:root{
+  --radius:14px;
+  --soft-shadow:0 1px 2px rgba(1,62,49,.06),0 6px 20px rgba(1,62,49,.05);
+  --sombra:0 18px 44px rgba(1,62,49,.16);
+}
+.card,.item,.ficha,.crits,.quick,.copybox{border-radius:14px;}
+.result{border-radius:20px;}
+.btn,.opt,.field input,.field select,.search{border-radius:12px;}
+.verdict{border-radius:999px;}
+.card,.item{box-shadow:var(--soft-shadow);}
+.card:hover{box-shadow:0 10px 26px rgba(1,62,49,.11);}
+
+/* ---------- 3 · Encabezado de eje editorial, sin caja ---------- */
+#view .hero{
+  position:static;display:block;overflow:visible;
+  margin:6px 0 24px;padding:0;border:0;border-radius:0;
+  background:none;box-shadow:none;
+}
+#view .hero::after{content:none;}
+#view .hero::before{content:"";display:block;width:36px;height:4px;border-radius:2px;background:var(--eje);}
+#view .hero h2{
+  font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(28px,4.2vw,38px);line-height:1.05;letter-spacing:-.02em;
+  margin:12px 0 8px;
+}
+#view .hero p{color:var(--ink-2);font-size:14.5px;line-height:1.55;max-width:46em;margin:0;}
+#view .hero .cnt{
+  margin-top:11px;padding:0;background:none;border-radius:0;
+  color:var(--eje);
+}
+#view .hero .cnt::before{width:8px;height:8px;border-radius:50%;background:var(--eje);}
+@media (max-width:560px){
+  #view .hero{display:block;margin-bottom:18px;padding:0;}
+  #view .hero h2{font-size:27px;margin-top:10px;}
+  #view .hero p{font-size:13.5px;}
+}
+
+/* ---------- 4 · Tarjetas sin flecha decorativa ---------- */
+#view .card::after{content:none;}
+.card .dom,.card h2{padding-right:0;}
+.card{border-color:var(--line);}
+.card:hover{border-color:color-mix(in srgb,var(--eje) 30%,var(--line));}
+
+/* ---------- 5 · Inicio: tres puertas sobre la misma biblioteca ---------- */
+body[data-view="home"]{--eje:var(--marca-verde);}
+.home-hero{margin:10px 0 20px;}
+.home-hero h2{
+  font-family:'Fraunces',Georgia,serif;font-weight:600;
+  font-size:clamp(30px,5vw,42px);line-height:1.04;letter-spacing:-.022em;
+  margin:0 0 9px;color:var(--ink);
+}
+.home-hero p{color:var(--ink-2);font-size:14.5px;line-height:1.55;max-width:44em;margin:0;}
+
+.home-search{
+  width:100%;display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--line);
+  padding:14px 15px;margin-bottom:20px;cursor:text;
+  color:var(--muted);font-size:15px;text-align:left;
+  box-shadow:var(--soft-shadow);transition:border-color .15s ease,box-shadow .15s ease;
+}
+.home-search svg{width:16px;height:16px;flex:none;color:var(--marca-verde);}
+.home-search:hover{border-color:color-mix(in srgb,var(--marca-verde) 40%,var(--line));}
+
+.home-lbl{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin:22px 0 10px;
+  display:flex;align-items:center;gap:9px;
+}
+.home-lbl::after{content:"";flex:1;height:1px;background:var(--line);}
+
+.doors{display:grid;gap:10px;}
+.door{
+  position:relative;overflow:hidden;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:15px 17px 14px 20px;box-shadow:var(--soft-shadow);
+  transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease;
+}
+.door::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--eje);}
+.door:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--eje) 32%,var(--line));box-shadow:0 10px 26px rgba(1,62,49,.11);}
+.door:active{transform:none;}
+.door-head{display:flex;align-items:baseline;gap:10px;}
+.door-eje{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:18px;letter-spacing:-.01em;color:var(--ink);}
+.door-n{
+  margin-left:auto;flex:none;font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--eje);background:color-mix(in srgb,var(--eje) 10%,var(--card));
+  border-radius:999px;padding:2px 9px;
+}
+.door-txt{
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-top:5px;font-size:13px;color:var(--ink-2);line-height:1.45;
+}
+.door-vgi{--eje:var(--ink);}
+.door-opi{--eje:var(--paliativo);}
+.proto-note{
+  margin:26px 0 4px;padding-top:14px;border-top:1px dashed var(--line);
+  font-size:12px;color:var(--muted);line-height:1.5;
+}
+
+body[data-view="home"] main{max-width:720px;}
+@media (min-width:760px){
+  .doors{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .doors .door:first-child{grid-column:1/-1;}
+  .doors-util{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .doors-util .door:first-child{grid-column:auto;}
+}
+@media (min-width:960px){
+  body[data-view="home"] main{max-width:960px;padding-top:40px;}
+  .home-hero{margin-bottom:24px;}
+}
+
+/* ---------- 6 · Navegación ---------- */
+/* El Inicio existe como pestaña solo en la barra lateral de escritorio;
+   en móvil y tableta se llega con el botón de la cabecera y al abrir. */
+@media (max-width:959px){nav.tabs .tab-inicio{display:none;}}
+@media (min-width:960px){
+  nav.tabs .tab-inicio{margin-bottom:12px;}
+  .nav-foot{font-size:10px;line-height:1.75;}
+}
+
+/* ---------- 7 · Resultado: el número respira ---------- */
+.result .body{padding:26px 24px 22px;}
+.score{gap:10px;}
+.result .band{height:7px;}
+
+/* ---------- 8 · Detalles ---------- */
+.search:focus-within{border-color:color-mix(in srgb,var(--eje) 45%,var(--line));}
+.glyph{transition:border-color .14s ease,background-color .14s ease;}
+.glyph:hover{border-color:var(--line-2);background:var(--tint-2);}
+::selection{background:color-mix(in srgb,var(--marca-lima) 30%,transparent);}
+@media (prefers-reduced-motion:reduce){
+  .door,.card,.glyph,.home-search{transition:none;}
+  .door:hover{transform:none;}
+}
+
+/* ---------- 9 · La escena de marca ----------
+   El símbolo flota sobre un disco con su halo y tres nodos, y se inclina
+   hacia el puntero. La escena viene de la guía "Cómo se construyó VGI
+   Digital", adaptada a los verdes de la app. Vive centrada en el Inicio
+   (con entrada una vez por sesión, nunca con movimiento reducido) y en
+   "Acerca de". Sin la clase "anima", aparece ya en su estado final. */
+.home-marca{display:flex;justify-content:center;margin:8px 0 20px;}
+.home-marca .cab-escena{width:clamp(136px,24vw,186px);}
+.home-marca.anima .cab-escena{
+  animation:vgi-nudo .7s var(--ease-spring,cubic-bezier(.34,1.56,.64,1)) .15s backwards;
+}
+@keyframes vgi-nudo{from{transform:scale(.5);opacity:0;}}
+
+/* El Inicio se centra alrededor del símbolo */
+.home-hero{text-align:center;}
+.home-hero p{margin-left:auto;margin-right:auto;}
+
+/* La escena en "Acerca de", en el lugar del logotipo estático */
+.marca-escena{display:flex;justify-content:center;margin:14px 0 30px;}
+.marca-escena .cab-escena{width:clamp(150px,32vw,200px);}
+
+/* La escena 3D: disco, halo, símbolo y tres nodos con los verdes de la marca */
+.cab-escena{
+  position:relative;flex:none;
+  width:clamp(112px,17vw,170px);aspect-ratio:1;
+  perspective:900px;z-index:1;
+}
+.cab-flota,.cab-incl{position:absolute;inset:0;transform-style:preserve-3d;}
+.cab-incl{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));}
+.cab-halo{
+  position:absolute;inset:-22%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--marca-agua) 26%,transparent) 0%,color-mix(in srgb,var(--marca-lima) 14%,transparent) 52%,transparent 74%);
+}
+.cab-disco{
+  position:absolute;inset:7%;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 34% 26%,#FFFFFF 0%,#F2FBF5 44%,#D3F0DE 100%);
+  box-shadow:inset 0 -12px 26px rgba(1,62,49,.15),inset 0 2px 0 #FFFFFF,
+             0 0 0 1px rgba(255,255,255,.6),0 0 0 9px rgba(255,255,255,.08),
+             0 22px 40px -16px rgba(1,62,49,.5);
+}
+.cab-disco::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at var(--gx,34%) var(--gy,24%),rgba(255,255,255,.95) 0%,rgba(255,255,255,0) 46%);
+}
+.cab-marca{
+  position:absolute;inset:0;margin:auto;width:55%;aspect-ratio:320/324;pointer-events:none;
+  background:url(simbolo-marca.webp) center/contain no-repeat;
+  filter:drop-shadow(0 8px 10px rgba(1,62,49,.28));
+}
+.cab-nodo{position:absolute;border-radius:50%;pointer-events:none;box-shadow:0 6px 14px -4px rgba(1,30,22,.5);}
+.cab-nodo.n1{width:15%;height:15%;left:3%;top:9%;background:radial-gradient(circle at 32% 30%,#D9FB9A 0%,var(--marca-lima) 48%,#4FA80A 100%);}
+.cab-nodo.n2{width:10.5%;height:10.5%;right:1%;bottom:13%;background:radial-gradient(circle at 32% 30%,#8FF7E8 0%,var(--marca-agua) 48%,#008F80 100%);}
+.cab-nodo.n3{width:7%;height:7%;right:6%;top:6%;background:radial-gradient(circle at 32% 30%,#7BEBB0 0%,var(--marca-verde) 50%,var(--marca-bosque) 100%);}
+
+/* Física de la escena, solo cuando el sistema permite movimiento */
+@media (prefers-reduced-motion:no-preference){
+  .cab-flota{animation:vgi-flota 7s ease-in-out infinite alternate;}
+  .cab-halo{animation:vgi-halo 5.5s ease-in-out infinite alternate;}
+  .cab-incl{transition:transform .35s cubic-bezier(.2,.7,.3,1);}
+  .cab-marca{transform:translateZ(46px);}
+  .cab-nodo.n1{transform:translateZ(78px);animation:vgi-vaiven 5s ease-in-out infinite alternate;}
+  .cab-nodo.n2{transform:translateZ(36px);animation:vgi-vaiven 6.5s ease-in-out -2s infinite alternate;}
+  .cab-nodo.n3{transform:translateZ(-40px);animation:vgi-vaiven 8s ease-in-out -4s infinite alternate;}
+}
+@keyframes vgi-flota{from{transform:translate3d(0,5px,0) rotateZ(-1.2deg);}to{transform:translate3d(0,-7px,0) rotateZ(1.2deg);}}
+@keyframes vgi-halo{from{opacity:.72;transform:scale(.96);}to{opacity:1;transform:scale(1.05);}}
+@keyframes vgi-vaiven{from{translate:0 4px;}to{translate:0 -6px;}}
+@media (prefers-color-scheme:dark){
+  .cab-halo{opacity:.8;}
+  .cab-disco{box-shadow:inset 0 -12px 26px rgba(1,62,49,.18),inset 0 2px 0 #FFFFFF,
+             0 0 0 1px rgba(255,255,255,.35),0 0 0 9px rgba(255,255,255,.05),
+             0 22px 40px -16px rgba(0,0,0,.75);}
+}
+
+/* El lomo de color, la firma de la app, lleva en el Inicio el degradado de la
+   marca: lima, aguamarina, verde y bosque, el mismo del filete de cabecera. */
+body[data-view="home"] #spine .fill{
+  height:100%!important;opacity:.9!important;
+  background:linear-gradient(180deg,var(--marca-lima) 0%,var(--marca-agua) 34%,var(--marca-verde) 66%,var(--marca-bosque) 100%);
+}
+
+/* ---------- 10 · Puertas con icono ---------- */
+.door{display:flex;align-items:flex-start;gap:13px;}
+.door-ico{
+  flex:none;width:40px;height:40px;margin-top:1px;border-radius:12px;
+  display:grid;place-items:center;color:var(--eje);
+  background:color-mix(in srgb,var(--eje) 10%,var(--card));
+  transition:background-color .16s ease,color .16s ease,transform .16s ease;
+}
+.door-ico .tabicon{width:20px;height:20px;}
+.door:hover .door-ico{background:var(--eje);color:var(--sobre-eje,#fff);transform:scale(1.05);}
+.door-body{flex:1;min-width:0;}
+
+/* ---------- 11 · Transición entre pantallas (View Transitions API) ----------
+   El cruce lo inicia render() solo al cambiar de pantalla; aquí solo se acorta
+   el fundido para que conviva con la entrada escalonada de ui-motion. */
+::view-transition-old(root){animation-duration:.16s;}
+::view-transition-new(root){animation-duration:.22s;}
+
+/* ---------- 12 · Modo oscuro automático ----------
+   Toda la aplicación está construida sobre variables, así que el tema oscuro
+   es un remapa de la misma marca: papel verde bosque profundo, tarjetas en
+   musgo, y los colores de los cinco ejes aclarados para conservar contraste
+   sobre fondo oscuro. Los pictogramas de la CFS y la franja del resultado se
+   adaptan solos porque ya beben de las variables. */
+@media (prefers-color-scheme:dark){
+  :root{
+    color-scheme:dark;
+    --paper:#0D1512;
+    --card:#17221C;
+    --field:#121C16;
+    --tint:#1D2B23;
+    --tint-2:#19251E;
+    --line:#28392F;
+    --line-2:#46604F;
+    --ink:#EAF3ED;
+    --ink-2:#C2D4C9;
+    --muted:#8EA498;
+    --glass:rgba(23,34,28,.93);
+    --glass-top:rgba(13,21,18,.9);
+    --rail:#28392F;
+    --bar:#0A1411;
+    --bar-fg:#EAF3ED;
+    --clinico:#D47F93;
+    --funcional:#AF93DD;
+    --mental:#86AEE0;
+    --social:#D4749E;
+    --paliativo:#61BAA7;
+    --ok:#5BC694;
+    --warn:#DCA45F;
+    --alert:#E68A8A;
+    --sobre-eje:#0E1A15;
+    --marca-verde:#16B183;
+    --sombra:0 18px 44px rgba(0,0,0,.5);
+    --soft-shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  }
+  body{background:radial-gradient(circle at 78% -10%,color-mix(in srgb,var(--eje) 10%,transparent),transparent 33rem),var(--paper);}
+  .opt:hover{background:var(--card);}
+  .field input,.field select{background:var(--field);}
+  .domchip,.qchip{background:var(--card);box-shadow:none;}
+  .quick{background:rgba(255,255,255,.03);}
+  .about details.acc{background:var(--card);}
+  .scorebar .inner{border-color:rgba(255,255,255,.12);box-shadow:0 16px 34px rgba(0,0,0,.5);}
+  .fmark .fval{border:1px solid var(--line);}
+  .scrolled header.top{box-shadow:0 6px 20px rgba(0,0,0,.4);}
+  .card:hover{box-shadow:0 10px 26px rgba(0,0,0,.4);}
+  .door:hover{box-shadow:0 10px 26px rgba(0,0,0,.4);}
+  .btn-primary{box-shadow:0 6px 16px rgba(0,0,0,.35);}
+  /* El logotipo completo necesita fondo claro: el panel de marca se conserva
+     claro a propósito, como una lámina. */
+  .sig .retrato{border-color:var(--line);}
+}
+@media (prefers-color-scheme:dark) and (max-width:560px){
+  nav.tabs{background:rgba(16,25,20,.97);border-color:rgba(255,255,255,.08);box-shadow:0 12px 34px rgba(0,0,0,.5);}
+  .nav-count{border-color:var(--card);background:var(--ink);color:var(--paper);}
+}
+@media (prefers-color-scheme:dark) and (min-width:960px){
+  nav.tabs{box-shadow:12px 0 36px rgba(0,0,0,.35);}
+}

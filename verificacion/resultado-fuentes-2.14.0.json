@@ -1,0 +1,44 @@
+{
+  "archivo": "index.html",
+  "sha256": "c65aaa92dcb2b0961cfe3eb1b00c97e3b0249c3dc1123b5d3ded5abac1a2f0fa",
+  "fecha": "2026-11-11",
+  "version": "2.14.0",
+  "ves13": {
+    "combinaciones": 12288,
+    "maximoDeclarado": 10,
+    "maximoFuente": 10,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "ppi": {
+    "combinaciones": 72,
+    "maximoDeclarado": 15,
+    "maximoFuente": 15,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "ppsPpi": {
+    "niveles": 10,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "conversor": {
+    "calculos": 17328,
+    "idaYVuelta": 324,
+    "dibujados": 361,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "casosInforme": {
+    "comprobaciones": 45,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "seguridadConversor": {
+    "combinaciones": 2280,
+    "discrepancias": 0,
+    "ejemplos": []
+  },
+  "totalDiscrepancias": 0,
+  "erroresJS": []
+}
