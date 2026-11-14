@@ -5,9 +5,13 @@
 // Comprueba, sin acceso a red:
 //  1) clasificación hospitalaria del Barthel actividad por actividad (basal
 //     premórbido, ingreso y alta) en los casos límite: sin pérdida, recuperación
-//     completa, recuperación parcial por actividad y por puntos (3 en la escala
-//     de 0 a 20), sin recuperación con 10 puntos, pérdida durante la estancia,
-//     pérdida adicional sobre una dependencia previa, y caso incompleto;
+//     completa, recuperación parcial solo con ganancia neta de 3 puntos en la
+//     escala de 0 a 20 (15 en la de 0 a 100), sin recuperación cuando la
+//     ganancia es menor o el total no sube aunque una actividad se recupere
+//     (incidente de la 2.15.0: 100, 25 y 20 salía como recuperación parcial),
+//     deterioro adicional durante la estancia (caída de 15 o más), pérdida
+//     durante la estancia, pérdida adicional sobre una dependencia previa, y
+//     caso incompleto;
 //  2) umbrales de cambio por escala, en el borde exacto de cada uno, incluido
 //     el criterio del Barthel ambulatorio (5 puntos de relevancia mínima y 10
 //     o más significativo) y el Zarit sin umbral validado;
@@ -55,7 +59,7 @@ const r = await page.evaluate(() => {
   const ing = cp(max); ing[1] = 0; ing[9] = 0;
   ok('Recuperación completa', cat(H(cp(max), ing, cp(max))), 'Pérdida con recuperación completa');
   const altP = cp(max); altP[9] = 0;
-  ok('Recuperación parcial por actividad', cat(H(cp(max), ing, altP)), 'Pérdida con recuperación parcial');
+  ok('Recupera una actividad con ganancia de 5: sin recuperación', cat(H(cp(max), ing, altP)), 'Pérdida sin recuperación');
   ok('Sin recuperación (alta igual al ingreso)', cat(H(cp(max), ing, cp(ing))), 'Pérdida sin recuperación');
   const ing5 = cp(max); ing5[7] = 0; ing5[8] = 0;
   const alt15 = cp(max); alt15[7] = 10; alt15[8] = 5;
@@ -68,7 +72,19 @@ const r = await page.evaluate(() => {
   ok('Pérdida adicional sobre dependencia previa', cat(H(bas9, ing9, cp(ing9))), 'Pérdida sin recuperación');
   const altM = cp(max); altM[9] = 0; altM[3] = 0;
   const m = trayClasificar(H(cp(max), ing, altM));
-  ok('Caso mixto: parcial con actividad nueva perdida', [m.cat, m.nuevas], ['Pérdida con recuperación parcial', ['Aseo personal']]);
+  ok('Caso mixto: recupera una y pierde otra, total igual', [m.cat, m.nuevas], ['Pérdida sin recuperación', ['Aseo personal']]);
+  // Incidente de la 2.15.0 (caso real): basal 100, ingreso 25, alta 20 con una actividad recuperada
+  const ingC = [10,0,0,5,10,0,0,0,0,0], altC = [10,5,0,0,0,5,0,0,0,0];
+  const rc = trayClasificar(H(cp(max), ingC, altC));
+  ok('Incidente 2.15.0: 100, 25 y 20 no es recuperación', [rc.tB, rc.tI, rc.tA, rc.cat], [100, 25, 20, 'Pérdida sin recuperación']);
+  const ingD = cp(max); ingD[7] = 5; ingD[8] = 5; ingD[9] = 0;
+  const altD = cp(ingD); altD[2] = 0; altD[6] = 0;
+  const rd = trayClasificar(H(cp(max), ingD, altD));
+  ok('Caída de 20 en la estancia: deterioro adicional', [rd.tI - rd.tA, rd.cat], [20, 'Pérdida con deterioro adicional durante la estancia']);
+  const altD15 = cp(ingD); altD15[2] = 5; altD15[6] = 5; altD15[3] = 0;
+  ok('Caída de exactamente 15: deterioro adicional', cat(H(cp(max), ingD, altD15)), 'Pérdida con deterioro adicional durante la estancia');
+  const altD10 = cp(ingD); altD10[2] = 0;
+  ok('Caída de 10: sin recuperación', cat(H(cp(max), ingD, altD10)), 'Pérdida sin recuperación');
   ok('Caso incompleto no se clasifica', trayClasificar(H(cp(max), [], cp(max))), null);
 
   const v = (id, a, b, ctx) => trayVeredicto(id, a, b, ctx).t;
