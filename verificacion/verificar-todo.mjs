@@ -1,4 +1,4 @@
-// Ejecuta las cuatro pruebas de VGI Digital y resume el resultado.
+// Ejecuta las cinco pruebas de VGI Digital y resume el resultado.
 // Uso, desde la raíz del repositorio:  npm test
 // (equivale a: node verificacion/verificar-todo.mjs [carpeta-de-resultados])
 //
@@ -22,7 +22,9 @@ const pruebas = [
   { nombre: 'Fuentes primarias (VES-13, PPI, PPS y conversor)', script: 'verificar-fuentes.mjs',
     args: ['index.html'], salida: 'resultado-fuentes.json' },
   { nombre: 'Integridad y regresiones', script: 'verificar-integridad.mjs',
-    args: ['.'], salida: 'resultado-integridad.json' }
+    args: ['.'], salida: 'resultado-integridad.json' },
+  { nombre: 'Trayectoria (clasificación, umbrales de cambio y recorrido)', script: 'verificar-trayectoria.mjs',
+    args: ['index.html'], salida: 'resultado-trayectoria.json' }
 ];
 
 const filas = [];
@@ -33,7 +35,8 @@ for (const p of pruebas) {
   let detalle = '';
   try {
     const j = JSON.parse(r.stdout);
-    if (j.fallos && !Array.isArray(j.fallos))
+    if (Array.isArray(j.fallos)) detalle = j.fallos.slice(0, 15).join('\n');
+    else if (j.fallos)
       detalle = Object.entries(j.fallos).flatMap(([k, l]) => l.map(x => `[${k}] ${x}`)).slice(0, 15).join('\n');
     else if (typeof j.totalDiscrepancias === 'number') detalle = j.totalDiscrepancias ? `${j.totalDiscrepancias} discrepancias` : '';
     else if (typeof j.numDiscrepancias === 'number') detalle = j.numDiscrepancias ? `${j.numDiscrepancias} discrepancias` : '';
