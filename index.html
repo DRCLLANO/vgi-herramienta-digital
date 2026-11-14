@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.14.1",
+  "softwareVersion": "2.15.0",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-11-11",
+  "dateModified": "2026-11-14",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -99,9 +99,9 @@
 <title>VGI Digital: Valoración Geriátrica Integral</title>
 
 <!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
 
 <!-- Apple Touch Icons -->
+<link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
@@ -616,6 +616,82 @@ body.tg2 .card h2{font-size:20px;}
 <link rel="stylesheet" href="ui-v3.css">
 <link rel="stylesheet" href="ui-motion.css">
 <link rel="stylesheet" href="ui-v4.css">
+<style>
+/* ===== Trayectoria (2.15.0) ===== */
+.tr-seg{display:flex;gap:8px;margin:4px 0 16px;}
+.tr-seg .opt{flex:1;justify-content:center;text-align:center;font-weight:600;min-height:46px;}
+.tr-seg .opt[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink);}
+.tr-llenar{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px;}
+.tr-llenar .btn{flex:1 1 140px;font-size:12.5px;padding:8px 10px;min-height:38px;}
+.tr-act{padding:12px 0;border-top:1px solid var(--line);}
+.tr-act:first-of-type{border-top:0;}
+.tr-act-n{font-weight:600;font-size:14.5px;margin-bottom:6px;}
+.tr-act-s{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+.tr-mini{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.tr-mini span{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.tr-mini select,.tr-proto-sel{width:100%;min-width:0;min-height:42px;border-radius:10px;border:1px solid var(--line-2);
+  background:var(--field,var(--card));color:var(--ink);font:inherit;font-size:13px;padding:0 6px;text-overflow:ellipsis;}
+.tr-cfs{margin-top:8px;}
+.tr-tot{display:flex;justify-content:space-between;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);}
+.tr-tot strong{color:var(--ink);font-size:15px;}
+.tr-res{margin-top:6px;}
+.tr-res .band{background:var(--marca-verde,var(--ok));}
+.tr-eb{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.tr-res .verdict{display:inline-block;margin:8px 0 6px;font-weight:600;}
+.v-neutro{background:color-mix(in srgb,var(--muted) 14%,var(--card));color:var(--ink);}
+.tr-graf{width:100%;max-width:440px;display:block;margin:8px auto 4px;overflow:visible;}
+.tr-graf .tr-ax{font-family:'IBM Plex Mono',monospace;font-size:9.5px;fill:var(--muted);}
+.tr-graf .tr-val{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;fill:var(--ink);}
+.tr-graf .tr-lab{font-size:11.5px;fill:var(--ink-2);}
+.tr-linea{stroke-dasharray:400;stroke-dashoffset:0;animation:trTraza .9s ease-out both;}
+@keyframes trTraza{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.tr-linea{animation:none}}
+.tr-deltas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0;}
+.tr-deltas div{border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.tr-deltas span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.tr-deltas strong{font-family:'IBM Plex Mono',monospace;font-size:18px;}
+.tr-deltas em{font-style:normal;font-size:11.5px;line-height:1.3;color:var(--ink-2);}
+.tr-ley{font-size:11.5px;color:var(--muted);text-align:center;margin:0 0 6px;}
+.tr-li{font-size:13.5px;margin:6px 0;line-height:1.45;}
+.tr-li b{font-weight:600;}
+.tr-cfs-r{margin-top:12px;}
+.tr-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.tr-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--card);color:var(--ink);
+  border-radius:999px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:38px;}
+.tr-chip .qd{width:8px;height:8px;border-radius:50%;}
+.tr-chip[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink);}
+.tr-amb .num{color:var(--eje);}
+.tr-amb input[type=text],.item input[type=date]{width:100%;}
+.tr-amb-r{margin-top:12px;}
+.tr-amb-v{font-size:14px;margin-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.tr-amb-v .verdict{font-size:12.5px;padding:4px 10px;}
+.tr-bar{position:relative;height:30px;margin:6px 6px 0;}
+.tr-bar::before{content:"";position:absolute;left:0;right:0;top:9px;height:6px;border-radius:6px;background:var(--line);}
+.tr-bar-r{position:absolute;top:9px;height:6px;border-radius:6px;transition:left .4s,width .4s;}
+.tr-pt{position:absolute;top:5px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--card);border:2.5px solid var(--muted);transition:left .4s;}
+.tr-pt-b{border-width:3px;}
+.tr-min,.tr-max{position:absolute;top:19px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--muted);}
+.tr-min{left:0}.tr-max{right:0}
+.tr-pend{border:2px solid var(--marca-verde,var(--ok));border-radius:16px;padding:14px;margin:0 0 16px;background:color-mix(in srgb,var(--marca-verde,var(--ok)) 7%,var(--card));}
+.tr-pend-t{font-weight:600;font-size:15px;}
+.tr-pend-v{margin:4px 0 10px;font-size:14px;color:var(--ink-2);}
+.tr-pend-b{display:flex;flex-wrap:wrap;gap:6px;}
+.tr-pend-b .btn{flex:1 1 120px;}
+.tr-desc{opacity:.75;}
+.tr-umb{margin:14px 0;border:1px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--card);}
+.tr-umb summary{cursor:pointer;font-weight:600;font-size:14px;}
+.tr-umb-r{font-size:12.5px;line-height:1.45;padding:8px 0;border-top:1px solid var(--line);}
+.tr-umb-r:first-of-type{border-top:0;}
+.tr-umb-r span{color:var(--muted);}
+.door-tray .door-ico{color:var(--marca-verde,var(--ok));}
+@media (max-width:420px){
+  .tr-deltas{grid-template-columns:1fr;}
+  .tr-deltas div{flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:10px;}
+}
+body[data-view="tray"] main{max-width:920px;}
+@media (max-width:959.98px){nav.tabs{grid-template-columns:repeat(7,minmax(0,1fr));}nav.tabs button{font-size:10.5px;}}
+</style>
 <!-- Estadísticas anónimas de uso (GoatCounter, desde la 2.10.11): sin cookies ni datos personales. Nunca se envían respuestas ni resultados de las escalas. -->
 <script data-goatcounter="https://vgidigitalco.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2753,7 +2829,7 @@ let pantallaPrev = null, domPrev = null;
 function pantallaClave(){
   return [state.view, state.view==='vgi'?'':state.eje, state.id||'', state.showResult?'r':''].join('|');
 }
-function profundidad(v, r){ return v==='list'||v==='vgi' ? 0 : (r ? 2 : 1); }
+function profundidad(v, r){ return v==='list'||v==='vgi'||v==='tray' ? 0 : (r ? 2 : 1); }
 function marcarEntrada(){
   const view = document.getElementById('view');
   const clave = pantallaClave();
@@ -2845,6 +2921,10 @@ function renderHome(){
     + '<span class="door-ico">'+icoConv+'</span>'
     + '<span class="door-body"><span class="door-head"><span class="door-eje">Conversor de opioides</span></span>'
     + '<span class="door-txt">Dosis equianalgésicas, reducción por tolerancia cruzada incompleta y rescates.</span></span></button>'
+    + '<button class="door door-tray" data-tab="tray">'
+    + '<span class="door-ico">'+tabIcon('tray')+'</span>'
+    + '<span class="door-body"><span class="door-head"><span class="door-eje">Trayectoria</span></span>'
+    + '<span class="door-txt">Compare mediciones en el tiempo: pérdida y recuperación en el hospital, declinación o ganancia en la consulta.</span></span></button>'
     + '</div>';
 }
 
@@ -2897,15 +2977,16 @@ function render(){
 }
 
 function renderBase(){
-  setEjeColor(state.view==='vgi' ? 'ink' : state.view==='home' ? 'marca-verde' : state.eje);
+  setEjeColor(state.view==='vgi' ? 'ink' : (state.view==='home'||state.view==='tray') ? 'marca-verde' : state.eje);
   document.body.dataset.view = state.view;
-  document.body.dataset.eje = state.view==='vgi' ? 'vgi' : state.view==='home' ? 'home' : state.eje;
+  document.body.dataset.eje = state.view==='vgi' ? 'vgi' : state.view==='home' ? 'home' : state.view==='tray' ? 'tray' : state.eje;
   renderTop(); renderTabs();
   if(state.view==='home') renderHome();
   else if(state.view==='list') renderList();
   else if(state.view==='vgi') renderVGI();
   else if(state.view==='about') renderAbout();
   else if(state.view==='tool') renderTool();
+  else if(state.view==='tray') renderTray();
   else renderScale();
   renderScorebar(); renderSpine();
   /* Al cambiar de pantalla se sube al inicio de inmediato (la entrada de la
@@ -2942,6 +3023,12 @@ function renderTop(){
       + '<h1>Resumen multidimensional</h1></div>'
       + homeBtn
       + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
+  } else if(state.view==='tray'){
+    t.innerHTML = '<div style="flex:1">'
+      + '<span class="eyebrow" style="color:var(--ink-2)">Seguimiento en el tiempo</span>'
+      + '<h1>Trayectoria</h1></div>'
+      + homeBtn
+      + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
   } else {
     const s = SCALES[state.id];
     t.innerHTML = '<button class="back" data-act="back"><svg viewBox="0 0 9 15" fill="none"><path d="M8 1L1.5 7.5L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Escalas</button>'
@@ -2960,6 +3047,7 @@ function tabIcon(id){
     mental:'<path d="M9.5 4.5A3.5 3.5 0 0 0 6 8v.5a3 3 0 0 0-1 5.7A3.5 3.5 0 0 0 9.5 19V4.5ZM14.5 4.5A3.5 3.5 0 0 1 18 8v.5a3 3 0 0 1 1 5.7 3.5 3.5 0 0 1-4.5 4.8V4.5Z"/><path d="M9.5 9H7M14.5 9H17M9.5 14H7.5M14.5 14h2"/>',
     social:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 19c.5-4 2.5-6 5.5-6s5 2 5.5 6M14 14c3.5-.5 5.5 1.2 6 4"/>',
     paliativo:'<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/><path d="M12 8v7M9.5 11.5h5"/>',
+    tray:'<path d="M3.5 18.5 9 12l4 3.5 7.5-9"/><path d="M16 6.5h4.5V11"/><path d="M3.5 21h17"/>',
     vgi:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'
   };
   return '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[id]+'</svg>';
@@ -2969,7 +3057,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.14.1</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.15.0</small></div></div>'
     + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
@@ -2979,7 +3067,9 @@ function renderTabs(){
     + '<div class="nav-divider"></div>'
     + '<button class="vgi-tab" data-tab="vgi" aria-label="Resumen de valoración geriátrica integral" style="--tab:var(--ink)" '+(state.view==='vgi'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext"><span class="tab-full">Resumen VGI</span><span class="tab-short">Resumen</span></span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
-    + '<div class="nav-foot">47 escalas · 1 conversor<br><span>Datos procesados localmente</span></div>';
+    + '<button class="tray-tab" data-tab="tray" aria-label="Trayectoria: comparar mediciones en el tiempo" style="--tab:var(--marca-verde)" '+(state.view==='tray'?'aria-current="true"':'')+'>'
+    + '<span class="mark"></span>'+tabIcon('tray')+'<span class="tabtext"><span class="tab-full">Trayectoria</span><span class="tab-short">Trayect.</span></span></button>'
+    + '<div class="nav-foot">47 escalas · 1 conversor · 1 comparador<br><span>Datos procesados localmente</span></div>';
   if(nPrev!==undefined && n>nPrev && !MOV_REDUCIDO){
     const c = document.querySelector('#tabs .nav-count'); if(c) c.classList.add('bump');
   }
@@ -3169,7 +3259,9 @@ function renderResult(){
     + '<button class="btn" data-act="copy">Copiar resumen</button>'
     + '<button class="btn'+(VGI[state.id]?'':' btn-primary')+'" data-act="addvgi">'
     + (VGI[state.id]?'Actualizada en la VGI':'Añadir a la valoración')+'</button>'
-    + '<button class="btn" data-act="reset">Nueva aplicación</button></div>'
+    + '<button class="btn" data-act="reset">Nueva aplicación</button>'
+    + (TRAY_DESDE_FICHA.indexOf(state.id)>=0 ? '<button class="btn tr-llevar" data-act="trayllevar">Comparar con otra medición</button>' : '')
+    + '</div>'
     + '<p class="toast" id="toast"></p>'
     + '<textarea class="copybox" id="copybox" style="display:none" readonly>'+esc(summaryText())+'</textarea>'
     + '<button class="btn" data-act="evid" style="width:100%;margin-bottom:14px">'
@@ -3519,7 +3611,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.14.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.15.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3531,6 +3623,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.15.0</strong> · Función nueva: Trayectoria, para comparar mediciones de una misma persona en el tiempo. En el modo hospitalario compara el basal premórbido, el ingreso y el alta con el Índice de Barthel actividad por actividad y la Clinical Frailty Scale, clasifica la trayectoria (sin pérdida, pérdida con recuperación completa o parcial, pérdida sin recuperación o pérdida durante la estancia) y registra la SPPB al alta y el 4AT como marcadores. En el modo ambulatorio compara dos mediciones de Barthel, Lawton, SPPB, CFS, MNA-SF, Yesavage, MMSE y Zarit con umbrales de cambio citados y señala el cruce de puntos de corte. Se llega desde la barra de navegación, el Inicio o el botón Comparar con otra medición del resultado. Nada se guarda en el dispositivo. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.14.1</strong> · Las transiciones entre pantallas quedan solo en escritorio con puntero fino. En el celular, el fundido de la vista anterior se superponía a la entrada de la nueva y producía un pequeño sobresalto al cambiar de pestaña; el celular recupera su entrada limpia. Ninguna escala, puntaje ni interpretación cambia.</div>'
   + '<div class="cite"><strong>2.14.0</strong> · Rediseño de la interfaz. Pantalla nueva de Inicio con buscador global, los cinco dominios como puertas de entrada, accesos al Resumen VGI y al conversor, y favoritas y recientes. El símbolo de la marca, animado, recibe en el Inicio y encabeza Acerca de. Tema oscuro automático según la preferencia del sistema. Transiciones entre pantallas solo ante gestos del usuario. Capa visual nueva (ui-v4.css) con tipografía de títulos unificada; todas las animaciones respetan la preferencia de movimiento reducido. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.13.4</strong> · Conversor de opioides. Se retira la meperidina, que no debe usarse en la persona mayor. Con parche de destino, el rescate se calcula sobre la presentación sugerida y no sobre la liberación calculada, que la supera (morfina oral 200 mg: parche de 25 mcg/h y rescate de 9 mg de morfina oral). Con metadona de destino, el rescate se indica con morfina o hidromorfona de liberación inmediata, como 10 % del equivalente de morfina oral de origen, porque las tabletas de metadona disponibles en Colombia (10 y 40 mg) no permiten fraccionar un rescate del 10 %. Los factores de conversión no cambian. Ninguna escala cambia.</div>'
@@ -3574,7 +3667,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.14.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.15.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3676,6 +3769,7 @@ document.addEventListener('click', e=>{
   if(tab){
     if(tab.dataset.tab==='inicio'){ state = {...state, view:'home', id:null, q:'', dom:null, showResult:false}; render(); return; }
     if(tab.dataset.tab==='vgi'){ state = {...state, view:'vgi', id:null, q:'', dom:null, showResult:false}; render(); return; }
+    if(tab.dataset.tab==='tray'){ state = {...state, view:'tray', id:null, q:'', dom:null, showResult:false}; render(); return; }
     state = {view:'list', eje:tab.dataset.tab, id:null, ans:{}, sel:{}, multi:{}, extra:{}, q:'', dom:null, showResult:false};
     render(); return;
   }
@@ -3808,6 +3902,441 @@ document.addEventListener('input', e=>{
   const b = document.getElementById('bmiOut'); if(b) b.innerHTML = bmiText();
   const w = document.getElementById('wOut');  if(w) w.innerHTML = weightText();
 });
+
+/* ===================== TRAYECTORIA (2.15.0) =====================
+   Compara mediciones de una misma escala en el tiempo. Dos modos:
+   hospitalario (basal premórbido, ingreso y alta) y ambulatorio (dos fechas).
+   Igual que el Resumen VGI, todo vive solo en memoria: nada se guarda en el
+   dispositivo ni se transmite. Umbrales de cambio según la tabla de evidencia
+   del comparador (14-nov-2026). */
+
+/* dir: +1 si un puntaje mayor es mejor, -1 si es peor.
+   thr: cambio mínimo que la app rotula como relevante (en la unidad indicada).
+   tipo: de dónde sale el umbral, para mostrarlo con honestidad. */
+const TRAY_CFG = {
+  barthel: {dir:1,  thr:3, unidad:'puntos en la versión de 0 a 20', div:5, tipo:'MIC y MDC (Bouwstra 2019)', fuente:'Bouwstra H, et al. J Am Med Dir Assoc. 2019;20(4):420-5.'},
+  cfs:     {dir:-1, thr:1, unidad:'nivel', div:1, tipo:'convención de un nivel (Theou 2020)', fuente:'Theou O, et al. J Gerontol A Biol Sci Med Sci. 2020;75(10):1928-34.'},
+  sppb:    {dir:1,  thr:1, unidad:'punto', div:1, tipo:'cambio sustancial (Perera 2006)', fuente:'Perera S, et al. J Am Geriatr Soc. 2006;54(5):743-9.'},
+  lawton:  {dir:1,  thr:1, unidad:'punto', div:1, tipo:'MIC de medio punto llevado al entero (Suijker 2017)', fuente:'Suijker JJ, et al. J Nutr Health Aging. 2017;21(2):165-72.'},
+  mna:     {dir:1,  thr:2, unidad:'puntos', div:1, tipo:'supera el error de medida; sin MIC (cálculo propio con Kather 2020)', fuente:'Kather F, et al. J Geriatr Cardiol. 2020;17(9):574-9.'},
+  yesavage:{dir:-1, thr:4, unidad:'puntos', div:1, tipo:'MDC95; sin MIC (González-Domínguez 2024)', fuente:'González-Domínguez NP, et al. J Clin Epidemiol. 2024;173:111443.'},
+  mmse:    {dir:1,  thr:3, unidad:'puntos', div:1, tipo:'cambio fiable (Hensel 2007; Feeney 2016)', fuente:'Hensel A, et al. J Neurol Neurosurg Psychiatry. 2007;78:1298-303. Feeney J, et al. J Alzheimers Dis. 2016.'},
+  zarit:   {dir:-1, thr:null, unidad:'puntos', div:1, tipo:'sin umbral validado de cambio', fuente:'Ballesteros J, et al. Value Health. 2012;15(8):1141-7.'}
+};
+const TRAY_AMB = ['barthel','lawton','sppb','cfs','mna','yesavage','mmse','zarit'];
+const TRAY_MOM = [{k:'bas',l:'Basal'},{k:'ing',l:'Ingreso'},{k:'alt',l:'Alta'}];
+
+let TRAY = trayNuevo();
+function trayNuevo(){
+  return {
+    modo:'hosp', pend:null,
+    hosp:{ bar:{bas:[],ing:[],alt:[]}, fuente:'', cfs:{bas:'',ing:'',alt:''}, sppb:'', at4:'' },
+    amb:{ f1:'', f2:'', sel:['barthel','lawton','sppb'], v:{} }
+  };
+}
+
+/* ---------- utilidades ---------- */
+function trayCorto(l){
+  let c = String(l).split(/[:;(]/)[0].trim();
+  c = c.replace(/,.*$/,'').trim();
+  return c.length>30 ? c.slice(0,29)+'…' : c;
+}
+function barMax(i){ return Math.max.apply(null, SCALES.barthel.items[i].o.map(o=>o.v)); }
+function barCompleto(col){
+  return SCALES.barthel.items.every((_,i)=>col[i]!==undefined && col[i]!=='' && col[i]!==null);
+}
+function barTotal(col){ return SCALES.barthel.items.reduce((s,_,i)=>s+(+col[i]||0),0); }
+function signo(n){ return n>0 ? '+'+fmt(n) : fmt(n); }
+function trayNum(v, max){
+  const n = num(v);
+  if(!isFinite(n) || n<0 || n>max) return null;
+  return n;
+}
+function trayRango(id){
+  if(id==='cfs') return {min:1,max:9};
+  if(id==='zarit') return {min:22,max:110};
+  return {min:0,max:SCALES[id].max};
+}
+function trayInterp(id, v){
+  const s = SCALES[id];
+  if(id==='cfs') return s.logic([v]);
+  return s.interpret(v);
+}
+
+/* Veredicto de cambio entre dos valores de una escala */
+function trayVeredicto(id, a, b, ctx){
+  const c = TRAY_CFG[id];
+  const d = b - a;
+  const dEsc = d / c.div;
+  const sentido = d===0 ? 0 : (d*c.dir>0 ? 1 : -1);
+  const palabra = sentido>0 ? 'mejora' : 'empeora';
+  if(d===0) return {d, dEsc, tono:'neutro', t:'Sin cambio'};
+  /* Barthel ambulatorio (criterio clínico del autor, 14-nov-2026): 5 puntos
+     es la relevancia mínima y 10 o más un cambio significativo, sobre la
+     escala de 0 a 100. Más bajo que el MIC de Bouwstra (15 puntos). */
+  if(id==='barthel' && ctx==='amb'){
+    if(Math.abs(d) >= 10) return {d, dEsc, tono:sentido>0?'ok':'alert', t:'Cambio significativo: '+palabra};
+    return {d, dEsc, tono:'warn', t:'Cambio de relevancia mínima: '+palabra};
+  }
+  if(c.thr===null) return {d, dEsc, tono:'neutro', t:(sentido>0?'Mejora':'Empeora')+' sin umbral validado de cambio'};
+  if(Math.abs(dEsc) >= c.thr) return {d, dEsc, tono:sentido>0?'ok':'alert', t:'Cambio relevante: '+palabra};
+  return {d, dEsc, tono:'warn', t:'Cambio menor que el umbral; puede ser error de medida'};
+}
+
+/* ---------- clasificación hospitalaria (Barthel actividad por actividad) ----------
+   Pérdida: una actividad baja de nivel frente al basal (nueva o adicional,
+   como en la discapacidad asociada a la hospitalización). Recuperación parcial:
+   al alta recupera al menos una actividad perdida al ingreso, o sube 3 puntos o
+   más (escala 0-20) frente al ingreso, pero sigue con alguna actividad perdida. */
+function trayClasificar(h){
+  const B = h.bar;
+  if(!barCompleto(B.bas) || !barCompleto(B.ing) || !barCompleto(B.alt)) return null;
+  const items = SCALES.barthel.items;
+  const nom = i=>items[i].q;
+  const perdIng = [], perdAlt = [], recup = [], nuevas = [];
+  items.forEach((_,i)=>{
+    const b=+B.bas[i], n=+B.ing[i], a=+B.alt[i];
+    if(n<b) perdIng.push(i);
+    if(a<b) perdAlt.push(i);
+    if(n<b && a>=b) recup.push(i);
+    if(n>=b && a<b) nuevas.push(i);
+  });
+  const tB=barTotal(B.bas), tI=barTotal(B.ing), tA=barTotal(B.alt);
+  const sube20 = (tA - tI)/5;
+  let cat, tono;
+  if(!perdIng.length){
+    if(!perdAlt.length){ cat='Sin pérdida'; tono='ok'; }
+    else { cat='Pérdida durante la estancia'; tono='alert'; }
+  } else if(!perdAlt.length){ cat='Pérdida con recuperación completa'; tono='ok'; }
+  else if(recup.length || sube20>=3){ cat='Pérdida con recuperación parcial'; tono='warn'; }
+  else { cat='Pérdida sin recuperación'; tono='alert'; }
+  return {cat, tono, tB, tI, tA, perdIng:perdIng.map(nom), perdAlt:perdAlt.map(nom),
+          recup:recup.map(nom), nuevas: perdIng.length ? nuevas.map(nom) : []};
+}
+
+/* ---------- gráfico de la trayectoria del Barthel ---------- */
+function trayGrafico(r){
+  const W=320, H=184, x0=46, x1=W-24, y0=34, y1=H-34;
+  const xs=[x0,(x0+x1)/2,x1];
+  const y=v=> y1 - (v/100)*(y1-y0);
+  const vals=[r.tB,r.tI,r.tA];
+  const col=(a,b)=> b<a ? 'var(--alert)' : b>a ? 'var(--ok)' : 'var(--muted)';
+  let g='';
+  [0,20,40,60,80,100].forEach(v=>{
+    g+='<line x1="'+x0+'" x2="'+x1+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)" stroke-width="1"/>'
+      +'<text x="'+(x0-14)+'" y="'+(y(v)+4)+'" text-anchor="end" class="tr-ax">'+v+'</text>';
+  });
+  g+='<line x1="'+x0+'" x2="'+x1+'" y1="'+y(r.tB)+'" y2="'+y(r.tB)+'" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="4 4" opacity=".55"/>';
+  for(let k=0;k<2;k++)
+    g+='<line class="tr-linea" x1="'+xs[k]+'" y1="'+y(vals[k])+'" x2="'+xs[k+1]+'" y2="'+y(vals[k+1])+'" stroke="'+col(vals[k],vals[k+1])+'" stroke-width="3" stroke-linecap="round"/>';
+  vals.forEach((v,k)=>{
+    g+='<circle cx="'+xs[k]+'" cy="'+y(v)+'" r="6" fill="var(--card)" stroke="var(--ink)" stroke-width="2.4"/>'
+      +'<text x="'+xs[k]+'" y="'+(y(v)-12)+'" text-anchor="middle" class="tr-val">'+v+'</text>'
+      +'<text x="'+xs[k]+'" y="'+(H-12)+'" text-anchor="middle" class="tr-lab">'+TRAY_MOM[k].l+'</text>';
+  });
+  return '<svg class="tr-graf" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Índice de Barthel: basal '+vals[0]+', ingreso '+vals[1]+', alta '+vals[2]+'">'+g+'</svg>';
+}
+
+/* Barra de rango para el modo ambulatorio: dónde estaba y a dónde llegó */
+function trayBarra(id, a, b, tono){
+  const R = trayRango(id);
+  const p = v=> ((v-R.min)/(R.max-R.min))*100;
+  const lo=Math.min(p(a),p(b)), hi=Math.max(p(a),p(b));
+  const c = {ok:'var(--ok)',warn:'var(--warn)',alert:'var(--alert)'}[tono] || 'var(--muted)';
+  return '<div class="tr-bar"><div class="tr-bar-r" style="left:'+lo+'%;width:'+(hi-lo)+'%;background:'+c+'"></div>'
+    + '<span class="tr-pt tr-pt-a" style="left:'+p(a)+'%" title="Previa"></span>'
+    + '<span class="tr-pt tr-pt-b" style="left:'+p(b)+'%;border-color:'+c+'" title="Actual"></span>'
+    + '<span class="tr-min">'+R.min+'</span><span class="tr-max">'+R.max+'</span></div>';
+}
+
+/* ---------- vista ---------- */
+function renderTray(){
+  const h = TRAY.hosp;
+  let html = '<p class="lede">Compare mediciones de una misma persona en el tiempo: la pérdida y la recuperación durante una hospitalización, o la declinación y la ganancia en la consulta.</p>';
+
+  if(TRAY.pend) html += trayPendHTML();
+
+  html += '<div class="tr-seg" role="tablist">'
+    + '<button class="opt" data-act="traymodo" data-m="hosp" aria-pressed="'+(TRAY.modo==='hosp')+'">Hospitalario</button>'
+    + '<button class="opt" data-act="traymodo" data-m="amb" aria-pressed="'+(TRAY.modo==='amb')+'">Ambulatorio</button></div>';
+
+  html += TRAY.modo==='hosp' ? trayHospHTML() : trayAmbHTML();
+
+  html += '<div id="trayres"></div>'
+    + '<div class="actions" style="margin-top:18px">'
+    + '<button class="btn" data-act="trayvaciar">Vaciar</button>'
+    + '<button class="btn btn-primary" data-act="traycopiar">Copiar resumen</button></div>'
+    + '<p class="toast" id="toast"></p>'
+    + '<textarea class="copybox" id="copybox" style="display:none" readonly></textarea>'
+    + '<details class="tr-umb"><summary>Umbrales de cambio y fuentes</summary>'
+    + TRAY_AMB.map(id=>{
+        const c=TRAY_CFG[id];
+        return '<div class="tr-umb-r"><strong>'+esc(SCALES[id].name)+'</strong> · '
+          + (c.thr===null ? 'Sin umbral validado' : 'Umbral: '+c.thr+' '+esc(c.unidad))
+          + ' · '+esc(c.tipo)+'<br><span>'+esc(c.fuente)+'</span></div>';
+      }).join('')
+    + '<div class="tr-umb-r"><strong>Índice de Barthel en el seguimiento ambulatorio</strong> · 5 puntos (escala de 0 a 100): relevancia mínima; 10 o más: cambio significativo. Se señala además el cruce de los puntos de corte de dependencia (100, 60, 40 y 20).<br><span>Criterio clínico del autor, más sensible que el cambio mínimo importante publicado (15 puntos en la escala de 0 a 100; Bouwstra 2019).</span></div>'
+    + '<div class="tr-umb-r"><strong>Discapacidad asociada a la hospitalización</strong> · pérdida nueva o adicional en al menos una actividad básica al alta frente al basal de dos semanas antes del ingreso.<br><span>Covinsky KE, et al. J Am Geriatr Soc. 2003;51:451. La categoría de recuperación parcial es una definición propia de esta herramienta.</span></div>'
+    + '</details>'
+    + '<div class="ref"><b>Privacidad</b>Estas mediciones viven únicamente en la memoria del dispositivo mientras la aplicación está abierta: se pierden al cerrarla o recargarla, y nunca se guardan ni se transmiten. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</div>';
+
+  $('#view').innerHTML = html;
+  trayResultado();
+}
+
+function trayPendHTML(){
+  const p = TRAY.pend, s = SCALES[p.id];
+  const val = p.id==='cfs' ? 'CFS '+p.valor : fmt(p.valor)+' / '+fmt(s.max);
+  const slots = [];
+  if(p.id==='barthel' || p.id==='cfs') TRAY_MOM.forEach(m=>slots.push({k:'h-'+m.k,l:m.l}));
+  if(p.id==='sppb') slots.push({k:'h-sppb',l:'Al alta'});
+  if(p.id==='at4') slots.push({k:'h-at4',l:'Durante la estancia'});
+  if(TRAY_AMB.indexOf(p.id)>=0){ slots.push({k:'a-a',l:'Medición previa'}); slots.push({k:'a-b',l:'Medición actual'}); }
+  return '<div class="tr-pend"><div class="tr-pend-t">¿Dónde ubica este resultado?</div>'
+    + '<div class="tr-pend-v">'+esc(s.name)+': <strong>'+esc(val)+'</strong></div>'
+    + '<div class="tr-pend-b">'+slots.map(x=>'<button class="btn" data-act="trayubicar" data-slot="'+x.k+'">'+esc(x.l)+'</button>').join('')
+    + '<button class="btn tr-desc" data-act="traydescartar">Descartar</button></div></div>';
+}
+
+function traySelect(attr, val, opciones, vacio){
+  return '<select '+attr+'><option value="">'+(vacio||'—')+'</option>'
+    + opciones.map(o=>'<option value="'+o.v+'"'+(String(val)===String(o.v)?' selected':'')+'>'+esc(o.l)+'</option>').join('')
+    + '</select>';
+}
+
+function trayHospHTML(){
+  const h = TRAY.hosp, items = SCALES.barthel.items;
+  let html = '<div class="item"><div class="num">Índice de Barthel · actividad por actividad</div>'
+    + '<div class="q">Basal premórbido, ingreso y alta</div>'
+    + '<p class="hint">El basal es cómo estaba unas dos semanas antes de enfermarse. La trayectoria se calcula sobre cada actividad, no solo sobre el total.</p>'
+    + '<div class="calc"><div class="field"><label>Fuente del basal</label>'
+    + traySelect('data-tr="fuente"', h.fuente, [{v:'paciente',l:'Referido por el paciente'},{v:'cuidador',l:'Referido por el cuidador'},{v:'historia',l:'Historia clínica'}], 'Sin especificar')
+    + '</div></div>'
+    + '<div class="tr-llenar">'+TRAY_MOM.map(m=>'<button class="btn" data-act="traymax" data-mom="'+m.k+'">'+m.l+': todo independiente</button>').join('')+'</div>';
+  items.forEach((it,i)=>{
+    const ops = it.o.map(o=>({v:o.v, l:o.v+' · '+trayCorto(o.l)}));
+    html += '<div class="tr-act"><div class="tr-act-n">'+esc(it.q)+'</div><div class="tr-act-s">'
+      + TRAY_MOM.map(m=>'<label class="tr-mini"><span>'+m.l+'</span>'
+          + traySelect('data-tr="bar" data-mom="'+m.k+'" data-i="'+i+'"', h.bar[m.k][i]===undefined?'':h.bar[m.k][i], ops)
+          + '</label>').join('')
+      + '</div></div>';
+  });
+  html += '<div class="tr-tot" id="trtot"></div></div>';
+
+  const cfsOps = SCALES.cfs.items[0].o.map(o=>({v:o.v, l:trayCorto(o.l)}));
+  html += '<div class="item"><div class="num">Clinical Frailty Scale</div>'
+    + '<div class="q">Nivel en cada momento</div>'
+    + '<div class="tr-act-s tr-cfs">'
+    + TRAY_MOM.map(m=>'<label class="tr-mini"><span>'+m.l+'</span>'+traySelect('data-tr="cfs" data-mom="'+m.k+'"', h.cfs[m.k], cfsOps)+'</label>').join('')
+    + '</div></div>';
+
+  html += '<div class="item"><div class="num">Marcadores (no se comparan)</div>'
+    + '<div class="calc">'
+    + '<div class="field"><label>SPPB al alta (0 a 12)</label><input type="text" inputmode="numeric" autocomplete="off" data-tr="sppb" value="'+esc(h.sppb)+'" placeholder="—"></div>'
+    + '<div class="field"><label>4AT más alto en la estancia (0 a 12)</label><input type="text" inputmode="numeric" autocomplete="off" data-tr="at4" value="'+esc(h.at4)+'" placeholder="—"></div>'
+    + '</div><p class="hint" style="margin-top:10px">La SPPB al alta sirve como punto de partida del seguimiento ambulatorio.</p></div>';
+  return html;
+}
+
+function trayAmbHTML(){
+  const A = TRAY.amb;
+  let html = '<div class="item"><div class="num">Fechas</div>'
+    + '<div class="calc">'
+    + '<div class="field"><label>Medición previa</label><input type="date" data-tr="f1" value="'+esc(A.f1)+'"></div>'
+    + '<div class="field"><label>Medición actual</label><input type="date" data-tr="f2" value="'+esc(A.f2)+'"></div>'
+    + '</div></div>'
+    + '<div class="item"><div class="num">Escalas</div><div class="q">¿Qué quiere comparar?</div>'
+    + '<div class="tr-chips">'
+    + TRAY_AMB.map(id=>'<button class="tr-chip" data-act="trayesc" data-id="'+id+'" aria-pressed="'+(A.sel.indexOf(id)>=0)+'">'
+        + '<span class="qd" style="background:var(--'+SCALES[id].eje+')"></span>'+esc(SCALES[id].name)+'</button>').join('')
+    + '</div></div>';
+  A.sel.forEach(id=>{
+    const s = SCALES[id], R = trayRango(id), v = A.v[id] || {a:'',b:''};
+    const campo = (k,l)=> id==='cfs'
+      ? '<div class="field"><label>'+l+'</label>'+traySelect('data-tr="amb" data-id="cfs" data-k="'+k+'"', v[k], SCALES.cfs.items[0].o.map(o=>({v:o.v,l:trayCorto(o.l)})))+'</div>'
+      : '<div class="field"><label>'+l+' ('+R.min+' a '+R.max+')</label><input type="text" inputmode="numeric" autocomplete="off" data-tr="amb" data-id="'+id+'" data-k="'+k+'" value="'+esc(v[k])+'" placeholder="—"></div>';
+    html += '<div class="item tr-amb" style="--eje:var(--'+s.eje+')"><div class="num">'+esc(s.dom)+(id==='zarit'?' · se refiere al cuidador, no al paciente':'')+'</div>'
+      + '<div class="q">'+esc(s.name)+'</div>'
+      + '<div class="calc">'+campo('a','Previa')+campo('b','Actual')+'</div>'
+      + '<div class="tr-amb-r" id="tra-'+id+'"></div></div>';
+  });
+  if(!A.sel.length) html += '<div class="vacio">Elija al menos una escala para comparar.</div>';
+  return html;
+}
+
+/* ---------- resultados (se actualizan sin redibujar el formulario) ---------- */
+function trayResultado(){
+  const box = document.getElementById('trayres');
+  if(!box) return;
+  if(TRAY.modo==='hosp'){
+    const B = TRAY.hosp.bar;
+    const tot = document.getElementById('trtot');
+    if(tot) tot.innerHTML = TRAY_MOM.map(m=>'<span>'+m.l+': <strong>'+(barCompleto(B[m.k])?barTotal(B[m.k]):'—')+'</strong></span>').join('');
+    const r = trayClasificar(TRAY.hosp);
+    if(!r){ box.innerHTML = '<div class="derived" style="margin:0 0 4px">Complete las diez actividades del Barthel en los tres momentos para clasificar la trayectoria.</div>'+trayCfsHTML(); return; }
+    const v1 = trayVeredicto('barthel', r.tB, r.tI), v2 = trayVeredicto('barthel', r.tI, r.tA), v3 = trayVeredicto('barthel', r.tB, r.tA);
+    const lista = (t, arr)=> arr.length ? '<div class="tr-li"><b>'+t+'</b>'+arr.map(esc).join(', ')+'</div>' : '';
+    box.innerHTML = '<div class="result tr-res"><div class="band"></div><div class="body">'
+      + '<span class="eyebrow tr-eb">Trayectoria hospitalaria</span>'
+      + '<div class="verdict v-'+r.tono+'">'+esc(r.cat)+'</div>'
+      + trayGrafico(r)
+      + '<p class="tr-ley">Línea punteada: nivel basal. Rojo: caída; verde: recuperación.</p>'
+      + '<div class="tr-deltas">'
+      + '<div><span>Basal → ingreso</span><strong>'+signo(v1.d)+'</strong><em>'+esc(v1.t)+'</em></div>'
+      + '<div><span>Ingreso → alta</span><strong>'+signo(v2.d)+'</strong><em>'+esc(v2.t)+'</em></div>'
+      + '<div><span>Basal → alta</span><strong>'+signo(v3.d)+'</strong><em>'+esc(v3.t)+'</em></div></div>'
+      + lista('Perdidas al alta frente al basal: ', r.perdAlt)
+      + lista('Recuperadas durante la estancia: ', r.recup)
+      + lista('Perdidas durante la estancia: ', r.nuevas)
+      + '<p class="detail">Puntajes en la escala de 0 a 100. El umbral de cambio relevante es de 3 puntos en la versión de 0 a 20 (15 en la de 0 a 100).</p>'
+      + '</div></div>' + trayCfsHTML() + trayMarcHTML();
+  } else {
+    TRAY.amb.sel.forEach(id=>{
+      const el = document.getElementById('tra-'+id); if(!el) return;
+      const r = trayAmbUna(id);
+      if(!r){ el.innerHTML=''; return; }
+      el.innerHTML = trayBarra(id, r.a, r.b, r.v.tono)
+        + '<div class="tr-amb-v"><strong>'+esc(r.fa)+' → '+esc(r.fb)+'</strong> ('+signo(r.v.d)+')'
+        + ' <span class="verdict v-'+r.v.tono+'">'+esc(r.v.t)+'</span></div>'
+        + (r.ca!==r.cb ? '<div class="tr-li"><b>Cruza un punto de corte:</b> '+esc(r.ca)+' → '+esc(r.cb)+(r.corte?' ('+esc(r.corte)+')':'')+'</div>' : '<div class="tr-li">Sin cruce de punto de corte: '+esc(r.cb)+'</div>');
+    });
+    box.innerHTML = '';
+  }
+}
+
+function trayCfsHTML(){
+  const c = TRAY.hosp.cfs;
+  if(c.bas==='' || c.alt==='') return '';
+  const v = trayVeredicto('cfs', +c.bas, +c.alt);
+  return '<div class="derived tr-cfs-r">CFS basal '+c.bas+(c.ing!==''?', ingreso '+c.ing:'')+', alta '+c.alt+'. <span class="verdict v-'+v.tono+'" style="display:inline-block;font-size:12px;padding:2px 9px">'+esc(v.t)+'</span>'
+    + (v.d ? ' ('+(v.d>0?'aumentó ':'disminuyó ')+Math.abs(v.d)+' nivel'+(Math.abs(v.d)===1?'':'es')+' frente al basal).' : '.')+'</div>';
+}
+function trayMarcHTML(){
+  const h = TRAY.hosp, out = [];
+  const s = trayNum(h.sppb,12), a = trayNum(h.at4,12);
+  if(s!==null) out.push('SPPB al alta: '+fmt(s)+' / 12 ('+SCALES.sppb.interpret(s).t.toLowerCase()+')');
+  if(a!==null) out.push('4AT más alto en la estancia: '+fmt(a)+' ('+SCALES.at4.interpret(a).t.toLowerCase()+')');
+  return out.length ? '<div class="derived">'+out.map(esc).join('<br>')+'</div>' : '';
+}
+
+function trayAmbUna(id){
+  const v = TRAY.amb.v[id]; if(!v) return null;
+  const R = trayRango(id);
+  const a = id==='cfs' ? (v.a===''?null:+v.a) : trayNum(v.a, R.max);
+  const b = id==='cfs' ? (v.b===''?null:+v.b) : trayNum(v.b, R.max);
+  if(a===null || b===null || a<R.min || b<R.min) return null;
+  const ver = trayVeredicto(id, a, b, 'amb');
+  const f = x=> id==='cfs' ? 'CFS '+x : fmt(x);
+  const ca = trayInterp(id,a).t, cb = trayInterp(id,b).t;
+  return {a, b, v:ver, fa:f(a), fb:f(b), ca, cb, corte: ca!==cb ? trayCorte(id,a,b) : ''};
+}
+
+/* Punto de corte cruzado, leído de la propia interpretación de la escala */
+function trayCorte(id, a, b){
+  if(id==='cfs') return '';
+  const lo = Math.min(a,b), hi = Math.max(a,b), cortes = [];
+  for(let v=lo+1; v<=hi; v++){
+    if(trayInterp(id,v-1).t !== trayInterp(id,v).t) cortes.push(v);
+  }
+  return cortes.length ? 'corte'+(cortes.length>1?'s':'')+' en '+cortes.join(', ') : '';
+}
+
+/* ---------- texto para la historia clínica ---------- */
+function trayTexto(){
+  const hoy = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'});
+  if(TRAY.modo==='hosp'){
+    const h = TRAY.hosp, r = trayClasificar(h);
+    let t = 'TRAYECTORIA FUNCIONAL DURANTE LA HOSPITALIZACIÓN\nFecha: '+hoy+'\n';
+    if(r){
+      const fuente = {paciente:'referido por el paciente', cuidador:'referido por el cuidador', historia:'tomado de la historia clínica'}[h.fuente];
+      t += '\nÍndice de Barthel (0 a 100): basal '+r.tB+(fuente?' ('+fuente+')':'')+', ingreso '+r.tI+', alta '+r.tA+'.\n'
+        + 'Trayectoria: '+r.cat+'.\n';
+      if(r.perdAlt.length) t += 'Actividades perdidas al alta frente al basal: '+r.perdAlt.join(', ')+'.\n';
+      if(r.recup.length) t += 'Actividades recuperadas durante la estancia: '+r.recup.join(', ')+'.\n';
+      if(r.nuevas.length) t += 'Actividades perdidas durante la estancia: '+r.nuevas.join(', ')+'.\n';
+      t += 'Cambio basal-alta: '+signo(r.tA-r.tB)+' puntos ('+trayVeredicto('barthel',r.tB,r.tA).t.toLowerCase()+').\n';
+    } else t += '\nÍndice de Barthel incompleto.\n';
+    const c = h.cfs;
+    if(c.bas!=='' && c.alt!=='') t += 'Clinical Frailty Scale: basal '+c.bas+(c.ing!==''?', ingreso '+c.ing:'')+', alta '+c.alt+' ('+trayVeredicto('cfs',+c.bas,+c.alt).t.toLowerCase()+').\n';
+    const s = trayNum(h.sppb,12), a = trayNum(h.at4,12);
+    if(s!==null) t += 'SPPB al alta: '+fmt(s)+' / 12.\n';
+    if(a!==null) t += '4AT más alto durante la estancia: '+fmt(a)+' ('+SCALES.at4.interpret(a).t.toLowerCase()+').\n';
+    return t + '\nUmbral de cambio del Barthel: 3 puntos en la versión de 0 a 20 (Bouwstra 2019). Herramienta de apoyo: no reemplaza el juicio clínico.';
+  }
+  const A = TRAY.amb;
+  const fd = x=> x ? x.split('-').reverse().join('/') : 'sin fecha';
+  let t = 'SEGUIMIENTO FUNCIONAL AMBULATORIO\nMedición previa: '+fd(A.f1)+' · Medición actual: '+fd(A.f2)+'\n';
+  let n = 0;
+  A.sel.forEach(id=>{
+    const r = trayAmbUna(id); if(!r) return; n++;
+    t += '\n'+SCALES[id].name+(id==='zarit'?' (cuidador)':'')+': '+r.fa+' → '+r.fb+' ('+signo(r.v.d)+'). '+r.v.t+'.'
+      + (r.ca!==r.cb ? ' Cruza un punto de corte: '+r.ca+' → '+r.cb+(r.corte?' ('+r.corte+')':'')+'.' : '');
+  });
+  if(!n) t += '\nSin mediciones completas.';
+  return t + '\n\nUmbrales de cambio según la literatura citada en la herramienta'
+    + (A.sel.indexOf('barthel')>=0 && trayAmbUna('barthel') ? '; en el Barthel, 5 puntos de relevancia mínima y 10 o más de cambio significativo (criterio clínico)' : '')
+    + '. Herramienta de apoyo: no reemplaza el juicio clínico.';
+}
+
+/* ---------- llevar un resultado desde la ficha ---------- */
+const TRAY_DESDE_FICHA = ['barthel','cfs','sppb','at4'].concat(TRAY_AMB);
+function trayLlevar(){
+  const id = state.id, s = SCALES[id];
+  const ans = s.items.map((_,i)=>state.ans[i]);
+  TRAY.pend = {id, valor: id==='cfs' ? ans[0] : total(), ans};
+  state = {...state, view:'tray', id:null, q:'', dom:null, showResult:false};
+  render();
+}
+function trayUbicar(slot){
+  const p = TRAY.pend; if(!p) return;
+  const [m, k] = slot.split('-');
+  if(m==='h'){
+    TRAY.modo = 'hosp';
+    if(p.id==='barthel') TRAY.hosp.bar[k] = p.ans.slice();
+    else if(p.id==='cfs') TRAY.hosp.cfs[k] = String(p.valor);
+    else if(k==='sppb') TRAY.hosp.sppb = String(p.valor);
+    else if(k==='at4') TRAY.hosp.at4 = String(p.valor);
+  } else {
+    TRAY.modo = 'amb';
+    if(TRAY.amb.sel.indexOf(p.id)<0) TRAY.amb.sel.push(p.id);
+    const v = TRAY.amb.v[p.id] || (TRAY.amb.v[p.id]={a:'',b:''});
+    v[k] = String(p.valor);
+  }
+  TRAY.pend = null;
+  render();
+}
+
+/* ---------- eventos propios de la vista ---------- */
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const a = b.dataset.act;
+  if(a==='trayllevar'){ trayLlevar(); return; }
+  if(state.view!=='tray') return;
+  if(a==='traymodo'){ TRAY.modo = b.dataset.m; render(); }
+  if(a==='trayubicar'){ trayUbicar(b.dataset.slot); }
+  if(a==='traydescartar'){ TRAY.pend = null; render(); }
+  if(a==='traymax'){ TRAY.hosp.bar[b.dataset.mom] = SCALES.barthel.items.map((_,i)=>barMax(i)); render(); }
+  if(a==='trayesc'){
+    const id = b.dataset.id, sel = TRAY.amb.sel, k = sel.indexOf(id);
+    if(k>=0) sel.splice(k,1); else sel.splice(TRAY_AMB.filter(x=>sel.indexOf(x)>=0 || x===id).indexOf(id),0,id);
+    render();
+  }
+  if(a==='trayvaciar'){ TRAY = trayNuevo(); render(); }
+  if(a==='traycopiar'){ copiar(trayTexto(), b); }
+});
+function trayCampo(el){
+  const t = el.dataset.tr, h = TRAY.hosp;
+  if(t==='bar') h.bar[el.dataset.mom][+el.dataset.i] = el.value==='' ? undefined : +el.value;
+  else if(t==='cfs') h.cfs[el.dataset.mom] = el.value;
+  else if(t==='fuente') h.fuente = el.value;
+  else if(t==='sppb') h.sppb = el.value;
+  else if(t==='at4') h.at4 = el.value;
+  else if(t==='f1' || t==='f2') TRAY.amb[t] = el.value;
+  else if(t==='amb'){ const v = TRAY.amb.v[el.dataset.id] || (TRAY.amb.v[el.dataset.id]={a:'',b:''}); v[el.dataset.k] = el.value; }
+  trayResultado();
+}
+document.addEventListener('change', e=>{ const el = e.target.closest('[data-tr]'); if(el && state.view==='tray') trayCampo(el); });
+document.addEventListener('input',  e=>{ const el = e.target.closest('input[data-tr]'); if(el && state.view==='tray') trayCampo(el); });
 
 /* ---------- Service Worker (PWA offline) ---------- */
 if ('serviceWorker' in navigator) {

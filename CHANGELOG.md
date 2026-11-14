@@ -3,6 +3,38 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.15.0
+
+Función nueva: Trayectoria, para comparar mediciones de una misma persona en
+el tiempo. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el
+conversor no cambia.
+
+- Vista nueva "Trayectoria", en la barra de navegación (lateral en escritorio,
+  inferior en el celular) y en el Inicio. Desde el resultado de Barthel, CFS,
+  SPPB, 4AT, Lawton, MNA-SF, Yesavage, MMSE y Zarit, el botón "Comparar con
+  otra medición" lleva el puntaje a la Trayectoria sin volver a digitarlo.
+- Modo hospitalario: basal premórbido (con su fuente), ingreso y alta. El
+  Índice de Barthel se compara actividad por actividad y la trayectoria se
+  clasifica como sin pérdida, pérdida con recuperación completa, pérdida con
+  recuperación parcial, pérdida sin recuperación o pérdida durante la estancia.
+  Pérdida es bajar de nivel en una actividad frente al basal (discapacidad
+  nueva o adicional, Covinsky 2003); la recuperación parcial (recupera al menos
+  una actividad o sube 3 puntos en la escala de 0 a 20, pero sigue con alguna
+  perdida) es una definición propia. Incluye la CFS en los tres momentos, la
+  SPPB al alta y el 4AT como marcadores, y un gráfico de la trayectoria.
+- Modo ambulatorio: dos mediciones con fecha de Barthel, Lawton, SPPB, CFS,
+  MNA-SF, Yesavage, MMSE y Zarit. Umbrales de cambio: CFS 1 nivel, SPPB 1
+  punto, Lawton 1 punto, MNA-SF 2 puntos (supera el error de medida), GDS-15 4
+  puntos, MMSE 3 puntos; Zarit sin umbral validado. Barthel: 5 puntos de
+  relevancia mínima y 10 o más de cambio significativo (criterio clínico del
+  autor). Se señala el cruce de los puntos de corte de cada escala.
+- "Copiar resumen" con el texto para la historia clínica, y una sección con los
+  umbrales y sus fuentes. Como el Resumen VGI, las mediciones viven solo en la
+  memoria: nada se guarda en el dispositivo ni se transmite.
+- Prueba nueva verificacion/verificar-trayectoria.mjs (clasificación en los
+  casos límite, umbrales en su borde exacto, cruce de puntos de corte,
+  recorrido completo y privacidad), incluida en npm test.
+
 ## 2.14.1
 
 Ajuste de las transiciones entre pantallas. Ninguna escala, puntaje, punto de
