@@ -16,7 +16,7 @@ abstract: >-
   modelo de lenguaje. Uso exclusivamente educativo y de investigación,
   sin finalidad comercial; no reemplaza el juicio clínico.
 type: software
-version: "2.15.0"
+version: "2.15.1"
 date-released: "2026-11-14"
 license: PolyForm-Noncommercial-1.0.0
 doi: "10.17605/OSF.IO/KMX8H"

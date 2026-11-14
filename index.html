@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.15.0",
+  "softwareVersion": "2.15.1",
   "datePublished": "2026-09-10",
   "dateModified": "2026-11-14",
   "inLanguage": "es",
@@ -3057,7 +3057,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.15.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.15.1</small></div></div>'
     + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
@@ -3611,7 +3611,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.15.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.15.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3623,6 +3623,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.15.1</strong> · Corrección de la Trayectoria hospitalaria: una sola actividad recuperada daba "Pérdida con recuperación parcial" aunque el total del alta fuera menor que el del ingreso. Ahora, con pérdida al ingreso, la evolución durante la estancia se decide por el cambio neto del total: recuperación parcial si sube 15 puntos o más sin volver al basal, deterioro adicional durante la estancia (categoría nueva) si cae 15 o más, y sin recuperación si cambia menos. Las actividades recuperadas o perdidas se siguen listando. Ninguna escala, puntaje, punto de corte ni interpretación cambia.</div>'
   + '<div class="cite"><strong>2.15.0</strong> · Función nueva: Trayectoria, para comparar mediciones de una misma persona en el tiempo. En el modo hospitalario compara el basal premórbido, el ingreso y el alta con el Índice de Barthel actividad por actividad y la Clinical Frailty Scale, clasifica la trayectoria (sin pérdida, pérdida con recuperación completa o parcial, pérdida sin recuperación o pérdida durante la estancia) y registra la SPPB al alta y el 4AT como marcadores. En el modo ambulatorio compara dos mediciones de Barthel, Lawton, SPPB, CFS, MNA-SF, Yesavage, MMSE y Zarit con umbrales de cambio citados y señala el cruce de puntos de corte. Se llega desde la barra de navegación, el Inicio o el botón Comparar con otra medición del resultado. Nada se guarda en el dispositivo. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.14.1</strong> · Las transiciones entre pantallas quedan solo en escritorio con puntero fino. En el celular, el fundido de la vista anterior se superponía a la entrada de la nueva y producía un pequeño sobresalto al cambiar de pestaña; el celular recupera su entrada limpia. Ninguna escala, puntaje ni interpretación cambia.</div>'
   + '<div class="cite"><strong>2.14.0</strong> · Rediseño de la interfaz. Pantalla nueva de Inicio con buscador global, los cinco dominios como puertas de entrada, accesos al Resumen VGI y al conversor, y favoritas y recientes. El símbolo de la marca, animado, recibe en el Inicio y encabeza Acerca de. Tema oscuro automático según la preferencia del sistema. Transiciones entre pantallas solo ante gestos del usuario. Capa visual nueva (ui-v4.css) con tipografía de títulos unificada; todas las animaciones respetan la preferencia de movimiento reducido. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
@@ -3667,7 +3668,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.15.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.15.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 
@@ -3985,9 +3986,14 @@ function trayVeredicto(id, a, b, ctx){
 
 /* ---------- clasificación hospitalaria (Barthel actividad por actividad) ----------
    Pérdida: una actividad baja de nivel frente al basal (nueva o adicional,
-   como en la discapacidad asociada a la hospitalización). Recuperación parcial:
-   al alta recupera al menos una actividad perdida al ingreso, o sube 3 puntos o
-   más (escala 0-20) frente al ingreso, pero sigue con alguna actividad perdida. */
+   como en la discapacidad asociada a la hospitalización). Con pérdida al
+   ingreso, la evolución durante la estancia se decide por el cambio neto del
+   total (2.15.1): recuperación parcial si sube 3 puntos o más en la escala de
+   0 a 20 (15 en la de 0 a 100) y sigue con alguna actividad perdida; deterioro
+   adicional si cae 3 puntos o más; sin recuperación si cambia menos. Las
+   actividades recuperadas o perdidas se listan, pero no cambian el rótulo
+   (en la 2.15.0 una sola actividad recuperada daba "recuperación parcial"
+   aunque el total del alta fuera menor que el del ingreso). */
 function trayClasificar(h){
   const B = h.bar;
   if(!barCompleto(B.bas) || !barCompleto(B.ing) || !barCompleto(B.alt)) return null;
@@ -4002,13 +4008,14 @@ function trayClasificar(h){
     if(n>=b && a<b) nuevas.push(i);
   });
   const tB=barTotal(B.bas), tI=barTotal(B.ing), tA=barTotal(B.alt);
-  const sube20 = (tA - tI)/5;
+  const neto20 = (tA - tI)/5;
   let cat, tono;
   if(!perdIng.length){
     if(!perdAlt.length){ cat='Sin pérdida'; tono='ok'; }
     else { cat='Pérdida durante la estancia'; tono='alert'; }
   } else if(!perdAlt.length){ cat='Pérdida con recuperación completa'; tono='ok'; }
-  else if(recup.length || sube20>=3){ cat='Pérdida con recuperación parcial'; tono='warn'; }
+  else if(neto20>=3){ cat='Pérdida con recuperación parcial'; tono='warn'; }
+  else if(neto20<=-3){ cat='Pérdida con deterioro adicional durante la estancia'; tono='alert'; }
   else { cat='Pérdida sin recuperación'; tono='alert'; }
   return {cat, tono, tB, tI, tA, perdIng:perdIng.map(nom), perdAlt:perdAlt.map(nom),
           recup:recup.map(nom), nuevas: perdIng.length ? nuevas.map(nom) : []};
@@ -4076,7 +4083,7 @@ function renderTray(){
           + ' · '+esc(c.tipo)+'<br><span>'+esc(c.fuente)+'</span></div>';
       }).join('')
     + '<div class="tr-umb-r"><strong>Índice de Barthel en el seguimiento ambulatorio</strong> · 5 puntos (escala de 0 a 100): relevancia mínima; 10 o más: cambio significativo. Se señala además el cruce de los puntos de corte de dependencia (100, 60, 40 y 20).<br><span>Criterio clínico del autor, más sensible que el cambio mínimo importante publicado (15 puntos en la escala de 0 a 100; Bouwstra 2019).</span></div>'
-    + '<div class="tr-umb-r"><strong>Discapacidad asociada a la hospitalización</strong> · pérdida nueva o adicional en al menos una actividad básica al alta frente al basal de dos semanas antes del ingreso.<br><span>Covinsky KE, et al. J Am Geriatr Soc. 2003;51:451. La categoría de recuperación parcial es una definición propia de esta herramienta.</span></div>'
+    + '<div class="tr-umb-r"><strong>Discapacidad asociada a la hospitalización</strong> · pérdida nueva o adicional en al menos una actividad básica al alta frente al basal de dos semanas antes del ingreso.<br><span>Covinsky KE, et al. J Am Geriatr Soc. 2003;51:451. Con pérdida al ingreso, la evolución en la estancia se decide por el cambio neto del total frente al ingreso: recuperación parcial si sube 15 puntos o más (3 en la escala de 0 a 20) sin volver al basal, deterioro adicional si cae 15 o más, sin recuperación si cambia menos. Estas tres categorías son definiciones propias de esta herramienta.</span></div>'
     + '</details>'
     + '<div class="ref"><b>Privacidad</b>Estas mediciones viven únicamente en la memoria del dispositivo mientras la aplicación está abierta: se pierden al cerrarla o recargarla, y nunca se guardan ni se transmiten. No ingrese nombres, documentos ni ningún dato que identifique al paciente.</div>';
 

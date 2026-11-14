@@ -3,6 +3,26 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.15.1
+
+Corrección de la clasificación de la Trayectoria hospitalaria. Ninguna escala,
+puntaje, punto de corte ni interpretación cambia; el conversor no cambia.
+
+- En la 2.15.0 bastaba con que una actividad del Barthel volviera a su nivel
+  basal para rotular "Pérdida con recuperación parcial", aunque las demás
+  empeoraran y el total del alta quedara por debajo del ingreso (caso
+  reportado por el autor: basal 100, ingreso 25, alta 20).
+- Ahora, con pérdida al ingreso, la evolución durante la estancia se decide por
+  el cambio neto del total frente al ingreso: recuperación parcial si sube 3
+  puntos o más en la escala de 0 a 20 (15 en la de 0 a 100) sin volver al
+  basal; deterioro adicional durante la estancia (categoría nueva) si cae 3
+  puntos o más; sin recuperación si cambia menos. Así el rótulo siempre
+  coincide con los recuadros de cambio. Las actividades recuperadas o perdidas
+  se siguen listando como detalle.
+- La prueba verificar-trayectoria.mjs incluye el caso reportado y los bordes de
+  la regla nueva (40 comprobaciones); falló sobre la 2.15.0 antes de corregir.
+  El "caso mixto" de la 2.15.0 esperaba la regla equivocada y se corrigió.
+
 ## 2.15.0
 
 Función nueva: Trayectoria, para comparar mediciones de una misma persona en
