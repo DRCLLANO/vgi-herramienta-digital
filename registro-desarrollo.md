@@ -2,8 +2,11 @@
 
 **Desarrollo asistido por inteligencia artificial de una aplicación web de escalas geriátricas**
 
-Documento de respaldo del depósito. Corresponde a la versión 2.10.6 de la
-herramienta.
+Documento de respaldo del depósito. Su núcleo describe la versión 2.10.6 de la
+herramienta, la que analiza el manuscrito enviado a la Revista Española de
+Geriatría y Gerontología. Las secciones 3, 4, 6.1, 8, 10 y 12 se han ampliado
+con las versiones posteriores; última actualización: versión 2.15.2, 19 de
+noviembre de 2026.
 
 Autor del desarrollo: Cristian Camilo Llano Ceballos, médico geriatra.
 ORCID 0000-0001-9745-3863.
@@ -129,6 +132,14 @@ La división operativa fue: el modelo no incorporó ningún instrumento ni umbra
 sin fuente identificable, y el clínico no aceptó ninguna implementación sin
 revisar su procedencia.
 
+Hasta la versión 2.15.1 el autor subió personalmente cada cambio al
+repositorio. Desde el 17 de noviembre de 2026 autorizó que el asistente escriba
+en el repositorio solo con su verificación y aprobación. En la 2.15.2 el
+asistente preparó el cambio en una rama, corrió las pruebas, abrió la solicitud
+de cambio (pull request) y el autor la revisó y la fusionó con la verificación
+automática de GitHub en verde. La rama principal sigue protegida: ningún cambio
+entra sin esa verificación ni sin la aprobación del autor.
+
 Los coautores del manuscrito que describe este trabajo no participaron en la
 construcción de la herramienta. La autoría del software corresponde
 exclusivamente a Cristian Camilo Llano Ceballos.
@@ -173,6 +184,39 @@ vinculación con el registro ORCID del autor (2.10.3), identidad visual propia
 restitución de los archivos de derechos (2.10.6). La versión 2.10.6 es la que
 analiza el manuscrito. Ninguna de estas versiones modifica instrumentos, ítems,
 opciones de respuesta, reglas de cálculo, puntos de corte ni interpretaciones.
+
+### Iteración 4 · 16 de septiembre a 17 de octubre de 2026 · lanzamiento, analítica y verificación contra fuentes
+
+Producto: corrección de metadatos y avisos de finalidad y de desarrollo con
+inteligencia artificial (2.10.7 a 2.10.9); lanzamiento público el 26 de
+septiembre; corrección de la franja del resultado (2.10.10); estadísticas
+anónimas de uso con GoatCounter desde el 28 de septiembre (2.10.11); secciones
+de valoración prequirúrgica y de futilidad en TAVI, con las que la herramienta
+llega a 47 escalas (2.11.0); correcciones de interfaz, agradecimientos e
+identidad visual renovada (2.11.1 a 2.11.5); cambio de la licencia del código a
+PolyForm Noncommercial 1.0.0 (2.12.0); transiciones de interfaz (2.12.1 y
+2.12.2); y correcciones del CDR, de la PPS, de varios instrumentos contra sus
+fuentes originales y del conversor de opioides, buena parte a partir de
+revisiones externas (2.12.3 a 2.13.4; secciones 8.8 a 8.12). Entre el 12 y el 17
+de octubre se montó el arnés de verificación: pruebas automáticas que GitHub
+ejecuta en cada cambio, protección de la rama principal (todo cambio entra por
+solicitud de cambio con las pruebas en verde) y la prueba de puntos de corte
+contra las fuentes. La 2.13.4 quedó registrada en OSF Registries.
+
+### Iteración 5 · 11 a 19 de noviembre de 2026 · interfaz, Trayectoria y origen de las visitas
+
+Producto: rediseño de la interfaz con pantalla de Inicio, símbolo animado y
+tema oscuro automático, a partir de una propuesta de un auditor externo
+(ChatGPT) que se prototipó aparte antes de llevarla al repositorio (2.14.0), y
+ajuste de las transiciones en pantallas táctiles (2.14.1); función Trayectoria,
+para comparar mediciones de una misma persona en el tiempo en modo hospitalario
+y ambulatorio, con umbrales de cambio documentados (2.15.0), y corrección de su
+clasificación hospitalaria tras un caso que el autor detectó en uso (2.15.1;
+sección 8.13); y registro del origen de las visitas, para medir el tráfico que
+llega desde enlaces institucionales (2.15.2; sección 8.14). Ninguna de estas
+versiones modifica instrumentos, ítems, opciones de respuesta, reglas de
+cálculo, puntos de corte ni interpretaciones; la Trayectoria reutiliza los
+puntajes de las escalas existentes.
 
 El historial completo de versiones, con el cambio introducido en cada una, está
 en [`CHANGELOG.md`](CHANGELOG.md) y se reproduce dentro de la propia
@@ -268,6 +312,13 @@ Digital"; la 2.10.5 corrigió los defectos de presentación que esa identidad
 introdujo; la 2.10.6 restituyó los archivos de derechos y retiró de la ficha del
 Mini-Cog una afirmación de permiso que no consta documentada. Las cifras de la
 tabla anterior siguen siendo válidas para todas ellas.
+
+Desde la 2.11.0 la herramienta tiene 47 escalas y el conversor (48 fichas). La
+prueba automática de la 2.13.4 a la 2.15.2 da los mismos recuentos en todas
+esas versiones: 372 ítems, 1 277 opciones de respuesta, 68 umbrales derivados,
+34 escalas sumativas y 13 algorítmicas, sin fallos
+(`verificacion/resultado-<versión>.json`). La presentación se reparte desde la
+2.14.0 entre `ui-v3.css`, `ui-v4.css` y `ui-motion.css`.
 
 ## 7. Atribución bibliográfica de los instrumentos
 
@@ -595,6 +646,65 @@ confirman que el programa hace lo que se decidió, no que lo decidido sea
 farmacológicamente correcto. Esa validación depende de la revisión clínica de
 las fuentes. Se publicó como 2.13.4.
 
+### 8.13 Rótulo de una clasificación nueva que contradice su propio dato
+
+La Trayectoria de la 2.15.0 clasificaba la evolución hospitalaria del Índice de
+Barthel. Bastaba con que una sola actividad volviera a su nivel basal para
+rotular "Pérdida con recuperación parcial", aunque las demás empeoraran y el
+total del alta quedara por debajo del ingreso. El autor lo detectó el mismo 14
+de noviembre de 2026 al usar la versión publicada con un caso de caída abrupta
+(basal 100, ingreso 25, alta 20): el rótulo decía recuperación y los recuadros
+de cambio mostraban deterioro.
+
+La prueba de la Trayectoria no lo detectó porque su "caso mixto" esperaba
+justamente esa regla: la prueba comprobaba lo que se había programado, no lo
+que tenía sentido clínico. Se corrigió en la 2.15.1: con pérdida al ingreso, la
+evolución durante la estancia se decide por el cambio neto del total frente al
+ingreso, y se añadió la categoría "deterioro adicional durante la estancia". La
+prueba incluye el caso reportado y los bordes de la regla nueva, y falló sobre
+la 2.15.0 antes de corregir. Es el mismo límite de la sección 8.10: una prueba
+escrita con la misma lectura que el código confirma la coherencia, no la
+validez clínica.
+
+### 8.14 Lo que mide la analítica depende del instrumento de medida
+
+El 19 de noviembre de 2026, antes de entregar a la Asociación Colombiana de
+Gerontología y Geriatría (ACGG) los enlaces para promocionar la herramienta, el
+autor probó un enlace etiquetado (`?utm_source=prueba&utm_campaign=prueba`)
+desde un computador del hospital, en una ventana de incógnito, y luego desde su
+celular con datos móviles. En ninguno de los dos casos apareció la etiqueta en
+el panel de GoatCounter.
+
+La lectura del código fuente de GoatCounter explicó el motivo: el servicio
+atribuye el sitio de procedencia y la campaña solo a la primera visita de cada
+sesión, y reconoce la sesión por la combinación de navegador y dirección IP
+durante hasta 8 horas. En una red institucional muchos equipos salen a internet
+con la misma IP y el mismo navegador, de modo que una visita etiquetada podía
+quedar dentro de la sesión de otra persona y no sumar. La aplicación funcionaba
+bien; lo que fallaba era la medición.
+
+Ninguna prueba del repositorio podía detectarlo, porque es un comportamiento
+del servicio externo y no del programa. Se detectó solo al probar la cadena
+completa (enlace, red real, panel) en el entorno de uso. La 2.15.2 registra el
+origen como un evento propio, `origen/<etiqueta>`, igual que las fichas
+abiertas: GoatCounter cuenta un evento la primera vez que aparece en cada
+sesión, así que el origen queda registrado aunque la sesión ya exista. Solo se
+acepta una etiqueta de 1 a 40 caracteres con letras, números y guiones. La
+prueba de integridad comprueba una etiqueta válida, una inválida y la ausencia
+de etiqueta, y su caso válido falló sobre la 2.15.1. Una simulación con el
+script real de GoatCounter confirmó que se envían la visita y el evento. Tras
+publicar la versión, la misma prueba desde el mismo computador del hospital
+mostró `origen/prueba` en el panel.
+
+Consecuencias para el uso de estos datos en investigación: (1) las visitas de
+prueba del 19 de noviembre (`origen/prueba` y las etiquetas `prueba` y
+`prueba-celular`) deben excluirse del análisis; (2) antes de la 2.15.2 el sitio
+de procedencia está subestimado en redes institucionales; (3) los navegadores o
+extensiones que bloquean rastreadores impiden todo registro, de modo que las
+cifras siguen siendo un mínimo. La lección de método: antes de usar una cifra de
+tráfico como dato, conviene probar el instrumento de medida en el entorno real,
+igual que se prueba el instrumento clínico.
+
 ## 9. Decisiones de contenido tomadas por el clínico
 
 **Ubicación de fragilidad y sarcopenia en el eje funcional**, siguiendo la
@@ -643,7 +753,13 @@ la caché pueden variar según el navegador, las políticas del dispositivo y la
 eliminación posterior de datos del sitio; por ello no deben asumirse sin una
 prueba específica en el entorno de uso.
 
-El registro de incidentes es retrospectivo, no concurrente.
+El registro de incidentes es retrospectivo, no concurrente, salvo los de las
+secciones 8.13 y 8.14, que se documentaron el mismo día en que ocurrieron.
+
+Las estadísticas de uso dependen de un servicio externo (GoatCounter) y de su
+forma de agrupar sesiones. No cuentan el uso sin conexión ni las visitas desde
+navegadores que bloquean rastreadores, y antes de la 2.15.2 subestimaban el
+sitio de procedencia en redes compartidas (sección 8.14).
 
 La delimitación de la aportación respecto del método de desarrollo proviene de
 una búsqueda no sistemática, cuyas cadenas constan en el anexo 1 del
@@ -701,3 +817,9 @@ visitas (con país, navegador, tamaño de pantalla y sitio de procedencia) y el
 identificador de cada ficha abierta. No se envían respuestas, puntajes,
 resultados ni ningún dato de la valoración. El uso sin conexión no se
 contabiliza, por lo que las cifras representan un mínimo.
+
+Desde la versión 2.15.2, cuando la aplicación se abre desde un enlace con una
+etiqueta de origen (`utm_source`, por ejemplo la del enlace de una asociación),
+se registra además esa etiqueta como el evento `origen/<etiqueta>`. Solo se
+acepta una etiqueta corta de letras, números y guiones, y no se registra ningún
+otro dato. La sección Privacidad de la aplicación lo declara.

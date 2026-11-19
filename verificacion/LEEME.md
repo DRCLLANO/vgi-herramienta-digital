@@ -72,6 +72,15 @@ recuentos no cambian y la lista de fallos sigue vacía.
 `resultado-2.13.4.json` corresponde a la 2.13.4 (meperidina retirada y rescates
 del conversor); los recuentos no cambian y la lista de fallos sigue vacía.
 
+`resultado-2.14.0.json` y `resultado-2.14.1.json` corresponden al rediseño de la
+interfaz; `resultado-2.15.0.json` y `resultado-2.15.1.json`, a la función
+Trayectoria y su corrección (que además tiene su propia prueba,
+`verificar-trayectoria.mjs`); y `resultado-2.15.2.json`, al registro del origen
+de las visitas, cuya comprobación está en `verificar-integridad.mjs` (ver
+`INTEGRIDAD.md`). En todas, los recuentos son los de la 2.13.4 (48 fichas, 47
+escalas, 372 ítems, 1 277 opciones y 68 umbrales) y la lista de fallos sigue
+vacía.
+
 ## Prueba del puntaje global del CDR
 
 Desde la 2.12.3, `verificar-cdr.mjs` compara la lógica del CDR de la
