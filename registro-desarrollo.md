@@ -132,12 +132,17 @@ La división operativa fue: el modelo no incorporó ningún instrumento ni umbra
 sin fuente identificable, y el clínico no aceptó ninguna implementación sin
 revisar su procedencia.
 
-Hasta la versión 2.15.1 el autor subió personalmente cada cambio al
-repositorio. Desde el 17 de noviembre de 2026 autorizó que el asistente escriba
-en el repositorio solo con su verificación y aprobación. En la 2.15.2 el
-asistente preparó el cambio en una rama, corrió las pruebas, abrió la solicitud
-de cambio (pull request) y el autor la revisó y la fusionó con la verificación
-automática de GitHub en verde. La rama principal sigue protegida: ningún cambio
+Hasta la versión 2.14.1 el autor subió personalmente cada cambio al
+repositorio. Los archivos de la 2.15.0 los subió el asistente desde el
+navegador del autor, y la corrección 2.15.1 la hizo el asistente directamente
+en GitHub a pedido del autor, incluida la fusión. Desde el 17 de noviembre de
+2026 el autor autorizó que el asistente escriba en el repositorio solo con su
+verificación y aprobación. En la 2.15.2 el asistente preparó el cambio en una
+rama, corrió las pruebas y abrió la solicitud de cambio (pull request); el
+autor la revisó y la fusionó con la verificación automática de GitHub en verde.
+Desde esa versión, los commits del asistente llevan "Claude" como autor y la
+línea Co-Authored-By, para que el historial de Git distinga quién hizo cada
+cambio. La rama principal sigue protegida: ningún cambio
 entra sin esa verificación ni sin la aprobación del autor.
 
 Los coautores del manuscrito que describe este trabajo no participaron en la
