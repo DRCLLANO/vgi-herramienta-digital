@@ -3,6 +3,30 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.15.2
+
+Origen de las visitas en las estadísticas anónimas. Ninguna escala, puntaje,
+punto de corte ni interpretación cambia; el conversor no cambia.
+
+- Cuando la aplicación se abre desde un enlace con etiqueta de origen
+  (`utm_source`, por ejemplo `?utm_source=acgg-web&utm_campaign=acgg` en el
+  enlace de una asociación), se registra en GoatCounter el evento
+  `origen/<etiqueta>`, igual que se registran las fichas abiertas.
+- Motivo: GoatCounter atribuye el origen de una visita solo a la primera de
+  cada sesión, y reconoce la sesión por el navegador y la dirección IP durante
+  hasta 8 horas. Una persona que ya tenía la aplicación abierta, o que comparte
+  la red de una institución con otros usuarios, llegaba desde el enlace sin
+  que su origen quedara registrado. Un evento se cuenta la primera vez que
+  aparece en cada sesión, así que el origen queda registrado en esos casos.
+- Solo se acepta una etiqueta de 1 a 40 caracteres con letras, números y
+  guiones (se pasa a minúsculas); cualquier otra cosa se ignora. No se
+  registra ningún otro dato. Si GoatCounter está bloqueado o no hay conexión,
+  no se registra nada, como hasta ahora.
+- La sección Privacidad de Acerca de lo declara.
+- verificar-integridad.mjs comprueba una etiqueta válida, una inválida y la
+  ausencia de etiqueta; la comprobación de la etiqueta válida falló sobre la
+  2.15.1 antes del cambio.
+
 ## 2.15.1
 
 Corrección de la clasificación de la Trayectoria hospitalaria. Ninguna escala,

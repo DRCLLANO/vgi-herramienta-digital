@@ -9,7 +9,7 @@ Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
 evaluación (clínico, funcional, mental y social) más una sección de paliativos
 y pronóstico.
 
-**Versión 2.15.1** · 47 escalas, un conversor de dosis equianalgésicas de opioides y, desde la 2.15.0, la función Trayectoria para comparar mediciones en el tiempo (hospitalización y seguimiento ambulatorio). Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI.
+**Versión 2.15.2** · 47 escalas, un conversor de dosis equianalgésicas de opioides y, desde la 2.15.0, la función Trayectoria para comparar mediciones en el tiempo (hospitalización y seguimiento ambulatorio). Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI.
 
 ## Abrir la herramienta
 
@@ -99,7 +99,7 @@ citarse.
 
 La carpeta [`verificacion/`](verificacion/) contiene el script que ejecuta las
 tres pruebas automatizadas sobre `index.html` y el resultado fechado de las
-versiones 2.10.6 a 2.15.1, una prueba específica del puntaje global del CDR, una prueba de la función Trayectoria (desde la 2.15.0) y, desde la 2.13.1, una prueba contra las fuentes primarias del VES-13, el PPI, la PPS y el conversor de opioides, con los casos de referencia de una revisión externa. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
+versiones 2.10.6 a 2.15.2, una prueba específica del puntaje global del CDR, una prueba de la función Trayectoria (desde la 2.15.0) y, desde la 2.13.1, una prueba contra las fuentes primarias del VES-13, el PPI, la PPS y el conversor de opioides, con los casos de referencia de una revisión externa. [`SHA256SUMS.txt`](SHA256SUMS.txt) lista la suma SHA-256 de
 cada archivo, para comprobar que el repositorio y el depósito de OSF contienen
 exactamente la misma versión.
 
@@ -108,7 +108,7 @@ exactamente la misma versión.
 Véase [`CITATION.cff`](CITATION.cff). Formato sugerido:
 
 > Llano Ceballos CC. VGI Digital: herramienta digital
-> para la Valoración Geriátrica Integral (versión 2.15.1) [software]. Open Science
+> para la Valoración Geriátrica Integral (versión 2.15.2) [software]. Open Science
 > Framework; 2026. https://doi.org/10.17605/OSF.IO/KMX8H
 
 ## Licencia y derechos
@@ -144,7 +144,7 @@ derechos propio y condiciones de uso específicas.
 | `LICENSE` | Licencia del código fuente (PolyForm Noncommercial 1.0.0) |
 | `NOTICE.md` | Alcance de la licencia y derechos sobre el contenido de las escalas |
 | `CITATION.cff` | Metadatos de citación |
-| `CHANGELOG.md` | Historial de versiones (1.0 a 2.15.1) |
+| `CHANGELOG.md` | Historial de versiones (1.0 a 2.15.2) |
 | `sw.js` | Service worker: permite el uso sin conexión tras la primera visita |
 | `manifest.json` | Manifiesto de la aplicación web progresiva |
 | `icon-*.png` | Iconos de la aplicación (120, 152, 167, 180, 192 y 512 px, más el icono *maskable*) |
@@ -179,6 +179,7 @@ derechos propio y condiciones de uso específicas.
 | `verificacion/resultado-2.14.1.json` | Resultado fechado de esas pruebas sobre la versión 2.14.1 |
 | `verificacion/resultado-2.15.0.json` | Resultado fechado de esas pruebas sobre la versión 2.15.0 |
 | `verificacion/resultado-2.15.1.json` | Resultado fechado de esas pruebas sobre la versión 2.15.1 |
+| `verificacion/resultado-2.15.2.json` | Resultado fechado de esas pruebas sobre la versión 2.15.2 |
 | `verificacion/verificar-fuentes.mjs` | Prueba contra las fuentes primarias del VES-13, el PPI, la coherencia PPS y PPI y el conversor de opioides, en todas sus combinaciones, y, desde la 2.13.3, de la seguridad del conversor con parche de destino |
 | `verificacion/resultado-fuentes-2.13.1.json` | Resultado de esa prueba sobre la versión 2.13.1 |
 | `verificacion/resultado-fuentes-2.13.2.json` | Resultado de esa prueba sobre la versión 2.13.2 |
@@ -188,6 +189,7 @@ derechos propio y condiciones de uso específicas.
 | `verificacion/resultado-fuentes-2.14.1.json` | Resultado de esa prueba sobre la versión 2.14.1 |
 | `verificacion/resultado-fuentes-2.15.0.json` | Resultado de esa prueba sobre la versión 2.15.0 |
 | `verificacion/resultado-fuentes-2.15.1.json` | Resultado de esa prueba sobre la versión 2.15.1 |
+| `verificacion/resultado-fuentes-2.15.2.json` | Resultado de esa prueba sobre la versión 2.15.2 |
 | `verificacion/resultado-cdr-2.13.1.json` | Resultado de la prueba del CDR sobre la versión 2.13.1 (12.500 combinaciones) |
 | `verificacion/resultado-cdr-2.13.2.json` | Resultado de la prueba del CDR, con la referencia corregida, sobre la versión 2.13.2 (12.500 combinaciones) |
 | `verificacion/resultado-cdr-2.13.3.json` | Resultado de la prueba del CDR sobre la versión 2.13.3 |
@@ -196,9 +198,11 @@ derechos propio y condiciones de uso específicas.
 | `verificacion/resultado-cdr-2.14.1.json` | Resultado de la prueba del CDR sobre la versión 2.14.1 |
 | `verificacion/resultado-cdr-2.15.0.json` | Resultado de la prueba del CDR sobre la versión 2.15.0 |
 | `verificacion/resultado-cdr-2.15.1.json` | Resultado de la prueba del CDR sobre la versión 2.15.1 |
+| `verificacion/resultado-cdr-2.15.2.json` | Resultado de la prueba del CDR sobre la versión 2.15.2 |
 | `verificacion/verificar-trayectoria.mjs` | Prueba de la función Trayectoria: clasificación hospitalaria, umbrales de cambio, cruce de puntos de corte, recorrido y privacidad (desde la 2.15.0) |
 | `verificacion/resultado-trayectoria-2.15.0.json` | Resultado de esa prueba sobre la versión 2.15.0 |
 | `verificacion/resultado-trayectoria-2.15.1.json` | Resultado de esa prueba sobre la versión 2.15.1 (incluye el caso del incidente de la 2.15.0) |
+| `verificacion/resultado-trayectoria-2.15.2.json` | Resultado de esa prueba sobre la versión 2.15.2 |
 | `verificacion/verificar-cdr.mjs` | Prueba del puntaje global del CDR contra las reglas de Washington University, en todas las combinaciones (12.500 desde la 2.13.1) |
 | `verificacion/resultado-cdr-2.12.3.json` | Resultado de esa prueba sobre la versión 2.12.3 |
 | `verificacion/LEEME.md` | Instrucciones para ejecutar la verificación |
