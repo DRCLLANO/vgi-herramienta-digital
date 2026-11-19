@@ -20,7 +20,11 @@ miran porque no es cálculo:
 5. **Referencias.** Cada escala lleva su referencia bibliográfica.
 6. **Regresiones.** Clave de la GDS-15, versión 3.1 del NECPAL, 4AT completo,
    factores del conversor iguales a los aprobados, sin meperidina, y carga sin
-   errores de JavaScript.
+   errores de JavaScript. Desde la 2.15.2, además, el origen de la visita: con
+   `?utm_source=` y una etiqueta válida se registra un solo evento
+   "origen/<etiqueta>" (en minúsculas), y con una etiqueta inválida o sin
+   etiqueta no se registra ninguno. GoatCounter se sustituye por un registro
+   local, porque la prueba corre sin red.
 
 ```
 node verificacion/verificar-integridad.mjs > resultado-integridad.json

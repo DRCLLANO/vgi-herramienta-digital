@@ -106,6 +106,21 @@ const app = await page.evaluate(() => ({
   at4: SCALES.at4 ? { items: SCALES.at4.items.length, max: SCALES.at4.max, ref: SCALES.at4.ref || '' } : null,
   opioides: OPIOIDES.map(o => ({ id: o.id, n: o.n, f: o.f }))
 }));
+// Origen de la visita (desde la 2.15.2): con ?utm_source=<etiqueta> la
+// aplicación registra el evento "origen/<etiqueta>" en GoatCounter. Se
+// sustituye GoatCounter por un registro local (la red está bloqueada) y se
+// comprueba una etiqueta válida, una inválida y la ausencia de etiqueta.
+const origenes = {};
+for (const [caso, query] of [['valida', '?utm_source=ACGG-web&utm_campaign=acgg'], ['invalida', '?utm_source=%3Cscript%3E'], ['sin', '']]) {
+  const p2 = await browser.newPage();
+  p2.on('pageerror', e => jsErrors.push(e.message));
+  await p2.route(u => !u.toString().startsWith('file:'), r => r.abort());
+  await p2.addInitScript(() => { window.__gc = []; window.goatcounter = { count: v => window.__gc.push(v) }; });
+  await p2.goto('file://' + join(raiz, 'index.html') + query);
+  await p2.waitForTimeout(800);
+  origenes[caso] = await p2.evaluate(() => window.__gc.filter(v => /^origen\//.test(v.path)));
+  await p2.close();
+}
 await browser.close();
 out.fichas = app.ids.length;
 
@@ -136,6 +151,11 @@ caso('NECPAL: versión 3.1', !!app.necpal && /3\.1/.test(app.necpal), `el nombre
 // Incidente 5: el 4AT se perdió al divergir dos ramas.
 caso('4AT: presente y completo', !!app.at4 && app.at4.items === 4 && app.at4.max === 12 && /Bellelli/.test(app.at4.ref),
   `4AT = ${JSON.stringify(app.at4)}`);
+// 2.15.2: el origen de la visita se registra solo con una etiqueta válida.
+caso('Origen de la visita: etiqueta válida', origenes.valida.length === 1 && origenes.valida[0].path === 'origen/acgg-web' && origenes.valida[0].event === true,
+  `eventos de origen: ${JSON.stringify(origenes.valida)}`);
+caso('Origen de la visita: etiqueta inválida o ausente no se registra', origenes.invalida.length === 0 && origenes.sin.length === 0,
+  `inválida: ${JSON.stringify(origenes.invalida)}; sin etiqueta: ${JSON.stringify(origenes.sin)}`);
 // Decisión del 8-oct-2026: factores del nomograma y del taller, sin meperidina.
 const actuales = Object.fromEntries(app.opioides.map(o => [o.id, o.f]));
 const cambios = [...new Set([...Object.keys(actuales), ...Object.keys(huellas.conversor)])]
