@@ -16,8 +16,8 @@ abstract: >-
   modelo de lenguaje. Uso exclusivamente educativo y de investigación,
   sin finalidad comercial; no reemplaza el juicio clínico.
 type: software
-version: "2.15.2"
-date-released: "2026-11-19"
+version: "2.16.0"
+date-released: "2026-11-25"
 license: PolyForm-Noncommercial-1.0.0
 doi: "10.17605/OSF.IO/KMX8H"
 repository-code: "https://github.com/drcllano/vgi-herramienta-digital"
