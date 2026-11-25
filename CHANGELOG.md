@@ -3,6 +3,36 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.16.0
+
+Rediseño de la navegación y de las entradas. Ninguna escala, puntaje, punto de
+corte ni interpretación cambia; el conversor y la Trayectoria no cambian.
+
+- Inicio: rueda de los cinco ejes, con cada arco proporcional al número de
+  instrumentos del eje; cifras de escalas, ítems, ejes y herramientas que se
+  calculan de los datos de la aplicación; módulos por eje con sus grupos
+  numerados y desplegables, desde los que se abre cada escala; tarjetas de
+  Resumen VGI, conversor y Trayectoria. El rótulo del Inicio dice "VGI Digital:
+  Valoración Geriátrica Integral".
+- Biblioteca de cada eje: banda de entrada del color del eje con sus cifras,
+  filtros por tipo de instrumento (sumativas, algorítmicas, complementarias),
+  índice de grupos y tarjetas con número de ítems y máximo o tipo.
+- Trayectoria: entrada propia con la gráfica de basal, ingreso y alta de las
+  piezas de difusión (línea basal punteada, caída en coral, recuperación en
+  lima); las dos tarjetas de modo sustituyen a los botones Hospitalario y
+  Ambulatorio y llaman a la misma acción.
+- Fichas: rótulos de eje, ítems y tipo bajo el título y, en pantallas anchas,
+  un mapa de ítems que marca los respondidos y lleva a cada uno.
+- Atajo "/" para buscar.
+- Archivos nuevos: ui-v5.css y ui-v5.js. ui-v5.js sustituye solo las funciones
+  que pintan el Inicio, la biblioteca, las tarjetas y la navegación, y añade la
+  entrada de Trayectoria; lee SCALES, ORDER, EJES, EJE_INTRO, VGI y la
+  configuración de Trayectoria sin modificarlos. index.html solo añade las dos
+  líneas que los cargan, la entrada del historial y el número de versión.
+- El service worker precarga los dos archivos nuevos.
+- Tema oscuro automático y movimiento reducido respetados en todas las vistas
+  nuevas.
+
 ## 2.15.2
 
 Origen de las visitas en las estadísticas anónimas. Ninguna escala, puntaje,
