@@ -1,5 +1,5 @@
 /*
- * VGI Digital · ui-v5.css: capa visual del rediseño 2.16.0
+ * VGI Digital · ui-v5.css: capa visual del rediseño 2.16.0 (y navegación de la 2.17.0)
  * Se carga después de ui-v3, ui-motion y ui-v4. No toca escalas, puntajes ni
  * interpretaciones: solo da forma al Inicio, a la biblioteca de cada eje, a
  * las tarjetas, a la navegación y al mapa de ítems de las fichas.
@@ -447,4 +447,188 @@ body[data-view="tray"] .tr-seg{display:none;}
 }
 @media (prefers-reduced-motion:reduce){
   .v5-mod,.v5-h,.v5-buscar,.v5-rap,.v5-paso-cuerpo{transition:none!important;animation:none!important;}
+}
+
+/* ================= NAVEGACIÓN SIMPLIFICADA (2.17.0) =================
+ * Se apoya en lo anterior y lo sustituye donde coincide: barra de cuatro
+ * destinos, Inicio compacto y biblioteca con un solo encabezado. Las clases
+ * v6-* son propias de esta versión. */
+:root{--v6-top:0px;--v6-chips:0px;}
+
+/* ----- Barra de cuatro destinos ----- */
+.v6-sub,.v6-sub-tit{display:none!important;}
+nav.tabs .tab-inicio{display:flex;}
+nav.tabs .v6-tab .tabtext{white-space:nowrap;}
+
+@media (max-width:959px){
+  nav.tabs .tab-inicio{display:flex!important;}
+  nav.tabs .v6-tab .tabtext{display:block;font-size:11px;line-height:1;color:var(--muted);}
+  nav.tabs .v6-tab[aria-current="true"] .tabtext{color:var(--tab);font-weight:700;}
+}
+@media (max-width:560px){
+  nav.tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+  nav.tabs .vgi-tab{box-shadow:none;}
+  nav.tabs button{min-height:60px;}
+}
+@media (min-width:561px) and (max-width:959px){
+  nav.tabs{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+@media (min-width:960px){
+  .v6-escalas{display:none!important;}
+  .v6-sub{display:flex!important;min-height:44px!important;}
+  .v6-sub-tit{display:block!important;margin-top:14px;}
+  nav.tabs .tab-inicio{margin-bottom:0;}
+}
+
+/* ----- Inicio compacto ----- */
+.v6-hero{
+  grid-template-columns:minmax(0,1fr) minmax(0,300px);
+  grid-template-areas:"txt viz" "bus viz";
+  align-items:end;row-gap:22px;padding:36px 40px 34px;margin-bottom:26px;
+}
+.v6-hero .v5-hero-txt{grid-area:txt;}
+.v6-hero .v5-hero-viz{grid-area:viz;order:0;align-self:center;}
+.v6-hero .v5-rueda{width:min(100%,280px);}
+.v6-hero h2{margin-bottom:0;}
+.v6-buscar{
+  grid-area:bus;display:flex;align-items:center;gap:12px;width:100%;max-width:560px;
+  padding:4px 14px 4px 18px;border-radius:16px;cursor:text;
+  background:var(--field);border:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 8px 20px -14px rgba(1,62,49,.35);
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+.v6-buscar:focus-within{border-color:var(--marca-verde);box-shadow:0 0 0 4px color-mix(in srgb,var(--marca-verde) 14%,transparent);}
+.v6-buscar svg{width:17px;height:17px;color:var(--marca-verde);flex:none;}
+.v6-buscar input{flex:1;min-width:0;border:0;background:transparent;outline:none;padding:13px 0;font:inherit;font-size:16px;color:var(--ink);}
+.v6-buscar input::placeholder{color:var(--muted);}
+.v6-buscar kbd{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 7px;background:var(--card);}
+
+.v6-sec{margin:0 0 28px;}
+.v6-sec-rap{margin-top:-6px;}
+.v6-tit{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;}
+
+/* Cinco fichas de eje */
+.v6-ejes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.v6-eje{
+  position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;
+  padding:16px 16px 16px 14px;border-radius:18px;text-align:left;overflow:hidden;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--eje) 9%,var(--card)),var(--card) 55%);
+  border:1px solid var(--v5-borde);box-shadow:var(--v5-sombra);
+  transition:transform .25s var(--v5-ease),box-shadow .25s ease,border-color .25s ease;
+}
+.v6-eje::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--eje);}
+.v6-eje:hover{transform:translateY(-2px);box-shadow:var(--v5-sombra-alta);border-color:color-mix(in srgb,var(--eje) 35%,var(--line));}
+.v6-eje-ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--eje);color:var(--sobre-eje,#fff);margin-left:4px;}
+.v6-eje-ico .tabicon{width:22px;height:22px;}
+.v6-eje-nom{display:block;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:20px;letter-spacing:-.015em;color:var(--ink);line-height:1.15;}
+.v6-eje-dom{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:4px;font-size:12.5px;line-height:1.4;color:var(--ink-2);}
+.v6-eje-n b{display:grid;place-items:center;min-width:38px;height:38px;padding:0 8px;border-radius:12px;font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:600;color:var(--eje);background:color-mix(in srgb,var(--eje) 11%,var(--card));font-variant-numeric:tabular-nums;}
+@media (prefers-reduced-motion:no-preference){
+  .v6-eje{animation:v5-sube .55s var(--v5-ease) both;animation-delay:calc(.04s + var(--k)*.05s);}
+}
+
+/* Conversor */
+.v6-conv{
+  display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;gap:16px;width:100%;
+  padding:14px 18px 14px 14px;border-radius:18px;text-align:left;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--eje) 8%,var(--card)),var(--card) 60%);
+  border:1px solid var(--v5-borde);box-shadow:var(--v5-sombra);
+  transition:transform .25s var(--v5-ease),box-shadow .25s ease;
+}
+.v6-conv:hover{transform:translateY(-2px);box-shadow:var(--v5-sombra-alta);}
+.v6-conv-viz svg{display:block;width:96px;height:52px;fill:none;stroke:var(--eje);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+.v6-conv-txt b{display:block;font-size:16px;color:var(--ink);}
+.v6-conv-txt span{display:block;margin-top:3px;font-size:13px;color:var(--ink-2);line-height:1.4;}
+.v6-conv-ir svg{width:20px;height:20px;color:var(--eje);}
+
+/* ----- Biblioteca de un eje ----- */
+/* Chips de eje con nombre completo: solo en pantallas sin barra lateral */
+.v6-chips{
+  position:sticky;top:var(--v6-top);z-index:15;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+  margin:-6px -15px 14px;padding:10px 15px;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);
+}
+.v6-chips::-webkit-scrollbar{display:none;}
+.v6-chips button{
+  flex:none;display:inline-flex;align-items:center;gap:7px;padding:8px 13px 8px 10px;border-radius:999px;
+  font-size:14px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--v5-borde);
+  transition:background-color .2s ease,color .2s ease,border-color .2s ease;
+}
+.v6-chips button .tabicon{width:17px;height:17px;color:var(--eje);}
+.v6-chips button[aria-current="true"]{background:var(--eje);border-color:var(--eje);color:var(--sobre-eje,#fff);}
+.v6-chips button[aria-current="true"] .tabicon{color:var(--sobre-eje,#fff);}
+@media (min-width:960px){ .v6-chips{display:none;} }
+
+/* Banda del eje: color e introducción, sin repetir el nombre */
+.v6-banda{
+  position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;overflow:hidden;
+  padding:18px 20px;border-radius:20px;margin:0 0 16px;color:#fff;
+  background:linear-gradient(120deg,var(--eje),color-mix(in srgb,var(--eje) 70%,#0b1f1a));
+  box-shadow:0 14px 30px -18px color-mix(in srgb,var(--eje) 80%,transparent);
+}
+.v6-banda p{margin:0;font-size:14.5px;line-height:1.5;max-width:52em;position:relative;z-index:1;}
+.v6-banda-n{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;opacity:.85;position:relative;z-index:1;}
+.v6-banda-ico{position:absolute;right:-18px;bottom:-26px;opacity:.14;}
+.v6-banda-ico .tabicon{width:120px;height:120px;}
+
+/* Buscador y filtro plegado */
+.v6-barra{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-bottom:6px;}
+.v6-barra .search{flex:none;width:100%;}
+.v6-filtro{border-radius:14px;background:var(--tint);}
+.v6-filtro summary{
+  list-style:none;display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+  font-size:13.5px;font-weight:600;color:var(--ink-2);
+}
+.v6-filtro summary::-webkit-details-marker{display:none;}
+.v6-filtro summary svg{width:16px;height:16px;margin-left:auto;transition:transform .2s ease;}
+.v6-filtro[open] summary svg{transform:rotate(180deg);}
+.v6-filtro-act{font-weight:600;color:var(--eje);}
+.v6-filtro .v5-filtros{background:transparent;padding:0 4px 4px;}
+
+/* Grupos como encabezados pegajosos */
+#list .v5-grp{
+  position:sticky;top:calc(var(--v6-top) + var(--v6-chips));z-index:6;
+  margin:18px -6px 4px;padding:8px 6px;border-radius:12px;
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+#list .v5-grp:first-child{margin-top:6px;}
+
+/* Tarjetas más cortas: nombre y dominio primero, descripción en dos líneas */
+#list .card.v5-card{min-height:0;}
+.v5-card{padding:15px 17px 13px;}
+.v5-card h2{margin:6px 0 4px;}
+.v5-card p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin:0;font-size:13.5px;}
+.v5-card-pie{padding-top:10px;}
+
+/* ----- Adaptable y tema oscuro ----- */
+@media (max-width:1100px){
+  .v6-hero{grid-template-columns:minmax(0,1fr) 200px;padding:30px 28px;}
+  .v6-hero .v5-rueda{width:min(100%,200px);}
+}
+@media (max-width:640px){
+  .v6-hero{grid-template-columns:minmax(0,1fr) 112px;grid-template-areas:"txt viz" "bus bus";
+    padding:20px 16px 16px;row-gap:16px;column-gap:10px;border-radius:22px;margin-bottom:20px;align-items:center;}
+  .v6-hero h2{font-size:28px;margin-top:10px;}
+  .v6-hero .v5-eyebrow{font-size:9.5px;letter-spacing:.12em;}
+  .v6-hero .v5-rueda{width:112px;}
+  .v6-hero .v5-rueda-cap{display:none;}
+  .v6-buscar kbd{display:none;}
+  .v6-ejes{grid-template-columns:1fr;gap:10px;}
+  .v6-eje{padding:13px 13px 13px 12px;gap:12px;}
+  .v6-eje-ico{width:40px;height:40px;border-radius:12px;}
+  .v6-eje-nom{font-size:18px;}
+  .v6-eje-dom{font-size:12px;}
+  .v6-conv{grid-template-columns:64px minmax(0,1fr) auto;gap:12px;}
+  .v6-conv-viz svg{width:64px;height:36px;}
+  .v6-banda{padding:15px 16px;border-radius:18px;}
+  .v6-banda p{font-size:13.5px;}
+}
+@media (prefers-color-scheme:dark){
+  .v6-banda{color:var(--ink);background:linear-gradient(120deg,color-mix(in srgb,var(--eje) 34%,var(--card)),color-mix(in srgb,var(--eje) 14%,var(--card)));}
+  .v6-banda-ico{opacity:.18;color:var(--eje);}
+  nav.tabs .v6-tab[aria-current="true"]::before{background:color-mix(in srgb,var(--tab) 22%,transparent)!important;}
+  .v6-chips{background:color-mix(in srgb,var(--paper) 86%,transparent);}
+  #list .v5-grp{background:color-mix(in srgb,var(--paper) 88%,transparent);}
 }

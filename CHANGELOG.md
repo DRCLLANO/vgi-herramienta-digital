@@ -3,6 +3,37 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.17.0
+
+Navegación simplificada. Ninguna escala, puntaje, punto de corte ni
+interpretación cambia; el conversor y la Trayectoria no cambian. Solo cambia la
+capa de presentación (ui-v5.js y ui-v5.css).
+
+- Barra de cuatro destinos: Inicio, Escalas, Resumen y Trayectoria. Antes, en
+  el teléfono, la barra tenía siete botones con los nombres de los ejes
+  recortados. Escalas abre el último eje usado. En pantallas anchas la barra
+  lateral muestra debajo los cinco ejes con su nombre completo y su número de
+  instrumentos.
+- Inicio: buscador visible en el encabezado (al escribir, lleva a los
+  resultados de toda la biblioteca), favoritas y recientes, una ficha por eje
+  con sus grupos y su número de instrumentos, y el conversor de opioides como
+  herramienta. La rueda de los ejes se conserva, más pequeña. Se retiran las
+  cifras del encabezado, los módulos desplegables por eje y las tarjetas de
+  Resumen y Trayectoria, que ya están en la barra.
+- Biblioteca de cada eje: un solo título ("Escalas", con el nombre del eje);
+  en el teléfono, cambio de eje con botones que dicen el nombre; banda del
+  color del eje con su introducción; filtro por tipo de instrumento plegado
+  (abierto si hay un tipo elegido); grupos como encabezados que quedan visibles
+  al desplazarse. Se retiran el índice de grupos, el selector numerado 01 a 05
+  y las cifras repetidas de la banda. Las tarjetas muestran la descripción en
+  dos líneas.
+- Encabezado: se retira el botón de casa, porque Inicio está en la barra. En
+  Resumen, el rótulo "Los cuatro ejes" pasa a "Esta valoración", porque la
+  aplicación tiene cinco ejes.
+- No hay archivos nuevos: los cambios están en ui-v5.js y al final de
+  ui-v5.css. index.html solo cambia el número de versión y la entrada del
+  historial. Tema oscuro y movimiento reducido respetados.
+
 ## 2.16.0
 
 Rediseño de la navegación y de las entradas. Ninguna escala, puntaje, punto de

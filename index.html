@@ -60,9 +60,9 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.16.0",
+  "softwareVersion": "2.17.0",
   "datePublished": "2026-09-10",
-  "dateModified": "2026-11-25",
+  "dateModified": "2026-11-26",
   "inLanguage": "es",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Cualquier sistema con navegador web",
@@ -3058,7 +3058,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.16.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.17.0</small></div></div>'
     + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
@@ -3612,7 +3612,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.16.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.17.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3624,6 +3624,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.17.0</strong> · Navegación simplificada. La barra tiene cuatro destinos (Inicio, Escalas, Resumen y Trayectoria); Escalas abre el último eje usado y, en pantallas anchas, la barra lateral muestra los cinco ejes con su nombre. Inicio con buscador, favoritas y recientes, una ficha por eje con sus grupos y el conversor de opioides. Biblioteca de cada eje con un solo título, cambio de eje por nombre en el teléfono, filtro por tipo plegado y grupos que quedan visibles al desplazarse; se retiran el índice de grupos, el selector numerado de ejes y las cifras repetidas. En Resumen, el rótulo "Los cuatro ejes" pasa a "Esta valoración". Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor y la Trayectoria no cambian.</div>'
   + '<div class="cite"><strong>2.16.0</strong> · Rediseño de la navegación y de las entradas. Inicio con la rueda de los cinco ejes (cada arco, proporcional a sus instrumentos), cifras que se calculan de los datos de la aplicación y módulos por eje con sus grupos numerados y desplegables. Biblioteca de cada eje con banda de entrada, filtros por tipo de instrumento (sumativas, algorítmicas, complementarias) e índice de grupos. Tarjetas con número de ítems, máximo o tipo. Trayectoria con entrada propia y la gráfica de basal, ingreso y alta de las piezas de difusión. Mapa de ítems en las fichas en pantallas anchas. Capa visual nueva (ui-v5.css y ui-v5.js) que solo cambia la presentación. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor y la Trayectoria no cambian.</div>'
   + '<div class="cite"><strong>2.15.2</strong> · Origen de las visitas: cuando la aplicación se abre desde un enlace con etiqueta de origen (utm_source, por ejemplo la del enlace de una asociación), se registra en las estadísticas anónimas como el evento "origen/&lt;etiqueta&gt;", igual que se registran las fichas abiertas. Así el origen se cuenta aunque la persona ya tuviera una sesión abierta. Solo se acepta una etiqueta corta de letras, números y guiones. La sección Privacidad lo declara. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor no cambia.</div>'
   + '<div class="cite"><strong>2.15.1</strong> · Corrección de la Trayectoria hospitalaria: una sola actividad recuperada daba "Pérdida con recuperación parcial" aunque el total del alta fuera menor que el del ingreso. Ahora, con pérdida al ingreso, la evolución durante la estancia se decide por el cambio neto del total: recuperación parcial si sube 15 puntos o más sin volver al basal, deterioro adicional durante la estancia (categoría nueva) si cae 15 o más, y sin recuperación si cambia menos. Las actividades recuperadas o perdidas se siguen listando. Ninguna escala, puntaje, punto de corte ni interpretación cambia.</div>'
@@ -3671,7 +3672,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.16.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.17.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 

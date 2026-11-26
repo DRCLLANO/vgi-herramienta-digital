@@ -71,6 +71,9 @@ recuentos no cambian y la lista de fallos sigue vacía.
 recuentos no cambian y la lista de fallos sigue vacía.
 `resultado-2.13.4.json` corresponde a la 2.13.4 (meperidina retirada y rescates
 del conversor); los recuentos no cambian y la lista de fallos sigue vacía.
+`resultado-2.17.0.json` corresponde a la 2.17.0 (navegación simplificada: solo
+cambia la capa de presentación); los recuentos y los resultados de las cinco
+pruebas son idénticos a los de la 2.16.0 salvo la huella, la fecha y la versión.
 
 ## Prueba del puntaje global del CDR
 

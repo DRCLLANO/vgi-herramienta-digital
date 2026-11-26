@@ -1,5 +1,7 @@
 /*
- * VGI Digital · ui-v5.js: capa de interfaz del rediseño 2.16.0
+ * VGI Digital · ui-v5.js: capa de interfaz del rediseño 2.16.0, con la
+ * navegación simplificada de la 2.17.0 (barra de cuatro destinos, Inicio
+ * compacto y biblioteca con un solo encabezado)
  *
  * Solo presentación. No define ni modifica escalas, ítems, opciones,
  * puntajes, puntos de corte, interpretaciones ni el conversor: lee SCALES,
@@ -17,7 +19,6 @@ const V5 = { tipo:'todas', ejePrev:null, abiertos:{} };
 const esEscala = id => SCALES[id] && !SCALES[id].tool;
 const idsEje = eje => ORDER[eje].flatMap(g=>g.ids);
 const escalasEje = eje => idsEje(eje).filter(esEscala);
-const nItems = ids => ids.filter(esEscala).reduce((n,id)=>n+SCALES[id].items.length,0);
 const tipoDe = s => s.tool ? 'herramienta' : (s.max ? 'sumativa' : 'algoritmica');
 const VERSION = (function(){
   try{
@@ -25,25 +26,8 @@ const VERSION = (function(){
     return j.softwareVersion || '';
   }catch(e){ return ''; }
 })();
-const NUM = ['01','02','03','04','05'];
 const ejeInfo = id => EJES.find(e=>e.id===id);
 const ejeNombre = e => e.largo || e.label;
-
-/* Cuenta animada para las cifras del Inicio (sin animación si el sistema
-   pide movimiento reducido). */
-function contar(root){
-  root.querySelectorAll('[data-cuenta]').forEach(el=>{
-    const fin = +el.dataset.cuenta;
-    if(MOV_REDUCIDO || !fin){ el.textContent = fin.toLocaleString('es-CO'); return; }
-    const t0 = performance.now(), dur = 900;
-    const paso = t=>{
-      const p = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-p,3);
-      el.textContent = Math.round(fin*e).toLocaleString('es-CO');
-      if(p<1) requestAnimationFrame(paso);
-    };
-    requestAnimationFrame(paso);
-  });
-}
 
 /* ---------- Rueda de la VGI: arcos proporcionales a los instrumentos ---------- */
 function ruedaHTML(){
@@ -81,47 +65,14 @@ const ICO = {
   candado:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="9" width="11" height="8" rx="2"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg>'
 };
 
-function moduloHTML(e, k){
-  const grupos = ORDER[e.id];
+function fichaEje(e, k){
   const ids = idsEje(e.id);
-  const sum = ids.filter(id=>tipoDe(SCALES[id])==='sumativa').length;
-  const alg = ids.filter(id=>tipoDe(SCALES[id])==='algoritmica').length;
-  const abierto = V5.abiertos[e.id];
-  const pasos = grupos.map((g,i)=>{
-    const ab = abierto===i;
-    return '<li class="v5-paso'+(ab?' abierto':'')+'">'
-      + '<button class="v5-paso-btn" data-v5="paso" data-eje="'+e.id+'" data-i="'+i+'" aria-expanded="'+ab+'">'
-      + '<span class="v5-paso-n">'+(i+1)+'</span>'
-      + '<span class="v5-paso-g">'+esc(g.g)+'</span>'
-      + '<span class="v5-paso-c">'+g.ids.length+'</span>'
-      + '<span class="v5-paso-chev">'+ICO.chev+'</span></button>'
-      + '<div class="v5-paso-cuerpo"><div class="v5-paso-chips">'
-      + g.ids.map(id=>'<button class="v5-chip" data-open="'+id+'">'+esc(SCALES[id].name)+'</button>').join('')
-      + '</div></div></li>';
-  }).join('');
-  return '<article class="v5-mod" style="--eje:var(--'+e.id+');--k:'+k+'">'
-    + '<header class="v5-mod-cab">'
-    + '<span class="v5-mod-ico">'+tabIcon(e.id)+'</span>'
-    + '<span class="v5-mod-num">Eje '+NUM[k]+'</span>'
-    + '<span class="v5-mod-cnt"><b>'+ids.length+'</b> instrumento'+(ids.length===1?'':'s')+'</span>'
-    + '</header>'
-    + '<h3>'+esc(ejeNombre(e))+'</h3>'
-    + '<p class="v5-mod-intro">'+esc(EJE_INTRO[e.id])+'</p>'
-    + '<div class="v5-mod-mix" aria-label="'+sum+' sumativas y '+alg+' algorítmicas">'
-    + '<span class="v5-mix-bar"><i style="flex:'+sum+'"></i><i style="flex:'+Math.max(alg,0)+'"></i>'+(ids.length-sum-alg>0?'<i style="flex:'+(ids.length-sum-alg)+'"></i>':'')+'</span>'
-    + '<span class="v5-mix-txt">'+sum+' sumativa'+(sum===1?'':'s')+' · '+alg+' algorítmica'+(alg===1?'':'s')+(ids.length-sum-alg>0?' · '+(ids.length-sum-alg)+' calculadora':'')+'</span></div>'
-    + '<ol class="v5-pasos">'+pasos+'</ol>'
-    + '<button class="v5-mod-ir" data-tab="'+e.id+'">Abrir el eje '+ICO.flecha+'</button>'
-    + '</article>';
-}
-
-function resumenVivo(){
-  const vals = Object.values(VGI);
-  if(!vals.length) return '<span class="v5-vivo-vacio">Aún no hay resultados en esta valoración.</span>';
-  return '<span class="v5-vivo">'+EJES.map(e=>{
-    const n = vals.filter(v=>v.eje===e.id).length;
-    return '<span class="v5-vivo-eje'+(n?' con':'')+'" style="--eje:var(--'+e.id+')" title="'+esc(e.label)+': '+n+'"><i></i>'+n+'</span>';
-  }).join('')+'</span>';
+  return '<button class="v6-eje" data-tab="'+e.id+'" style="--eje:var(--'+e.id+');--k:'+k+'">'
+    + '<span class="v6-eje-ico">'+tabIcon(e.id)+'</span>'
+    + '<span class="v6-eje-txt"><span class="v6-eje-nom">'+esc(ejeNombre(e))+'</span>'
+    + '<span class="v6-eje-dom">'+esc(ORDER[e.id].map(g=>g.g).join(' · '))+'</span></span>'
+    + '<span class="v6-eje-n" aria-label="'+ids.length+' instrumentos"><b>'+ids.length+'</b></span>'
+    + '</button>';
 }
 
 function rapidasHTML(){
@@ -138,61 +89,48 @@ function rapidasHTML(){
 
 renderHome = function(){
   const nEsc = ALL_IDS.filter(esEscala).length;
-  const nIt = nItems(ALL_IDS);
-  const nVGI = Object.keys(VGI).length;
   const dibuja = !renderHome.hecho && !MOV_REDUCIDO;
   renderHome.hecho = true;
   const rap = rapidasHTML();
-
   $('#view').innerHTML =
-    '<section class="v5-hero'+(dibuja?' anima':'')+'">'
+    '<section class="v5-hero v6-hero'+(dibuja?' anima':'')+'">'
     + '<div class="v5-hero-txt">'
     + '<span class="v5-eyebrow">VGI Digital: Valoración Geriátrica Integral</span>'
     + '<h2>Cinco ejes,<br><em>una sola valoración.</em></h2>'
-    + '<p>Busca una escala concreta, recorre los dominios de la valoración o retoma los instrumentos que ya usas.</p>'
-    + '<button class="v5-buscar" data-act="gosearch">'+ICO.buscar+'<span>Buscar entre las '+nEsc+' escalas</span><kbd>/</kbd></button>'
-    + '<dl class="v5-cifras">'
-    + '<div><dt>Escalas</dt><dd data-cuenta="'+nEsc+'">'+nEsc+'</dd></div>'
-    + '<div><dt>Ítems</dt><dd data-cuenta="'+nIt+'">'+nIt+'</dd></div>'
-    + '<div><dt>Ejes</dt><dd data-cuenta="'+EJES.length+'">'+EJES.length+'</dd></div>'
-    + '<div><dt>Herramientas</dt><dd data-cuenta="3">3</dd></div>'
-    + '</dl></div>'
+    + '</div>'
     + '<div class="v5-hero-viz">'+ruedaHTML()+'</div>'
+    + '<label class="v6-buscar">'+ICO.buscar
+    + '<input id="v6q" type="search" placeholder="Buscar entre las '+nEsc+' escalas" autocomplete="off" enterkeyhint="search" aria-label="Buscar una escala">'
+    + '<kbd>/</kbd></label>'
     + '</section>'
-    + (rap ? '<section class="v5-sec v5-sec-rap">'+rap+'</section>' : '')
-    + '<section class="v5-sec">'
-    + '<div class="v5-sec-cab"><span class="v5-eyebrow">Recorrido por ejes</span><h2>Módulos de la valoración</h2>'
-    + '<p>Cada eje se recorre por grupos, en el orden de la biblioteca. Despliega un grupo para ver sus instrumentos y abrir uno directamente.</p></div>'
-    + '<div class="v5-mods">'+EJES.map(moduloHTML).join('')+'</div>'
+    + (rap ? '<section class="v6-sec v6-sec-rap">'+rap+'</section>' : '')
+    + '<section class="v6-sec">'
+    + '<h2 class="v6-tit">Escalas por eje</h2>'
+    + '<div class="v6-ejes">'+EJES.map(fichaEje).join('')+'</div>'
     + '</section>'
-    + '<section class="v5-sec">'
-    + '<div class="v5-sec-cab"><span class="v5-eyebrow">Durante la valoración</span><h2>Herramientas</h2></div>'
-    + '<div class="v5-herr">'
-    + '<button class="v5-h v5-h-vgi" data-tab="vgi">'
-    + '<span class="v5-h-viz" aria-hidden="true"><svg viewBox="0 0 120 64"><rect x="6" y="8" width="30" height="20" rx="5"/><rect x="45" y="8" width="30" height="20" rx="5"/><rect x="84" y="8" width="30" height="20" rx="5"/><rect x="6" y="36" width="30" height="20" rx="5"/><rect x="45" y="36" width="30" height="20" rx="5"/></svg></span>'
-    + '<span class="v5-h-tit">Resumen VGI'+(nVGI?'<span class="v5-badge">'+nVGI+'</span>':'')+'</span>'
-    + '<span class="v5-h-txt">Reúne los resultados de esta valoración y cópialos a la historia clínica.</span>'
-    + resumenVivo()
-    + '<span class="v5-h-ir">'+ICO.flecha+'</span></button>'
-    + '<button class="v5-h v5-h-opi" data-open="opioides">'
-    + '<span class="v5-h-viz" aria-hidden="true"><svg viewBox="0 0 120 64"><path d="M14 22h80M94 22l-12-10M94 22l-12 10"/><path d="M106 44H26M26 44l12-10M26 44l12 10"/></svg></span>'
-    + '<span class="v5-h-tit">Conversor de opioides</span>'
-    + '<span class="v5-h-txt">Dosis equianalgésicas, reducción por tolerancia cruzada incompleta y rescates.</span>'
-    + '<span class="v5-h-ir">'+ICO.flecha+'</span></button>'
-    + '<button class="v5-h v5-h-tray" data-tab="tray">'
-    + '<span class="v5-h-viz" aria-hidden="true"><svg viewBox="0 0 120 64"><line class="v5-h-base" x1="4" y1="14" x2="116" y2="14"/><line class="v5-h-cae" pathLength="1" x1="10" y1="14" x2="60" y2="50"/><line class="v5-h-sube" pathLength="1" x1="60" y1="50" x2="110" y2="24"/><circle cx="10" cy="14" r="4.5"/><circle cx="60" cy="50" r="4.5"/><circle cx="110" cy="24" r="4.5"/></svg></span>'
-    + '<span class="v5-h-tit">Trayectoria</span>'
-    + '<span class="v5-h-txt">Compare mediciones en el tiempo: pérdida y recuperación en el hospital, declinación o ganancia en la consulta.</span>'
-    + '<span class="v5-h-ir">'+ICO.flecha+'</span></button>'
-    + '</div></section>'
+    + '<section class="v6-sec">'
+    + '<h2 class="v6-tit">Herramienta</h2>'
+    + '<button class="v6-conv" data-open="opioides" style="--eje:var(--paliativo)">'
+    + '<span class="v6-conv-viz" aria-hidden="true"><svg viewBox="0 0 120 64"><path d="M14 22h80M94 22l-12-10M94 22l-12 10"/><path d="M106 44H26M26 44l12-10M26 44l12 10"/></svg></span>'
+    + '<span class="v6-conv-txt"><b>Conversor de opioides</b><span>Dosis equianalgésicas, tolerancia cruzada incompleta y rescates</span></span>'
+    + '<span class="v6-conv-ir">'+ICO.flecha+'</span></button>'
+    + '</section>'
     + '<footer class="v5-pie">'
     + '<span>'+ICO.candado+'Datos procesados localmente en este dispositivo</span>'
     + '<span>Basada en "Abordaje geriátrico integral: escalas de uso frecuente en geriatría" (Editorial PUJ, 2024)</span>'
     + '<button data-act="about">Acerca de VGI Digital</button>'
     + '</footer>';
-
-  contar($('#view'));
 };
+
+/* El buscador del Inicio lleva directo a los resultados de toda la biblioteca. */
+document.addEventListener('input', e=>{
+  if(!e.target || e.target.id!=='v6q') return;
+  const v = e.target.value;
+  state = {...state, view:'list', id:null, dom:null, q:v, showResult:false};
+  render();
+  const q = document.getElementById('q');
+  if(q){ q.focus(); try{ q.setSelectionRange(v.length, v.length); }catch(_){} }
+});
 
 /* La rueda responde al puntero y al teclado: el rótulo central nombra el eje. */
 function rotulo(arco){
@@ -213,7 +151,7 @@ document.addEventListener('keydown', e=>{
   /* Atajo "/" para buscar desde cualquier vista sin campo activo. */
   if(e.key==='/' && !/input|textarea|select/i.test((e.target.tagName||'')) && state.view!=='scale'){
     e.preventDefault();
-    const qi = document.getElementById('q');
+    const qi = document.getElementById('q') || document.getElementById('v6q');
     if(qi){ qi.focus(); return; }
     state = {...state, view:'list', id:null, dom:null, q:'', showResult:false}; render();
     const q2 = document.getElementById('q'); if(q2) q2.focus();
@@ -284,57 +222,68 @@ function filtrosHTML(){
     + '</div>';
 }
 
-function indiceHTML(){
-  return '<nav class="v5-indice" aria-label="Grupos del eje">'
-    + ORDER[state.eje].map((g,i)=>'<button data-v5="ir" data-i="'+i+'"><span>'+(i+1)+'</span>'+esc(g.g)+'</button>').join('')
-    + '</nav>';
+const TIPO_NOMBRE = {sumativa:'Sumativas', algoritmica:'Algorítmicas', complementaria:'Complementarias'};
+function filtroPlegado(){
+  const activo = V5.tipo!=='todas';
+  return '<details class="v6-filtro"'+(V5.filtroAbierto||activo?' open':'')+'>'
+    + '<summary><span>Filtrar por tipo</span><b class="v6-filtro-act">'+(activo?TIPO_NOMBRE[V5.tipo]:'')+'</b>'+ICO.chev+'</summary>'
+    + filtrosHTML()
+    + '</details>';
 }
 
 renderList = function(){
-  if(V5.ejePrev!==state.eje){ V5.tipo='todas'; V5.ejePrev=state.eje; }
+  if(V5.ejePrev!==state.eje){ V5.tipo='todas'; V5.ejePrev=state.eje; V5.filtroAbierto=false; }
   const e = ejeInfo(state.eje);
-  const k = EJES.indexOf(e);
   const ids = idsEje(state.eje);
   $('#view').innerHTML =
-    '<section class="v5-banda" style="--eje:var(--'+e.id+')">'
-    + '<span class="v5-banda-ico" aria-hidden="true">'+tabIcon(e.id)+'</span>'
-    + '<span class="v5-eyebrow">Eje '+NUM[k]+' de '+NUM[EJES.length-1]+'</span>'
-    + '<h2>'+esc(ejeNombre(e))+'</h2>'
+    '<nav class="v6-chips" aria-label="Cambiar de eje">'
+    + EJES.map(x=>'<button data-tab="'+x.id+'" style="--eje:var(--'+x.id+')" aria-current="'+(x.id===e.id)+'">'
+        + tabIcon(x.id)+'<span>'+esc(x.label)+'</span></button>').join('')
+    + '</nav>'
+    + '<section class="v6-banda" style="--eje:var(--'+e.id+')">'
+    + '<span class="v6-banda-ico" aria-hidden="true">'+tabIcon(e.id)+'</span>'
     + '<p>'+esc(EJE_INTRO[e.id])+'</p>'
-    + '<div class="v5-banda-cifras">'
-    + '<span><b>'+ids.length+'</b> instrumentos</span>'
-    + '<span><b>'+ORDER[e.id].length+'</b> grupos</span>'
-    + '<span><b>'+nItems(ids)+'</b> ítems</span>'
-    + '</div>'
-    + '<div class="v5-banda-ejes" aria-label="Cambiar de eje">'
-    + EJES.map((x,j)=>'<button data-tab="'+x.id+'" style="--eje:var(--'+x.id+')" aria-current="'+(x.id===e.id)+'" title="'+esc(ejeNombre(x))+'">'+NUM[j]+'</button>').join('')
-    + '</div></section>'
-    + '<div class="v5-barra">'
+    + '<span class="v6-banda-n">'+ids.length+' instrumentos · '+ORDER[e.id].length+' grupos</span>'
+    + '</section>'
+    + '<div class="v5-barra v6-barra">'
     + '<div class="search">'+ICO.buscar
-    + '<input id="q" type="search" placeholder="Buscar en las '+ALL_IDS.filter(esEscala).length+' escalas" value="'+esc(state.q)+'" autocomplete="off">'
+    + '<input id="q" type="search" placeholder="Buscar en las '+ALL_IDS.filter(esEscala).length+' escalas" value="'+esc(state.q)+'" autocomplete="off" enterkeyhint="search">'
     + (state.q?'<button class="clr" data-act="clearq" aria-label="Limpiar">&times;</button>':'')
     + '</div>'
-    + (state.q ? '' : filtrosHTML())
+    + (state.q ? '' : filtroPlegado())
     + '</div>'
-    + (state.q ? '' : rapidasHTML() + indiceHTML())
     + '<div id="list">'+listInner()+'</div>';
 };
 
-/* ---------- Navegación: misma estructura, con cifras por eje ---------- */
-const renderTabsBase = renderTabs;
+const ICO_ESCALAS = '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="4.5" height="16" rx="1"/><rect x="10" y="4" width="4.5" height="16" rx="1"/><path d="m16.2 5.3 3.4-.9 3 14.9-3.4.8z"/></svg>';
+
+/* ---------- Navegación: cuatro destinos (2.17.0) ----------
+ * Inicio, Escalas, Resumen y Trayectoria. Escalas abre el último eje usado;
+ * en escritorio la barra lateral muestra los cinco ejes con su nombre. */
 renderTabs = function(){
-  renderTabsBase();
-  const tabs = $('#tabs');
-  const marca = tabs.querySelector('.nav-brand small');
-  if(marca && VERSION) marca.textContent = 'Versión '+VERSION;
-  EJES.forEach((e,k)=>{
-    const b = tabs.querySelector('button[data-tab="'+e.id+'"]');
-    if(b && !b.querySelector('.v5-tab-n')){
-      const s = document.createElement('span');
-      s.className = 'v5-tab-n'; s.textContent = idsEje(e.id).length;
-      b.appendChild(s);
-    }
-  });
+  const n = Object.keys(VGI).length;
+  const nPrev = renderTabs.n; renderTabs.n = n;
+  const enEscalas = ['list','scale','tool'].indexOf(state.view)>=0;
+  const cur = c => c ? ' aria-current="true"' : '';
+  const nEsc = ALL_IDS.filter(esEscala).length;
+  $('#tabs').innerHTML =
+    '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>'+(VERSION?'Versión '+VERSION:'')+'</small></div></div>'
+    + '<button class="tab-inicio v6-tab" data-tab="inicio" style="--tab:var(--marca-agua)"'+cur(state.view==='home')+'>'
+    + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext">Inicio</span></button>'
+    + '<button class="v6-tab v6-escalas" data-tab="'+state.eje+'" style="--tab:var(--'+state.eje+')"'+cur(enEscalas)+' aria-label="Escalas">'
+    + '<span class="mark"></span>'+ICO_ESCALAS+'<span class="tabtext">Escalas</span></button>'
+    + '<div class="nav-label v6-sub-tit">Escalas por eje</div>'
+    + EJES.map(e=>'<button class="v6-tab v6-sub" data-tab="'+e.id+'" style="--tab:var(--'+e.id+')"'+cur(enEscalas && state.eje===e.id)+' aria-label="Eje '+esc(ejeNombre(e))+'">'
+        + '<span class="mark"></span>'+tabIcon(e.id)+'<span class="tabtext">'+esc(e.label)+'</span><span class="v5-tab-n">'+idsEje(e.id).length+'</span></button>').join('')
+    + '<div class="nav-divider"></div>'
+    + '<button class="vgi-tab v6-tab" data-tab="vgi" style="--tab:var(--ink)"'+cur(state.view==='vgi')+' aria-label="Resumen de la valoración">'
+    + '<span class="mark"></span>'+tabIcon('vgi')+'<span class="tabtext">Resumen</span>'+(n?'<span class="nav-count">'+n+'</span>':'')+'</button>'
+    + '<button class="tray-tab v6-tab" data-tab="tray" style="--tab:var(--marca-verde)"'+cur(state.view==='tray')+' aria-label="Trayectoria: comparar mediciones en el tiempo">'
+    + '<span class="mark"></span>'+tabIcon('tray')+'<span class="tabtext">Trayectoria</span></button>'
+    + '<div class="nav-foot">'+nEsc+' escalas · 1 conversor · 1 comparador<br><span>Datos procesados localmente</span></div>';
+  if(nPrev!==undefined && n>nPrev && !MOV_REDUCIDO){
+    const c = document.querySelector('#tabs .nav-count'); if(c) c.classList.add('bump');
+  }
 };
 
 /* ---------- Ficha: rótulos de tipo y mapa de ítems ---------- */
@@ -455,42 +404,62 @@ renderTray = function(){
 };
 
 const renderBaseV5 = render;
+/* ---------- Encabezado: un solo título; Inicio ya está en la barra ---------- */
+const renderTopV5 = renderTop;
+renderTop = function(){
+  renderTopV5();
+  const t = $('#topbar');
+  t.querySelectorAll('[data-act="home"]').forEach(b=>b.remove());
+  const ceja = t.querySelector('.eyebrow'), h1 = t.querySelector('h1');
+  if(state.view==='list' && h1){
+    if(ceja) ceja.textContent = 'Escalas';
+    h1.textContent = ejeNombre(ejeInfo(state.eje));
+  }
+  if(state.view==='vgi' && ceja) ceja.textContent = 'Esta valoración';
+};
+
+/* El buscador del Inicio lleva directo a los resultados de toda la biblioteca. */
+document.addEventListener('input', e=>{
+  if(!e.target || e.target.id!=='v6q') return;
+  const v = e.target.value;
+  state = {...state, view:'list', id:null, dom:null, q:v, showResult:false};
+  render();
+  const q = document.getElementById('q');
+  if(q){ q.focus(); try{ q.setSelectionRange(v.length, v.length); }catch(_){} }
+});
+
+/* Alturas reales del encabezado y de los chips, para que los grupos queden
+   pegados justo debajo al desplazarse. */
+function medirPegajosos(){
+  const raiz = document.documentElement.style;
+  const t = document.getElementById('topbar');
+  const ch = document.querySelector('.v6-chips');
+  const alto = el => el && getComputedStyle(el).display!=='none' ? el.getBoundingClientRect().height : 0;
+  raiz.setProperty('--v6-top', alto(t)+'px');
+  raiz.setProperty('--v6-chips', alto(ch)+'px');
+}
 render = function(){
   if(state.view!=='tray') V5.trayVisto = null;
   renderBaseV5();
+  medirPegajosos();
 };
+window.addEventListener('resize', medirPegajosos, {passive:true});
 
 /* ---------- Acciones propias de la capa ---------- */
 document.addEventListener('click', e=>{
+  /* El filtro por tipo recuerda si quedó abierto al cambiar la lista. */
+  const sum = e.target.closest && e.target.closest('.v6-filtro summary');
+  if(sum){ V5.filtroAbierto = !sum.parentElement.open; return; }
   const b = e.target.closest('[data-v5]');
   if(!b) return;
   const a = b.dataset.v5;
-  if(a==='paso'){
-    const eje = b.dataset.eje, i = +b.dataset.i;
-    V5.abiertos[eje] = V5.abiertos[eje]===i ? undefined : i;
-    const mod = b.closest('.v5-mod');
-    mod.querySelectorAll('.v5-paso').forEach((li,j)=>{
-      const ab = V5.abiertos[eje]===j;
-      li.classList.toggle('abierto', ab);
-      li.querySelector('.v5-paso-btn').setAttribute('aria-expanded', ab);
-    });
-  }
   if(a==='tipo'){
     V5.tipo = b.dataset.tipo;
     document.querySelectorAll('.v5-filtros button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    const act = document.querySelector('.v6-filtro-act');
+    if(act) act.textContent = V5.tipo==='todas' ? '' : TIPO_NOMBRE[V5.tipo];
     const box = document.getElementById('list');
     if(box){ box.innerHTML = listInner(); animarLista(); }
-  }
-  if(a==='ir'){
-    const g = document.getElementById('v5g'+b.dataset.i);
-    if(g){
-      const y = g.getBoundingClientRect().top + window.scrollY - 110;
-      window.scrollTo({top:y, behavior: MOV_REDUCIDO ? 'instant' : 'smooth'});
-    } else if(V5.tipo!=='todas'){
-      V5.tipo='todas'; render();
-      const g2 = document.getElementById('v5g'+b.dataset.i);
-      if(g2) window.scrollTo({top:g2.getBoundingClientRect().top + window.scrollY - 110});
-    }
   }
   if(a==='item'){
     const it = document.getElementById('it'+b.dataset.i);
@@ -501,6 +470,6 @@ document.addEventListener('click', e=>{
   }
 });
 
-document.documentElement.classList.add('v5');
+document.documentElement.classList.add('v5','v6');
 render();
 })();
