@@ -13,7 +13,8 @@
 //     las reglas de precedencia y la columna del PAI;
 //  3) el texto para la historia clínica: siempre las recomendadas y las
 //     contraindicadas, el resto solo si se marcó un estado, sin rayas;
-//  4) recorrido: la entrada en el eje clínico y en la búsqueda, los datos
+//  4) recorrido: el destino "Vacunas" en la barra (debajo de Resumen), la
+//     búsqueda, que no quede como grupo del eje clínico, los datos
 //     tomados del resumen de la VGI, la lista de chequeo, el bloque añadido al
 //     resumen, y ningún dato escrito en el almacenamiento del dispositivo;
 //  5) que las 48 fichas de escalas no cambian, y la carga sin errores.
@@ -150,10 +151,19 @@ await page.evaluate(() => {
   state = { ...state, view: 'list', eje: 'clinico', id: null, q: '', dom: null, showResult: false }; render();
 });
 out.casos++;
-if (!(await page.$('#list [data-vac="abrir"]'))) out.fallos.push('Recorrido: el eje clínico no muestra la entrada de Vacunación');
-await page.click('#list [data-vac="abrir"]');
+if (await page.$('#list [data-vac="abrir"]')) out.fallos.push('Recorrido: la vacunación aparece como grupo del eje clínico; debe estar en la barra');
+const orden = await page.evaluate(() => [...document.querySelectorAll('#tabs > button')].map(b => b.classList.contains('vac-tab') ? 'vacunas' : b.classList.contains('vgi-tab') ? 'resumen' : b.classList.contains('tray-tab') ? 'trayectoria' : 'otro'));
+out.casos++;
+if (orden.indexOf('vacunas') !== orden.indexOf('resumen') + 1) out.fallos.push('Recorrido: el botón Vacunas no está justo debajo de Resumen: ' + JSON.stringify(orden));
+const visible = await page.evaluate(() => { const b = document.querySelector('#tabs .vac-tab'); if (!b) return false; const r = b.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.right <= innerWidth + 1; });
+out.casos++;
+if (!visible) out.fallos.push('Recorrido: el botón Vacunas no se ve en la barra del celular');
+await page.click('#tabs .vac-tab');
 out.casos++;
 const vista = await page.evaluate(() => state.view);
+const actual = await page.evaluate(() => (document.querySelector('#tabs .vac-tab') || {}).getAttribute?.('aria-current'));
+out.casos++;
+if (actual !== 'true') out.fallos.push('Recorrido: el botón Vacunas no queda marcado como destino actual');
 if (vista !== 'vac') out.fallos.push(`Recorrido: la entrada abre la vista ${vista} y no la de Vacunación`);
 const pre = await page.evaluate(() => ['barthel', 'cfs', 'mnasf'].map(k => (document.querySelector(`[data-vac="campo"][data-k="${k}"]`) || {}).value));
 out.casos++;

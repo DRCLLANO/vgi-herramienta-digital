@@ -5,8 +5,9 @@ Transcrito del historial que la propia aplicación muestra en su sección
 
 ## 2.18.0
 
-Función nueva en el eje clínico: Promoción y prevención, vacunación del adulto
-mayor. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el
+Función nueva: Vacunas (promoción y prevención), vacunación del adulto mayor,
+con destino propio en la barra de navegación, debajo de Resumen (en el celular,
+quinto botón de la barra). Ninguna escala, puntaje, punto de corte ni interpretación cambia; el
 conversor y la Trayectoria no cambian. Las 48 fichas de escalas siguen siendo
 las mismas: la vacunación es una herramienta, no una escala.
 
@@ -51,6 +52,9 @@ las mismas: la vacunación es una herramienta, no una escala.
 - Acerca de: acordeón con las fuentes de la vacunación y, en Derechos y
   permisos, los tres orígenes del contenido (manual, desarrollo propio del
   autor con asistencia de IA y consenso de la ACMI).
+- Ubicación: por decisión del autor, la función no está dentro de un eje sino
+  en la barra, para que se vea como función propia; en la biblioteca aparece
+  solo en los resultados de búsqueda ("vacuna", "influenza", "neumococo"...).
 - Archivos nuevos: vacunacion.js y vacunacion.css, y la prueba
   verificacion/verificar-vacunacion.mjs, que comprueba los 20 casos aprobados
   por el autor, los bordes de cada punto de corte, las reglas de precedencia, el

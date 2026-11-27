@@ -50,3 +50,21 @@
   .vac-cab{flex-direction:column;}
   .vac-fila{padding:14px 14px 12px;}
 }
+
+/* Quinto destino de la barra en pantallas medianas y pequeñas. */
+@media (max-width:959px){
+  nav.tabs{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+  nav.tabs .v6-tab .tabtext{font-size:10.5px;}
+}
+/* Cabecera y ancho como las demás vistas de la barra (Resumen, Trayectoria). */
+body[data-view="vac"] main{max-width:1040px;}
+@media (max-width:959px){
+  body[data-view="vac"] header.top::before{
+    content:"";flex:none;align-self:center;width:30px;height:30px;
+    background:url("icon-192.png") center/contain no-repeat;
+  }
+}
+@media (max-width:365px){
+  body[data-view="vac"] header.top::before{width:25px;height:25px;}
+}
+.vac-form > .calc .field{max-width:240px;}

@@ -9,7 +9,7 @@ Valoración Geriátrica Integral (VGI), organizadas según los cuatro ejes de la
 evaluación (clínico, funcional, mental y social) más una sección de paliativos
 y pronóstico.
 
-**Versión 2.18.0** · 47 escalas, un conversor de dosis equianalgésicas de opioides y, desde la 2.15.0, la función Trayectoria para comparar mediciones en el tiempo (hospitalización y seguimiento ambulatorio). Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI y, desde la 2.18.0, la sección de promoción y prevención con la vacunación del adulto mayor, basada en el Consenso Colombiano de Vacunación en el Adulto 2026 (ACMI).
+**Versión 2.18.0** · 47 escalas, un conversor de dosis equianalgésicas de opioides y, desde la 2.15.0, la función Trayectoria para comparar mediciones en el tiempo (hospitalización y seguimiento ambulatorio). Desde la versión 2.11.0 el eje clínico incluye las secciones de valoración prequirúrgica y de futilidad en TAVI y, desde la 2.18.0, la aplicación tiene la función Vacunas (promoción y prevención), con destino propio en la barra de navegación, para la vacunación del adulto mayor según el Consenso Colombiano de Vacunación en el Adulto 2026 (ACMI).
 
 ## Abrir la herramienta
 

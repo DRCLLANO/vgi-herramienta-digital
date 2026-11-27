@@ -97,7 +97,8 @@ node verificacion/verificar-vacunacion.mjs index.html > resultado-vacunacion.jso
    reglas de precedencia; la columna del PAI.
 3. **Texto para la historia.** Siempre las recomendadas y las contraindicadas,
    el resto solo con estado marcado; sin rayas ni comillas tipográficas.
-4. **Recorrido.** La entrada en el eje clínico y en la búsqueda, los datos
+4. **Recorrido.** El botón Vacunas en la barra, justo debajo de Resumen y
+   visible en el celular; la búsqueda; que no quede como grupo del eje clínico; los datos
    tomados del resumen de la VGI, la lista de chequeo, el bloque en el resumen y
    ningún dato escrito en el almacenamiento del dispositivo.
 5. **Inventario.** Las 48 fichas de escalas no cambian.

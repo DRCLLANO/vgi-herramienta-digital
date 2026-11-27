@@ -2,6 +2,8 @@
  * VGI Digital · vacunacion.js: Promoción y prevención, vacunación del adulto
  * mayor (desde la 2.18.0).
  *
+ * Destino propio en la barra de navegación ("Vacunas", debajo de Resumen).
+ *
  * Fuente principal: Consenso Colombiano de Vacunación en el Adulto 2026 de la
  * Asociación Colombiana de Medicina Interna (ACMI), Parte 1 (adulto general y
  * adulto mayor) y Parte 2 (adultos con condiciones crónicas). Acta Med Colomb.
@@ -520,7 +522,7 @@ renderBase = function(){
   if(state.view!=='vac') return renderBaseVac();
   setEjeColor('clinico');
   document.body.dataset.view = 'vac';
-  document.body.dataset.eje = 'clinico';
+  document.body.dataset.eje = 'vac';
   renderTop(); renderTabs();
   renderVac();
   renderScorebar(); renderSpine();
@@ -531,20 +533,30 @@ renderBase = function(){
 const renderTopVac = renderTop;
 renderTop = function(){
   if(state.view!=='vac') return renderTopVac();
-  $('#topbar').innerHTML = '<button class="back" data-act="back"><svg viewBox="0 0 9 15" fill="none"><path d="M8 1L1.5 7.5L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Escalas</button>'
-    + '<div style="flex:1;text-align:right;padding-right:4px"><span class="eyebrow">Promoción y prevención</span></div>';
+  $('#topbar').innerHTML = '<div style="flex:1">'
+    + '<span class="eyebrow" style="color:var(--ink-2)">Promoción y prevención</span>'
+    + '<h1>Vacunas</h1></div>'
+    + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
 };
 
+/* Destino propio en la barra de navegación (decisión del autor, 27-nov-2026):
+   "Vacunas", debajo de Resumen en escritorio y como quinto botón en el
+   celular, para que la función no quede escondida dentro de un eje. */
+const ICO_TAB = '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17.5 3.5 3 3"/><path d="m19 5-3.5 3.5"/><path d="M16.5 7.5 7.8 16.2a1.8 1.8 0 0 1-2.5 0l-1-1a1.8 1.8 0 0 1 0-2.5L13 4"/><path d="m11 6 7 7"/><path d="m8.5 10.5 2 2M6.5 12.5l2 2"/><path d="m4.8 19.2-1.3 1.3"/></svg>';
 const renderTabsVac = renderTabs;
 renderTabs = function(){
   renderTabsVac();
-  if(state.view!=='vac') return;
-  const t = document.querySelector('#tabs .v6-escalas'); if(t) t.setAttribute('aria-current','true');
-  const s = document.querySelector('#tabs .v6-sub[data-tab="clinico"]'); if(s) s.setAttribute('aria-current','true');
+  const res = document.querySelector('#tabs .vgi-tab');
+  if(!res || document.querySelector('#tabs .vac-tab')) return;
+  res.insertAdjacentHTML('afterend',
+    '<button class="vac-tab v6-tab" data-vac="abrir" style="--tab:var(--clinico)"'+(state.view==='vac'?' aria-current="true"':'')+' aria-label="Vacunas: vacunación del adulto mayor">'
+    + '<span class="mark"></span>'+ICO_TAB+'<span class="tabtext">Vacunas</span></button>');
 };
+const profundidadVac = profundidad;
+profundidad = function(v, r){ return v==='vac' ? 0 : profundidadVac(v, r); };
 
-/* Entrada en el eje clínico: grupo "Promoción y prevención" al final de la
-   lista, y en los resultados de búsqueda cuando la consulta lo nombra. */
+/* La sección tiene su destino en la barra; en la biblioteca aparece solo en
+   los resultados de búsqueda cuando la consulta la nombra. */
 function tarjetaHTML(){
   return '<button class="card v5-card vac-card" data-vac="abrir" style="--eje:var(--clinico)">'
     + '<span class="v5-card-top"><span class="dom">Promoción y prevención</span></span>'
@@ -561,11 +573,7 @@ listInner = function(){
     const card = '<div class="grp v5-grp-res">Herramienta</div>'+tarjetaHTML();
     return /class="empty"/.test(html) ? card : html + card;
   }
-  if(state.eje!=='clinico') return html;
-  const filtro = document.querySelector('.v5-filtros button[aria-pressed="true"]');
-  if(filtro && filtro.dataset.tipo!=='todas') return html;
-  const i = ORDER.clinico.length;
-  return html + '<div class="grp v5-grp" id="v5g'+i+'"><span class="v5-grp-n">'+(i+1)+'</span><span class="v5-grp-t">Promoción y prevención</span><span class="n">1</span></div>' + tarjetaHTML();
+  return html;
 };
 
 /* El resumen de la VGI incluye el bloque de vacunación completo. */
@@ -621,4 +629,8 @@ document.addEventListener('input', e=>{
 /* Interfaz para las pruebas automáticas (verificacion/verificar-vacunacion.mjs). */
 window.VACUNAS = {evaluar, texto, derivados, leerVGI, abrir, CONDICIONES, NEUMO_PREVIA, ESTADOS, CAT,
   get estado(){ return VAC; }, set estado(v){ VAC = v; }, nuevo};
+
+/* ui-v5.js pinta la barra antes de que cargue este archivo: se vuelve a pintar
+   para que el botón Vacunas aparezca desde la primera pantalla. */
+renderTabs();
 })();
