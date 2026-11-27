@@ -3,6 +3,59 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.18.0
+
+Función nueva en el eje clínico: Promoción y prevención, vacunación del adulto
+mayor. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el
+conversor y la Trayectoria no cambian. Las 48 fichas de escalas siguen siendo
+las mismas: la vacunación es una herramienta, no una escala.
+
+- Fuente: Consenso Colombiano de Vacunación en el Adulto 2026 de la Asociación
+  Colombiana de Medicina Interna (ACMI), Parte 1 (adulto general y adulto
+  mayor) y Parte 2 (adultos con condiciones crónicas), cotejadas con los PDF
+  oficiales. Cada recomendación cita la parte y la afirmación Delphi o la tabla
+  de la que sale. El contenido se cotejó además con el CDC, la OMS, la OPS y el
+  calendario de adultos de España 2026; donde difieren, se mantuvo el consenso
+  colombiano por decisión del autor.
+- Según la edad (60 a 74 o 75 años o más) y las condiciones marcadas, cada
+  vacuna (influenza, COVID-19, neumococo, herpes zóster, Td/Tdap, VSR,
+  hepatitis B y A, fiebre amarilla y dengue) sale como "Se recomienda", "Puede
+  considerarse", "Individualizar", "Contraindicada", "No indicada" o "Esquema
+  completo", con su esquema, sus motivos y su situación en el PAI.
+- Reglas de precedencia: con una condición crónica manda la Parte 2 para esa
+  condición (af. 4); entre condiciones, la recomendación más fuerte, con todos
+  los motivos; "Contraindicada" siempre gana. Las vacunas vivas (fiebre
+  amarilla y dengue) se contraindican solas con biológicos, quimioterapia,
+  inmunocompromiso moderado o grave o trasplante.
+- Criterios del autor, señalados como tales en la aplicación: fragilidad con
+  fenotipo de Fried de 3 o más o CFS de 6 o más; dependencia funcional con
+  Barthel de 60 o menos (de 65 a 95, individualizar); malnutrición con MNA-SF
+  de 7 o menos; en inmunosupresión (malnutrición, VIH o cáncer), la pauta de la
+  OMS para la COVID-19 ("al menos una dosis al año, preferiblemente dos
+  separadas seis meses"); y la definición del CDC de los factores de riesgo de
+  la diabetes para el VSR (complicaciones, insulina o iSGLT2).
+- Advertencia en cardiopatía: el consenso sugiere no revacunar contra el VSR,
+  directriz que puede cambiar según la evidencia (af. 17, 79 % de acuerdo).
+- El fenotipo de Fried, la CFS, el Barthel y el MNA-SF se toman del resumen de
+  la VGI cuando ya están registrados; si no, la sección los pide.
+- Neumococo: selector de la vacuna previa (ocho escenarios del consenso) que
+  da el paso siguiente con su intervalo, incluido el acortamiento a 8 semanas
+  en inmunocompromiso.
+- Columna del PAI con fecha de corte (esquema nacional de julio de 2026);
+  revisión anual en abril. Para el neumococo y la Td la aplicación no indica
+  gratuidad.
+- Lista de chequeo con el estado de cada vacuna (sin dato, aplicada, esquema
+  incompleto, indicada y pendiente, no indicada, contraindicada, rechazada),
+  texto para copiar y bloque propio en el resumen de la VGI. Se copian siempre
+  las recomendadas y las contraindicadas; las demás, solo si se marcó un estado.
+- Acerca de: acordeón con las fuentes de la vacunación y, en Derechos y
+  permisos, los tres orígenes del contenido (manual, desarrollo propio del
+  autor con asistencia de IA y consenso de la ACMI).
+- Archivos nuevos: vacunacion.js y vacunacion.css, y la prueba
+  verificacion/verificar-vacunacion.mjs, que comprueba los 20 casos aprobados
+  por el autor, los bordes de cada punto de corte, las reglas de precedencia, el
+  texto para la historia, el recorrido y la privacidad.
+
 ## 2.17.0
 
 Navegación simplificada. Ninguna escala, puntaje, punto de corte ni

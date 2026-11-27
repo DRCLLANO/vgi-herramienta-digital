@@ -24,6 +24,7 @@ proponen rediseños, escalas nuevas ni mejoras que nadie pidió.
 |---|---|
 | `index.html` | Toda la aplicación: metadatos, estilos base, datos de las escalas y lógica |
 | `ui-v3.css`, `ui-motion.css` | Capa visual adaptable y transiciones |
+| `vacunacion.js`, `vacunacion.css` | Sección de vacunación del adulto mayor (desde la 2.18.0): reglas del consenso de la ACMI, lista de chequeo y texto para la VGI; no es una escala |
 | `sw.js` | Service worker: funcionamiento sin conexión; su `CACHE` lleva la versión |
 | `manifest.json`, `icon-*.png`, `vgi-digital-*.png` | Instalación como app e identidad visual |
 | `trazabilidad-instrumentos.csv` | Una fila por ficha: ítems, máximo, tramos y referencias |

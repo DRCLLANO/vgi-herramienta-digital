@@ -1,4 +1,4 @@
-// Ejecuta las cinco pruebas de VGI Digital y resume el resultado.
+// Ejecuta las seis pruebas de VGI Digital y resume el resultado.
 // Uso, desde la raíz del repositorio:  npm test
 // (equivale a: node verificacion/verificar-todo.mjs [carpeta-de-resultados])
 //
@@ -24,7 +24,9 @@ const pruebas = [
   { nombre: 'Integridad y regresiones', script: 'verificar-integridad.mjs',
     args: ['.'], salida: 'resultado-integridad.json' },
   { nombre: 'Trayectoria (clasificación, umbrales de cambio y recorrido)', script: 'verificar-trayectoria.mjs',
-    args: ['index.html'], salida: 'resultado-trayectoria.json' }
+    args: ['index.html'], salida: 'resultado-trayectoria.json' },
+  { nombre: 'Vacunación (20 casos aprobados, bordes, texto y recorrido)', script: 'verificar-vacunacion.mjs',
+    args: ['index.html'], salida: 'resultado-vacunacion.json' }
 ];
 
 const filas = [];

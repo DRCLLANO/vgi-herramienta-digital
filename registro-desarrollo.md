@@ -619,6 +619,24 @@ CAM en el paciente somnoliento o que no colabora motivó la incorporación del
 están marcados como complementarios en la interfaz, para que el usuario no
 atribuya a todo el contenido la misma fuente.
 
+**Vacunación del adulto mayor (2.18.0).** La sección de promoción y
+prevención se diseñó por escrito antes de programarla, en un documento de
+contenido que el autor revisó punto por punto el 27-nov-2026. El asistente
+extrajo las recomendaciones del Consenso Colombiano de Vacunación en el Adulto
+2026 (ACMI), primero de la página web y después de los PDF oficiales de las dos
+partes que aportó el autor; el cotejo con el PDF corrigió cinco filas (escenario
+de PCV13 más PPSV23, definición de obesidad mórbida, alternativa en influenza,
+Td y esquema de hepatitis B). Después se cotejó con el CDC, la OMS, la OPS y el
+calendario de España: donde difieren (intervalo del zóster, dengue en mayores
+de 60), el autor decidió mantener el consenso colombiano. El autor fijó los
+puntos de corte de fragilidad (Fried de 3 o más o CFS de 6 o más), dependencia
+(Barthel de 60 o menos; de 65 a 95, individualizar) y malnutrición (MNA-SF de 7
+o menos), adoptó la pauta de la OMS para la COVID-19 en inmunosupresión y la
+definición del CDC de los factores de riesgo de la diabetes para el VSR,
+resolvió cuatro inconsistencias internas del consenso y aprobó tres reglas de
+precedencia. Los 20 casos con resultado esperado se escribieron y se aprobaron
+antes del código, y la prueba automática se construyó sobre ellos.
+
 ## 10. Limitaciones del proceso
 
 El modelo redactó los textos de interpretación de todos los instrumentos.

@@ -1,0 +1,11 @@
+{
+  "archivo": "index.html",
+  "sha256": "14c8bbfe44533789f9cb24779394703fd7dbb728ae3a17e29de2e79981ef765f",
+  "modulo": "41be679f7f76daf404aa9f5628b071bb2dd9c1bc5616a8f9510635b180e401e0",
+  "version": "2.18.0",
+  "fecha": "2026-11-27T16:46:51.593Z",
+  "casos": 71,
+  "fallos": [],
+  "erroresJS": [],
+  "aprobado": true
+}
