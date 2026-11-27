@@ -14,9 +14,11 @@ autorización de sus editores. Autor único del software: Cristian Camilo Llano
 Ceballos. Uso educativo y de investigación, sin fines comerciales. DOI del
 proyecto: 10.17605/OSF.IO/KMX8H.
 
-**La aplicación está congelada en la 2.13.4 (8-oct-2026).** Solo se cambia por
-petición de los revisores de una revista o por un reporte crítico. No se
-proponen rediseños, escalas nuevas ni mejoras que nadie pidió.
+**La aplicación se cambia solo a petición del autor.** Estuvo congelada en la
+2.13.4 (8-oct-2026); desde la 2.14.0 el autor ha pedido rediseños y funciones
+nuevas (Trayectoria en la 2.15.0, navegación en la 2.16.0 y la 2.17.0, Vacunas
+en la 2.18.0). El asistente no propone por su cuenta rediseños, escalas nuevas
+ni mejoras que nadie pidió.
 
 ## Mapa del repositorio
 
@@ -106,18 +108,36 @@ que ese archivo cambie, la verificación falla.
    las anteriores, y se anotan en `verificacion/LEEME.md`. La prueba de integridad se describe en `verificacion/INTEGRIDAD.md`.
 6. `npm run sumas` regenera `SHA256SUMS.txt`.
 7. El cambio entra por una rama y una solicitud de cambios (pull request); se
-   fusiona en `main` solo con la verificación de GitHub en verde.
+   fusiona en `main` solo con la verificación de GitHub en verde. Lo puede
+   subir el asistente según "Subir cambios a GitHub", más abajo.
 8. Después: release en GitHub, carga en OSF y registration de la versión.
    Para confirmar que OSF quedó igual que GitHub, se descarga y se corre
    `sha256sum -c SHA256SUMS.txt`.
 9. Se actualizan `registro-desarrollo.md` y el expediente de reproducibilidad.
 
+## Subir cambios a GitHub
+
+Desde el 27-nov-2026 el autor autoriza al asistente a subir cambios con esta
+regla: **antes de cada acción que escribe en GitHub, el asistente pide
+confirmación en la conversación y espera un sí expreso del autor.** Con esa
+confirmación puede:
+
+- subir una rama y abrir la solicitud de cambios (pull request);
+- fusionarla en `main`, solo con la verificación de GitHub en verde;
+- crear el release de la versión.
+
+Cada confirmación vale para la acción que se nombró, no para las siguientes.
+Al pedirla, el asistente dice qué va a subir (rama, versión, archivos) y
+muestra el resultado de `npm test`. Nunca empuja directo a `main`, nunca
+fuerza (`push --force`) sobre una rama publicada y nunca pide credenciales. La
+carga en OSF y su registration las hace el autor.
+
 ## Lo que el asistente no hace
 
 - No declara un cambio terminado sin haber corrido `npm test` y mostrado el
   resultado.
-- No sube archivos a GitHub ni pide credenciales: entrega los archivos y el
-  autor los sube.
+- No sube nada a GitHub sin la confirmación expresa del autor para esa acción
+  (ver "Subir cambios a GitHub"), y nunca pide credenciales.
 - No borra archivos sin preguntar (por ejemplo, `MD5SUMS.txt` o las capturas
   de pantalla).
 - No toca la analítica (GoatCounter) ni los metadatos de citación sin que se
