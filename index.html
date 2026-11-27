@@ -60,7 +60,7 @@
   "url": "https://drcllano.github.io/vgi-herramienta-digital/",
   "identifier": "https://doi.org/10.17605/OSF.IO/KMX8H",
   "sameAs": ["https://doi.org/10.17605/OSF.IO/KMX8H", "https://osf.io/kmx8h/"],
-  "softwareVersion": "2.18.0",
+  "softwareVersion": "2.18.1",
   "datePublished": "2026-09-10",
   "dateModified": "2026-11-27",
   "inLanguage": "es",
@@ -3059,7 +3059,7 @@ function renderTabs(){
   const n = Object.keys(VGI).length;
   const nPrev = renderTabs.n; renderTabs.n = n;
   const shortLabel = {clinico:'Clín.', funcional:'Func.', mental:'Mental', social:'Social', paliativo:'Paliat.'};
-  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.18.0</small></div></div>'
+  $('#tabs').innerHTML = '<div class="nav-brand"><img class="brand-logo-mark" src="icon-192.png" width="42" height="42" alt="" aria-hidden="true"><div><strong>VGI Digital</strong><small>Versión 2.18.1</small></div></div>'
     + '<button class="tab-inicio" data-tab="inicio" aria-label="Inicio" style="--tab:var(--marca-agua)" '+(state.view==='home'?'aria-current="true"':'')+'>'
     + '<span class="mark"></span>'+tabIcon('inicio')+'<span class="tabtext"><span class="tab-full">Inicio</span><span class="tab-short">Inicio</span></span></button>'
     + '<div class="nav-label">Dominios de valoración</div>'
@@ -3561,10 +3561,9 @@ function renderAbout(){
   + '</details>'
 
   + '<details class="acc"><summary>Vacunación del adulto mayor</summary>'
-  + '<p>La sección Vacunas (promoción y prevención), en la barra de navegación, resume las recomendaciones del Consenso Colombiano de Vacunación en el Adulto 2026 de la Asociación Colombiana de Medicina Interna (ACMI) para personas de 60 años o más, con y sin condiciones crónicas. Cada recomendación cita la parte y la afirmación del consenso de la que sale. Los puntos de corte de fragilidad, dependencia y malnutrición, y la pauta de COVID-19 en inmunosupresión, son criterios del autor y se señalan como tales. La columna del PAI corresponde al esquema nacional de julio de 2026 y se revisa cada año en abril.</p>'
+  + '<p>La sección Vacunas (promoción y prevención), en la barra de navegación, resume las recomendaciones del Consenso Colombiano de Vacunación en el Adulto 2026 de la Asociación Colombiana de Medicina Interna (ACMI) para personas de 60 años o más, con y sin condiciones crónicas. Cada recomendación cita la parte y la afirmación del consenso de la que sale. Los puntos de corte de fragilidad, dependencia y malnutrición, y la pauta de COVID-19 en inmunosupresión, son criterios del autor y se señalan como tales. Primero muestra, en un menú desplegable, las vacunas indicadas para la edad y el contexto del paciente; después permite registrar cuáles tiene y copiarlas para el resumen.</p>'
   + '<div class="cite">Asociación Colombiana de Medicina Interna. Consenso Colombiano de Vacunación en el Adulto 2026. Parte 1: adulto general, adulto mayor, mujeres embarazadas y escenarios de riesgo de exposición. Acta Med Colomb. 2026;51(2 Supl). DOI 10.36104/amc.2026.5120.</div>'
   + '<div class="cite">Asociación Colombiana de Medicina Interna. Consenso Colombiano de Vacunación en el Adulto 2026. Parte 2: adultos con condiciones crónicas. Acta Med Colomb. 2026;51(2 Supl). DOI 10.36104/amc.2026.5121.</div>'
-  + '<div class="cite">Ministerio de Salud y Protección Social. Esquema de vacunación PAI Colombia, actualización de julio de 2026.</div>'
   + '<div class="cite">Organización Mundial de la Salud. Recomendaciones del SAGE sobre la vacunación contra la COVID-19, marzo de 2026. Centers for Disease Control and Prevention. Adult Immunization Schedule Notes (condiciones de riesgo para el VSR).</div>'
   + '</details>'
 
@@ -3622,7 +3621,7 @@ function renderAbout(){
 
   + '<h3>Cómo citar</h3>'
   + '<p>El identificador permanente de esta herramienta es un DOI, que resuelve al depósito en el Open Science Framework. Es el que debe citarse, no la dirección de la página.</p>'
-  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.18.0) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
+  + '<div class="cite">Llano Ceballos CC. VGI Digital: herramienta digital para la Valoración Geriátrica Integral (versión 2.18.1) [software]. Open Science Framework; 2026. DOI <a href="https://doi.org/10.17605/OSF.IO/KMX8H" target="_blank" rel="noopener noreferrer">10.17605/OSF.IO/KMX8H</a></div>'
   + '<p>Depósito: <a href="https://osf.io/kmx8h/" target="_blank" rel="noopener noreferrer">osf.io/kmx8h</a>. Código fuente: <a href="https://github.com/drcllano/vgi-herramienta-digital" target="_blank" rel="noopener noreferrer">github.com/drcllano/vgi-herramienta-digital</a>, donde el archivo CITATION.cff trae los metadatos de citación en formato legible por gestores bibliográficos.</p>'
 
   + '<h3>Comentarios y sugerencias</h3>'
@@ -3634,6 +3633,7 @@ function renderAbout(){
   + '<p>A la Unidad de Geriatría del Hospital Universitario San Ignacio, y en particular a los doctores Diego Andrés Chavarro Carvajal, Carlos Alberto Cano Gutiérrez y Rodrigo Alberto Heredia Ramírez, por su respaldo a esta herramienta y por el manual que le da su contenido.</p>'
 
   + '<details class="acc"><summary>Historial de versiones</summary>'
+  + '<div class="cite"><strong>2.18.1</strong> · Vacunas, rediseño a petición del autor. En lugar de una lista para llenar, la sección muestra primero, según la edad y el contexto del paciente, un menú desplegable con las vacunas indicadas, las que pueden considerarse según el caso y las contraindicadas, cada una con su esquema y su motivo. Después se registra, con un toque, si el paciente la tiene o no (el año o las dosis son opcionales; en el neumococo, cuál recibió), y el texto para copiar empieza por las vacunas aplicadas. Se retiran las menciones al PAI. Las reglas, los puntos de corte y las recomendaciones no cambian; ninguna escala, puntaje ni interpretación cambia.</div>'
   + '<div class="cite"><strong>2.18.0</strong> · Función nueva: Vacunas (promoción y prevención), con destino propio en la barra de navegación, debajo de Resumen. Según la edad (60 a 74 o 75 años o más) y las condiciones del paciente, indica qué vacunas se recomiendan, cuáles pueden considerarse, cuáles conviene individualizar y cuáles están contraindicadas, cada una con su esquema, el motivo, la afirmación del consenso de la que sale y su situación en el PAI. Fuente: Consenso Colombiano de Vacunación en el Adulto 2026 de la ACMI, Partes 1 y 2. La fragilidad, la dependencia y la malnutrición se toman del resumen de la VGI cuando ya están registradas. Lista de chequeo con el estado de cada vacuna, texto para copiar y bloque propio en el resumen de la VGI. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor y la Trayectoria no cambian.</div>'
   + '<div class="cite"><strong>2.17.0</strong> · Navegación simplificada. La barra tiene cuatro destinos (Inicio, Escalas, Resumen y Trayectoria); Escalas abre el último eje usado y, en pantallas anchas, la barra lateral muestra los cinco ejes con su nombre. Inicio con buscador, favoritas y recientes, una ficha por eje con sus grupos y el conversor de opioides. Biblioteca de cada eje con un solo título, cambio de eje por nombre en el teléfono, filtro por tipo plegado y grupos que quedan visibles al desplazarse; se retiran el índice de grupos, el selector numerado de ejes y las cifras repetidas. En Resumen, el rótulo "Los cuatro ejes" pasa a "Esta valoración". Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor y la Trayectoria no cambian.</div>'
   + '<div class="cite"><strong>2.16.0</strong> · Rediseño de la navegación y de las entradas. Inicio con la rueda de los cinco ejes (cada arco, proporcional a sus instrumentos), cifras que se calculan de los datos de la aplicación y módulos por eje con sus grupos numerados y desplegables. Biblioteca de cada eje con banda de entrada, filtros por tipo de instrumento (sumativas, algorítmicas, complementarias) e índice de grupos. Tarjetas con número de ítems, máximo o tipo. Trayectoria con entrada propia y la gráfica de basal, ingreso y alta de las piezas de difusión. Mapa de ítems en las fichas en pantallas anchas. Capa visual nueva (ui-v5.css y ui-v5.js) que solo cambia la presentación. Ninguna escala, puntaje, punto de corte ni interpretación cambia; el conversor y la Trayectoria no cambian.</div>'
@@ -3683,7 +3683,7 @@ function renderAbout(){
   + '<div class="cite"><strong>1.0</strong> · Nueve escalas basadas en el manual de 2020.</div>'
   + '</details>'
 
-  + '<p class="disclaimer">Versión 2.18.0 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
+  + '<p class="disclaimer">Versión 2.18.1 · '+new Date().getFullYear()+'. Los derechos sobre el manual pertenecen a sus autores y a la Pontificia Universidad Javeriana, cuyos editores autorizaron su uso en esta herramienta. Uso exclusivamente educativo y de investigación, sin finalidad comercial; algunos instrumentos tienen titular de derechos propio (ver NOTICE.md). Código bajo licencia PolyForm Noncommercial 1.0.0.</p>'
   + '</div>';
 }
 

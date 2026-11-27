@@ -10,13 +10,16 @@
 //  2) casos de borde: puntos de corte de fragilidad (Fried 3, CFS 5 y 6),
 //     dependencia (Barthel 60, 65 y 100), malnutrición (MNA-SF 7 y 8), edad
 //     (59, 60, 74 y 75), la advertencia de no revacunar el VSR en cardiopatía,
-//     las reglas de precedencia y la columna del PAI;
-//  3) el texto para la historia clínica: siempre las recomendadas y las
-//     contraindicadas, el resto solo si se marcó un estado, sin rayas;
+//     y las reglas de precedencia;
+//  3) el texto para la historia clínica (desde la 2.18.1): empieza por las
+//     vacunas que el paciente tiene, sigue con las indicadas pendientes o sin
+//     dato, las que pueden considerarse y las contraindicadas, sin rayas;
 //  4) recorrido: el destino "Vacunas" en la barra (debajo de Resumen), la
-//     búsqueda, que no quede como grupo del eje clínico, los datos
-//     tomados del resumen de la VGI, la lista de chequeo, el bloque añadido al
-//     resumen, y ningún dato escrito en el almacenamiento del dispositivo;
+//     búsqueda, que no quede como grupo del eje clínico, los datos tomados del
+//     resumen de la VGI, el menú desplegable de vacunas indicadas, el registro
+//     "La tiene / No la tiene", el bloque añadido al resumen, que no se
+//     mencione el PAI, y ningún dato escrito en el almacenamiento del
+//     dispositivo;
 //  5) que las 48 fichas de escalas no cambian, y la carga sin errores.
 // Termina con código 0 si todo se supera y con 1 si hay fallos.
 import { chromium } from 'playwright';
@@ -121,18 +124,30 @@ const r = await page.evaluate(() => {
   ok('Precedencia: hepatitis B sube a "Se recomienda" con hepatopatía', F(P(65, ['hepatica']), 'hepb').cat, 'rec');
   ok('Neumococo: PCV20 o PCV21 previa da esquema completo', F(P(65, [], { neumo: 'pcv2021' }), 'neumococo').cat, 'completo');
   ok('Esquema especial (VIH, asplenia, trasplante) se avisa', P(65, ['asplenia']).especial, ['asplenia']);
-  ok('Columna PAI: gratuitas influenza, COVID-19 y fiebre amarilla', ['influenza', 'covid', 'fa'].map(id => F(P(65), id).pai.startsWith('Sí')), [true, true, true]);
-  ok('Columna PAI: neumococo y Td sin afirmación de gratuidad', ['neumococo', 'td'].map(id => F(P(65), id).pai.startsWith('Sí')), [false, false]);
+  ok('Sin PAI: ninguna vacuna trae datos del PAI (2.18.1)', P(65).filas.some(f => 'pai' in f || JSON.stringify(f).includes('PAI')), false);
 
-  // ---------- 3) Texto para la historia ----------
-  VACUNAS.estado = { ...VACUNAS.nuevo(), edad: '78', c: { pulmonar: true, trasplante: true }, est: { influenza: { s: 'aplicada', x: '2026' }, hepa: { s: 'rechazada', x: '' } } };
+  // ---------- 3) Texto para la historia (2.18.1) ----------
+  const E0 = VACUNAS.nuevo();
+  VACUNAS.estado = { ...E0, edad: '78', c: { pulmonar: true, trasplante: true }, neumo: 'pcv2021',
+    tiene: { influenza: { v: 'si', x: '2026' }, neumococo: { v: 'si', x: '2024' }, covid: { v: 'no', x: '' } } };
   const t = VACUNAS.texto();
-  ok('Texto: encabezado con la fuente y la edad', /^VACUNACIÓN \(Consenso Colombiano de Vacunación en el Adulto, ACMI 2026; .*\)\. Edad: 78 años\./.test(t), true);
-  ok('Texto: estado marcado con su detalle', t.includes('- Influenza: aplicada (2026).'), true);
-  ok('Texto: recomendada sin dato queda a la vista', t.includes('- COVID-19: sin dato.'), true);
-  ok('Texto: contraindicada siempre aparece', /- Fiebre amarilla: contraindicada/.test(t), true);
-  ok('Texto: "Puede considerarse" solo si se marcó', [t.includes('- Hepatitis A: rechazada.'), t.includes('- Dengue: contraindicada') && !t.includes('Hepatitis B')], [true, true]);
-  ok('Texto: sin rayas ni comillas tipográficas', /[—–“”«»]/.test(t), false);
+  const L = t.split('\n');
+  ok('Texto: encabezado con la fuente y la edad', L[0], 'VACUNACIÓN (Consenso Colombiano de Vacunación en el Adulto, ACMI 2026). Edad: 78 años.');
+  const iApl = L.findIndex(l => l.startsWith('Vacunas aplicadas: '));
+  ok('Texto: las aplicadas van primero, con año y vacuna previa', L[iApl], 'Vacunas aplicadas: influenza (2026); neumococo (PCV20 o PCV21; 2024).');
+  ok('Texto: las aplicadas van antes que cualquier pendiente', iApl >= 0 && iApl < L.findIndex(l => l.startsWith('Indicadas')), true);
+  ok('Texto: la que no tiene queda como pendiente', L.some(l => /^Indicadas, pendientes: .*COVID-19/.test(l)), true);
+  ok('Texto: las indicadas sin registro quedan a la vista', L.some(l => /^Indicadas, sin dato de aplicación: .*herpes zóster/.test(l)), true);
+  ok('Texto: una aplicada no se repite como pendiente', L.filter(l => !l.startsWith('Vacunas aplicadas')).some(l => /influenza|neumococo/.test(l)), false);
+  ok('Texto: contraindicadas', L.some(l => /^Contraindicadas: fiebre amarilla; dengue\.$/.test(l)), true);
+  ok('Texto: sin PAI, sin rayas ni comillas tipográficas', /PAI|[—–“”«»]/.test(t), false);
+  VACUNAS.estado = { ...E0, edad: '70' };
+  ok('Texto: sin registro dice que no hay aplicadas', VACUNAS.texto().includes('Vacunas aplicadas: ninguna registrada.'), true);
+  VACUNAS.estado = { ...E0, edad: '70', tiene: { neumococo: { v: 'no', x: '' } }, neumo: 'pcv2021' };
+  ok('Neumococo: la vacuna previa solo cuenta si se marcó que la tiene', VACUNAS.texto().includes('pendientes: neumococo'), true);
+  VACUNAS.estado = { ...E0, edad: '70', tiene: { neumococo: { v: 'si', x: '' } }, neumo: 'pcv13' };
+  ok('Neumococo con solo PCV13: aplicada y con el paso siguiente', [VACUNAS.texto().includes('Vacunas aplicadas: neumococo (solo PCV13).'),
+    VACUNAS.texto().includes('Esquema por completar: neumococo. PCV20 o PCV21 al menos 1 año después de la PCV13.')], [true, true]);
   VACUNAS.estado = VACUNAS.nuevo();
 
   // ---------- 5) Inventario ----------
@@ -180,12 +195,34 @@ if (!(await page.$('[data-vac="cond"][data-k="neuroResp"]'))) out.fallos.push('R
 const covid = await page.textContent('#vac-covid .vac-dest').catch(() => '');
 out.casos++;
 if (!/al menos una dosis al año, preferiblemente dos separadas seis meses/.test(covid || '')) out.fallos.push('Recorrido: con MNA-SF 6 no aparece la pauta de COVID-19 en inmunosupresión');
-await page.selectOption('select[data-vac="est"][data-id="influenza"]', 'aplicada');
-await page.fill('input[data-vac="estx"][data-id="influenza"]', '2026');
-await page.click('[data-vac="addvgi"]');
+// Menú desplegable: cerrado de entrada, se abre al tocar la vacuna.
+const menu = await page.evaluate(() => ({
+  grupos: [...document.querySelectorAll('#vacres .vac-bloque .grp')].map(g => g.textContent),
+  abiertos: document.querySelectorAll('#vacres details.vac-item[open]').length,
+  items: document.querySelectorAll('#vacres details.vac-item').length }));
+out.casos++;
+if (menu.grupos[0] !== 'Indicadas' || menu.abiertos !== 0 || menu.items < 8) out.fallos.push('Recorrido: el menú de vacunas no es el esperado: ' + JSON.stringify(menu));
+await page.click('#vac-zoster > summary', { timeout: 3000 }).catch(() => {});
+out.casos++;
+if (!(await page.isVisible('#vac-zoster .vac-esq').catch(() => false))) out.fallos.push('Recorrido: al tocar una vacuna no se despliega su esquema');
+// Registro: La tiene, con año; el menú desplegado se conserva.
+await page.click('[data-vac="tiene"][data-id="influenza"][data-v="si"]', { timeout: 3000 }).catch(() => {});
+await page.fill('input[data-vac="tienex"][data-id="influenza"]', '2026', { timeout: 3000 }).catch(() => {});
+await page.click('[data-vac="tiene"][data-id="vsr"][data-v="no"]', { timeout: 3000 }).catch(() => {});
+out.casos++;
+if (!(await page.$eval('#vac-zoster', d => d.open).catch(() => false))) out.fallos.push('Recorrido: al registrar una vacuna se cierra la que estaba desplegada');
+out.casos++;
+if (!(await page.$('#vac-influenza .vac-ya'))) out.fallos.push('Recorrido: el menú no marca la vacuna que el paciente tiene');
+await page.click('[data-vac="tiene"][data-id="neumococo"][data-v="si"]', { timeout: 3000 }).catch(() => {});
+out.casos++;
+if (!(await page.$('select[data-vac="neumo"]'))) out.fallos.push('Recorrido: al marcar el neumococo no se pregunta cuál recibió');
+await page.click('[data-vac="tiene"][data-id="neumococo"][data-v="si"]', { timeout: 3000 }).catch(() => {});
+out.casos++;
+if (await page.$('select[data-vac="neumo"]')) out.fallos.push('Recorrido: un segundo toque no desmarca "La tiene"');
+await page.click('[data-vac="addvgi"]', { timeout: 3000 }).catch(() => {});
 const resumen = await page.evaluate(() => vgiTexto());
 out.casos++;
-if (!/PROMOCIÓN Y PREVENCIÓN/.test(resumen) || !/Influenza: aplicada \(2026\)\./.test(resumen) || !/VSR\): sin dato\./.test(resumen))
+if (!/PROMOCIÓN Y PREVENCIÓN/.test(resumen) || !/Vacunas aplicadas: influenza \(2026\)\./.test(resumen) || !/Indicadas, pendientes: VSR\./.test(resumen))
   out.fallos.push('Recorrido: el resumen de la VGI no trae el bloque de vacunación completo: ' + resumen.slice(0, 300));
 out.casos++;
 if (/[—–]/.test(resumen.split('PROMOCIÓN Y PREVENCIÓN')[1] || '')) out.fallos.push('Recorrido: el bloque de vacunación del resumen tiene rayas');
@@ -199,6 +236,8 @@ await page.evaluate(() => VACUNAS.abrir());
 const textoVista = await page.evaluate(() => document.getElementById('view').innerText);
 out.casos++;
 if (/[—–“”]/.test(textoVista)) out.fallos.push('Recorrido: la vista de Vacunación tiene rayas o comillas tipográficas');
+out.casos++;
+if (/\bPAI\b/.test(textoVista)) out.fallos.push('Recorrido: la vista de Vacunación menciona el PAI');
 const despues = await page.evaluate(() => { try { return Object.keys(localStorage).filter(k => !/^eg_(favs|recientes|tsize)$/.test(k)); } catch (e) { return []; } });
 out.casos++;
 if (despues.length > antes.length) out.fallos.push('Privacidad: la sección escribió en el almacenamiento del dispositivo: ' + despues.join(', '));

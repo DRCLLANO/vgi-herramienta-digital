@@ -16,14 +16,6 @@
 .vac-grupo-edad{margin:6px 0 4px;font-size:14px;color:var(--ink-2);}
 .vac-esp{margin:12px 0;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--alert) 40%,var(--line));background:color-mix(in srgb,var(--alert) 7%,var(--card));font-size:13.5px;line-height:1.45;}
 
-.vac-fila{position:relative;border:1px solid var(--line);border-radius:16px;padding:16px 18px 14px;margin-bottom:12px;background:var(--card);box-shadow:0 3px 12px rgba(16,34,56,.045);}
-.vac-fila::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--muted);}
-.vac-fila.vac-rec::before{background:var(--ok);}
-.vac-fila.vac-con::before,.vac-fila.vac-ind::before{background:var(--warn);}
-.vac-fila.vac-contra::before{background:var(--alert);}
-.vac-fila.vac-noind,.vac-fila.vac-completo{opacity:.92;}
-.vac-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-.vac-cab h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;}
 .vac-cat{flex:none;font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:8px;white-space:nowrap;}
 .vac-t-ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--card));}
 .vac-t-warn{color:color-mix(in srgb,var(--warn) 75%,var(--ink));background:color-mix(in srgb,var(--warn) 14%,var(--card));}
@@ -37,19 +29,12 @@
 .vac-mc{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 6px;border-radius:6px;margin-right:4px;}
 .vac-ref{color:var(--muted);font-size:12px;}
 .vac-esq{margin-top:10px;font-size:13.5px;}
-.vac-esq b,.vac-pai b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.vac-esq b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;}
 .vac-esq ul{margin-top:4px;}
 .vac-nota ul{color:var(--ink-2);}
-.vac-pai{margin-top:10px;font-size:13px;color:var(--ink-2);}
-.vac-est{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
 .vac-generales{color:var(--ink-2);margin:6px 0 4px;}
-.vac-corte{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.45;}
 .vac-fuentes a{color:inherit;}
 .vac-card{text-align:left;}
-@media (max-width:420px){
-  .vac-cab{flex-direction:column;}
-  .vac-fila{padding:14px 14px 12px;}
-}
 
 /* Quinto destino de la barra en pantallas medianas y pequeñas. */
 @media (max-width:959px){
@@ -68,3 +53,37 @@ body[data-view="vac"] main{max-width:1040px;}
   body[data-view="vac"] header.top::before{width:25px;height:25px;}
 }
 .vac-form > .calc .field{max-width:240px;}
+
+/* 2.18.1 · Menú de recomendaciones y registro de las que tiene. */
+.vac-paso-t{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:17px;font-weight:700;letter-spacing:-.01em;}
+.vac-paso-t span{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:8px;font-size:13px;color:#fff;background:var(--clinico);}
+.vac-paso{margin-top:22px;}
+.vac-bloque .grp{margin-top:18px;}
+.vac-ayuda{margin:-4px 0 8px;font-size:12.5px;color:var(--muted);}
+.vac-item{border:1px solid var(--line);border-radius:14px;margin-bottom:8px;background:var(--card);overflow:hidden;}
+.vac-item>summary{display:flex;align-items:center;gap:10px;padding:13px 14px 13px 18px;cursor:pointer;list-style:none;position:relative;min-height:48px;}
+.vac-item>summary::-webkit-details-marker{display:none;}
+.vac-item>summary::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 4px 4px 0;background:var(--muted);}
+.vac-item.vac-rec>summary::before{background:var(--ok);}
+.vac-item.vac-con>summary::before,.vac-item.vac-ind>summary::before{background:var(--warn);}
+.vac-item.vac-contra>summary::before{background:var(--alert);}
+.vac-item>summary::after{content:"";flex:none;width:8px;height:8px;margin:0 4px 4px 2px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s ease;}
+.vac-item[open]>summary::after{transform:rotate(225deg);margin-bottom:-4px;}
+.vac-nom{flex:1;font-weight:600;font-size:15px;line-height:1.3;}
+.vac-ya{flex:none;font-size:11px;font-weight:600;padding:3px 7px;border-radius:7px;color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 40%,var(--line));}
+.vac-ya.vac-falta{color:color-mix(in srgb,var(--warn) 75%,var(--ink));border-color:color-mix(in srgb,var(--warn) 45%,var(--line));}
+.vac-cuerpo{padding:2px 18px 14px;border-top:1px solid var(--line);}
+.vac-noind{margin:14px 0 4px;font-size:13px;color:var(--muted);line-height:1.45;}
+.vac-vgi{margin-top:16px;border-top:1px solid var(--line);padding-top:10px;}
+.vac-vgi>summary{cursor:pointer;font-weight:600;font-size:14px;padding:6px 0;}
+.vac-reg{padding:10px 0;border-top:1px solid var(--line);}
+.vac-paso .hint + .vac-reg{border-top:0;}
+.vac-reg-fila{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.vac-reg-nom{font-weight:600;font-size:14.5px;}
+.vac-reg-b{display:flex;gap:6px;}
+.vac-reg-b .chip{margin:0;min-height:40px;}
+.vac-reg-x{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:10px;}
+@media (max-width:420px){
+  .vac-item>summary{flex-wrap:wrap;}
+  .vac-cat{order:3;}
+}

@@ -14,7 +14,6 @@
  *    la pauta de la OMS para la COVID-19 en inmunosupresión);
  *  - CDC: definición de los factores de riesgo de la diabetes para el VSR;
  *  - OMS: pauta de COVID-19 en inmunosupresión (SAGE, marzo de 2026);
- *  - PAI: esquema nacional de Colombia, actualización de julio de 2026.
  *
  * No define ni modifica ninguna escala. Lee SCALES, VGI y state tal como los
  * declara index.html y añade una vista propia ("vac"). Como el Resumen VGI y la
@@ -34,12 +33,9 @@
 const FUENTES = [
   {k:'acmi1', t:'Asociación Colombiana de Medicina Interna. Consenso Colombiano de Vacunación en el Adulto 2026. Parte 1: adulto general, adulto mayor, mujeres embarazadas y escenarios de riesgo de exposición. Acta Med Colomb. 2026;51(2 Supl). DOI 10.36104/amc.2026.5120.', url:'https://doi.org/10.36104/amc.2026.5120'},
   {k:'acmi2', t:'Asociación Colombiana de Medicina Interna. Consenso Colombiano de Vacunación en el Adulto 2026. Parte 2: adultos con condiciones crónicas. Acta Med Colomb. 2026;51(2 Supl). DOI 10.36104/amc.2026.5121.', url:'https://doi.org/10.36104/amc.2026.5121'},
-  {k:'pai', t:'Ministerio de Salud y Protección Social. Esquema de vacunación PAI Colombia, actualización de julio de 2026.', url:'https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/VS/PP/ET/afiche-esquema-vacunacion-col-2026.pdf'},
   {k:'oms', t:'Organización Mundial de la Salud. Recomendaciones del SAGE sobre la vacunación contra la COVID-19, marzo de 2026.', url:'https://www.who.int/teams/immunization-vaccines-and-biologicals/diseases/covid-19-(corona-virus)'},
   {k:'cdc', t:'Centers for Disease Control and Prevention. Adult Immunization Schedule Notes, VSR: condiciones de riesgo.', url:'https://www.cdc.gov/vaccines/hcp/imz-schedules/adult-notes.html'}
 ];
-const PAI_CORTE = 'Esquema PAI Colombia, actualización de julio de 2026';
-const REVISION = 'Revisión anual de esta sección: abril, con la campaña de influenza cepa sur.';
 
 /* ---------------------------- Condiciones ---------------------------- */
 /* sub: condición que solo se muestra cuando la principal está marcada. */
@@ -98,16 +94,6 @@ const CAT = {
   noind:    {l:'No indicada',        r:0, tono:'neutro'}
 };
 
-const ESTADOS = [
-  {v:'sindato', l:'Sin dato'},
-  {v:'aplicada', l:'Aplicada', x:'Año o fecha'},
-  {v:'incompleto', l:'Esquema incompleto', x:'Dosis aplicadas'},
-  {v:'pendiente', l:'Indicada, pendiente'},
-  {v:'noindicada', l:'No indicada'},
-  {v:'contraindicada', l:'Contraindicada', x:'Motivo'},
-  {v:'rechazada', l:'Rechazada'}
-];
-
 /* ---------------------------- Datos de la VGI ---------------------------- */
 function numDe(txt){
   const m = String(txt||'').replace(',', '.').match(/-?\d+(\.\d+)?/);
@@ -147,7 +133,7 @@ function derivados(E){
 }
 
 /* ---------------------------- Motor ---------------------------- */
-function fila(id, nombre){ return {id, nombre, fuentes:[], esquema:[], notas:[], pai:''}; }
+function fila(id, nombre){ return {id, nombre, fuentes:[], esquema:[], notas:[]}; }
 function suma(f, cat, t, ref){ f.fuentes.push({cat, t, ref}); }
 function cerrar(f){
   /* Precedencia: la categoría más fuerte gana; "Contraindicada" siempre gana. */
@@ -176,7 +162,6 @@ function evaluar(E){
   f.esquema.push('Una dosis anual.');
   f.esquema.push('Preferir vacuna inactivada de alta dosis (HD-IIV3), recombinante (RIV3) o inactivada adyuvada (aIIV3); si ninguna está disponible, cualquier otra apropiada para la edad.');
   if(cronica) f.notas.push('Con enfermedad crónica, use vacuna inactivada o recombinante, nunca la intranasal viva (Parte 2, tablas 2 a 12).');
-  f.pai = 'Sí: una dosis anual para 60 años o más.';
   filas.push(cerrar(f));
 
   /* COVID-19 */
@@ -191,7 +176,6 @@ function evaluar(E){
     f.notas.push('Pauta de la OMS (SAGE, marzo de 2026), adoptada por criterio del autor para concretar los refuerzos adicionales según riesgo que indica el consenso.');
   }
   if(c.erc && D.inmuno) f.notas.push('ERC con inmunocompromiso o trasplante renal: completar el esquema primario y una dosis adicional; puede vacunarse desde 30 días después de una infección por COVID-19 (Parte 2, af. 71).');
-  f.pai = 'Sí: población priorizada de 60 años o más.';
   filas.push(cerrar(f));
 
   /* Neumococo */
@@ -228,7 +212,6 @@ function evaluar(E){
   if(c.neuro && (c.neuroResp || D.dependencia))
     suma(f, f.fuentes[0].cat==='completo' ? 'completo' : f.fuentes[0].cat,
       'Prioritaria: enfermedad neurológica con '+(c.neuroResp?'disfagia o dificultad para eliminar secreciones':'dependencia funcional (Barthel de 60 o menos)'),'Parte 2, af. 44');
-  f.pai = 'No figura en el esquema nacional para adultos.';
   filas.push(cerrar(f));
 
   /* Herpes zóster */
@@ -237,7 +220,6 @@ function evaluar(E){
   f.esquema.push('Vacuna recombinante adyuvada (RZV): 2 dosis, a los 0 y 2 a 6 meses (intervalo mínimo de 4 semanas).');
   f.esquema.push('Se aplica aunque haya tenido herpes zóster o la vacuna viva atenuada; después de un episodio, iniciar 2 a 3 meses más tarde.');
   if(c.biologico || c.cancerInmuno) f.notas.push('Con inmunosupresión, la segunda dosis puede darse entre 1 y 2 meses después si hace falta completar el esquema pronto (Parte 2, af. 97).');
-  f.pai = 'No figura en el esquema nacional para el adulto mayor.';
   filas.push(cerrar(f));
 
   /* Td/Tdap */
@@ -247,7 +229,6 @@ function evaluar(E){
   f.esquema.push('Serie completa: refuerzo con Td cada 10 años.');
   f.esquema.push('Serie completa sin Tdap previa: una dosis de Tdap y luego Td o Tdap cada 10 años.');
   if(c.pulmonar) f.notas.push('Con enfermedad pulmonar crónica, asegurar al menos una dosis de Tdap en la edad adulta (Parte 2, af. 9).');
-  f.pai = 'No figura en el esquema nacional para el adulto mayor.';
   filas.push(cerrar(f));
 
   /* VSR */
@@ -280,7 +261,6 @@ function evaluar(E){
   }
   f.esquema.push('Dosis única; no se recomiendan dosis adicionales.');
   if(c.cardio) f.advertencia = 'El consenso sugiere no revacunar contra el VSR a pacientes con cardiopatía establecida; esta directriz puede cambiar según evolucione la evidencia.';
-  f.pai = 'No figura para el adulto mayor (solo gestantes).';
   filas.push(cerrar(f));
 
   /* Hepatitis B */
@@ -296,7 +276,6 @@ function evaluar(E){
   f.esquema.push('Vacuna recombinante adyuvada: 2 dosis con intervalo mínimo de 4 semanas; o vacuna recombinante: 3 dosis a los 0, 1 y 6 meses.');
   if(c.erc) f.esquema.push('ERC: vacuna recombinante en dosis alta, 3 dosis (0, 1 y 6 meses) o 4 dosis (0, 1, 2 y 6 meses). Medir anti-HBs a los 3 a 6 meses y, si es menor de 10 mUI/mL, revacunar una vez (Parte 2, af. 69 y 70).');
   if(c.hepatica) f.esquema.push('Hepatopatía crónica: dosis alta en 3 o 4 dosis, adyuvada CpG en 2 dosis (0 y 1 mes) o trivalente en 3 dosis (Parte 2, af. 23).');
-  f.pai = 'No figura en el esquema nacional para el adulto mayor.';
   filas.push(cerrar(f));
 
   /* Hepatitis A */
@@ -307,7 +286,6 @@ function evaluar(E){
   if(c.erc && c.hepatica) suma(f,'rec','Enfermedad renal crónica con hepatopatía concomitante','Parte 2, af. 64');
   if(c.vih) suma(f,'rec','VIH sin inmunidad','Parte 2, tabla 10');
   f.esquema.push('2 dosis (0 y 6 a 12 meses), o vacuna combinada contra hepatitis A y B en 3 dosis (0, 1 y 6 meses).');
-  f.pai = 'No figura en el esquema nacional para el adulto mayor.';
   filas.push(cerrar(f));
 
   /* Fiebre amarilla (vacuna viva) */
@@ -317,7 +295,6 @@ function evaluar(E){
   if(D.vivasContra) suma(f,'contra','Vacuna viva atenuada: no se aplica con biológicos, FARME dirigidos, glucocorticoides en dosis altas, quimioterapia, inmunocompromiso moderado o grave ni trasplante','Parte 2, af. 5 y 100');
   if(c.vih) f.notas.push('Con VIH, el uso de vacunas vivas depende del recuento de CD4: consulte la Parte 2 del consenso y al especialista.');
   f.esquema.push('Dosis única de por vida; no requiere refuerzos de rutina.');
-  f.pai = 'Sí, en municipios de riesgo alto o muy alto (emergencia sanitaria).';
   filas.push(cerrar(f));
 
   /* Dengue (vacuna viva) */
@@ -327,7 +304,6 @@ function evaluar(E){
   if(D.vivasContra) suma(f,'contra','Vacuna viva atenuada: no se aplica con biológicos, quimioterapia, glucocorticoides en dosis altas ni trasplante','Parte 2, af. 68, 78 y 100');
   if(c.vih) suma(f,'contra','No se recomienda en personas que viven con VIH','Parte 2, af. 94');
   f.esquema.push('2 dosis con 3 meses de intervalo.');
-  f.pai = 'No figura en el esquema nacional para el adulto mayor.';
   filas.push(cerrar(f));
 
   const generales = ['Vacunar preferiblemente en un periodo de estabilidad clínica; la falta de compensación no es contraindicación (Parte 2, af. 1).'];
@@ -338,7 +314,9 @@ function evaluar(E){
 }
 
 /* ---------------------------- Estado ---------------------------- */
-function nuevo(){ return {edad:'', c:{}, fried:'', cfs:'', barthel:'', mnasf:'', origen:{}, neumo:'ninguna', est:{}}; }
+/* tiene[id] = {v:'si'|'no', x:'año o dosis'}; neumo: vacuna antineumocócica
+   previa, solo cuenta si se marcó que la tiene. */
+function nuevo(){ return {edad:'', c:{}, fried:'', cfs:'', barthel:'', mnasf:'', origen:{}, neumo:'pcv13', tiene:{}}; }
 let VAC = nuevo();
 
 function traerVGI(){
@@ -348,43 +326,60 @@ function traerVGI(){
   });
 }
 
-/* ---------------------------- Texto para la historia ---------------------------- */
-function estadoTexto(id){
-  const e = VAC.est[id] || {s:'sindato', x:''};
-  const def = ESTADOS.find(o=>o.v===e.s) || ESTADOS[0];
-  const base = def.l.charAt(0).toLowerCase()+def.l.slice(1);
-  return e.x && e.x.trim() ? base+' ('+e.x.trim()+')' : base;
+/* Entrada del motor: la vacuna antineumocócica previa solo se usa si se
+   registró que el paciente la tiene. */
+function entrada(){
+  const t = VAC.tiene.neumococo;
+  return {...VAC, neumo: t && t.v==='si' ? VAC.neumo : 'ninguna'};
 }
-/* Se copian siempre las vacunas que se recomiendan (aunque estén sin dato, para
-   que el vacío quede a la vista) y las contraindicadas; las demás, solo si se
-   marcó un estado. */
-function texto(E, R){
-  E = E || VAC; R = R || evaluar(E);
+
+/* ---------------------------- Texto para la historia ---------------------------- */
+/* Minúscula inicial, salvo en siglas (PCV20, VIH, EPOC). */
+const minus = t=>/^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ0-9]/.test(t) ? t : t.charAt(0).toLowerCase()+t.slice(1);
+function nombreCorto(f){ return f.id==='vsr' ? 'VSR' : f.id==='covid' || f.id==='td' ? f.nombre : minus(f.nombre); }
+function detalle(f){
+  const t = VAC.tiene[f.id] || {};
+  const partes = [];
+  if(f.id==='neumococo'){ const p = NEUMO_PREVIA.find(o=>o.v===VAC.neumo); if(p) partes.push(minus(p.l)); }
+  if(t.x && t.x.trim()) partes.push(t.x.trim());
+  return partes.length ? ' ('+partes.join('; ')+')' : '';
+}
+/* Neumococo registrado con un esquema que aún pide otra dosis. */
+const porCompletarF = f => f.id==='neumococo' && (VAC.tiene.neumococo||{}).v==='si' && (f.cat==='rec' || f.cat==='con');
+/* Encabezan las vacunas que ya tiene; siguen las indicadas que no tiene o sin
+   dato, las que pueden considerarse y las contraindicadas. */
+function texto(){
+  const R = evaluar(entrada());
   if(R.estado!=='ok') return '';
   const condiciones = [];
-  const minus = t=>t.charAt(0).toLowerCase()+t.slice(1);
-  const corto = c=>minus(c.l.replace(/ \(.*\)$/,''));
   CONDICIONES.forEach(g=>g.items.forEach(c=>{
-    if(!E.c[c.k] || c.sub) return;
-    const sub = g.items.find(x=>x.sub===c.k && E.c[x.k]);
-    condiciones.push(corto(c)+(sub ? ' '+minus(sub.l) : ''));
+    if(!VAC.c[c.k] || c.sub) return;
+    const sub = g.items.find(x=>x.sub===c.k && VAC.c[x.k]);
+    condiciones.push(minus(c.l.replace(/ \(.*\)$/,''))+(sub ? ' '+minus(sub.l) : ''));
   }));
   const D = R.derivados;
   if(D.fragil) condiciones.push('fragilidad');
   if(D.dependencia) condiciones.push('dependencia funcional (Barthel '+D.barthel+')');
   if(D.malnutricion) condiciones.push('malnutrición (MNA-SF '+D.mnasf+')');
-  const lineas = ['VACUNACIÓN (Consenso Colombiano de Vacunación en el Adulto, ACMI 2026; '+PAI_CORTE+'). Edad: '+R.edad+' años.'];
+  const tv = id => (VAC.tiene[id]||{}).v;
+  const lista = fs => fs.map(f=>nombreCorto(f)+detalle(f)).join('; ');
+  const tiene = R.filas.filter(f=>tv(f.id)==='si');
+  const indicadas = R.filas.filter(f=>(f.cat==='rec') && tv(f.id)!=='si');
+  const noTiene = indicadas.filter(f=>tv(f.id)==='no');
+  const sinDato = indicadas.filter(f=>tv(f.id)!=='no');
+  const considerar = R.filas.filter(f=>(f.cat==='con' || f.cat==='ind') && tv(f.id)!=='si');
+  const contra = R.filas.filter(f=>f.cat==='contra' && tv(f.id)!=='si');
+  const covid = R.filas.find(f=>f.id==='covid');
+  const porCompletar = tiene.filter(porCompletarF);
+  const lineas = ['VACUNACIÓN (Consenso Colombiano de Vacunación en el Adulto, ACMI 2026). Edad: '+R.edad+' años.'];
   if(condiciones.length) lineas.push('Condiciones consideradas: '+condiciones.join('; ')+'.');
-  const marcada = id => VAC.est[id] && VAC.est[id].s && VAC.est[id].s!=='sindato';
-  const prin = R.filas.filter(f=>f.cat==='rec' || f.cat==='contra');
-  const otras = R.filas.filter(f=>!(f.cat==='rec' || f.cat==='contra') && marcada(f.id));
-  prin.forEach(f=>{
-    lineas.push('- '+f.nombre+': '+(f.cat==='contra' && !marcada(f.id) ? 'contraindicada ('+(t=>t.charAt(0).toLowerCase()+t.slice(1))(f.motivos[0].t.split(':')[0])+')' : estadoTexto(f.id))+'.'+(f.destacada?' '+f.destacada:''));
-  });
-  if(otras.length){
-    lineas.push('Según riesgo o exposición:');
-    otras.forEach(f=>lineas.push('- '+f.nombre+': '+estadoTexto(f.id)+'.'));
-  }
+  lineas.push('Vacunas aplicadas: '+(tiene.length ? lista(tiene) : 'ninguna registrada')+'.');
+  porCompletar.forEach(f=>lineas.push('Esquema por completar: '+nombreCorto(f)+'. '+f.esquema[0]));
+  if(noTiene.length) lineas.push('Indicadas, pendientes: '+noTiene.map(nombreCorto).join('; ')+'.');
+  if(sinDato.length) lineas.push('Indicadas, sin dato de aplicación: '+sinDato.map(nombreCorto).join('; ')+'.');
+  if(considerar.length) lineas.push('A considerar según el caso: '+considerar.map(nombreCorto).join('; ')+'.');
+  if(contra.length) lineas.push('Contraindicadas: '+contra.map(nombreCorto).join('; ')+'.');
+  if(covid && covid.destacada) lineas.push('COVID-19 en '+minus(covid.destacada));
   return lineas.join('\n');
 }
 
@@ -417,69 +412,91 @@ function derivadosHTML(){
     + linea('Malnutrición', D.malnutricion, 'MNA-SF de 7 o menos');
 }
 
-function filaHTML(f){
-  const e = VAC.est[f.id] || {s:'sindato', x:''};
-  const def = ESTADOS.find(o=>o.v===e.s) || ESTADOS[0];
-  return '<article class="vac-fila vac-'+f.cat+'" id="vac-'+f.id+'">'
-    + '<div class="vac-cab"><h3>'+esc(f.nombre)+'</h3><span class="vac-cat vac-t-'+f.tono+'">'+esc(f.etiqueta)+'</span></div>'
+/* Paso 2: cada vacuna del menú, desplegable con su esquema y sus motivos. */
+function vacunaHTML(f){
+  const t = (VAC.tiene[f.id]||{}).v;
+  const marca = t==='si' ? (porCompletarF(f) ? '<span class="vac-ya vac-falta">Por completar</span>' : '<span class="vac-ya">La tiene</span>') : '';
+  return '<details class="vac-item vac-'+f.cat+'" id="vac-'+f.id+'">'
+    + '<summary><span class="vac-nom">'+esc(f.nombre)+'</span>'+marca+'<span class="vac-cat vac-t-'+f.tono+'">'+esc(f.etiqueta)+'</span></summary>'
+    + '<div class="vac-cuerpo">'
     + (f.destacada ? '<p class="vac-dest">'+esc(f.destacada)+'</p>' : '')
     + (f.advertencia ? '<p class="vac-adv"><b>Advertencia.</b> '+esc(f.advertencia)+'</p>' : '')
-    + '<ul class="vac-mot">'+f.motivos.map(m=>'<li><span class="vac-mc vac-t-'+CAT[m.cat].tono+'">'+esc(CAT[m.cat].l)+'</span> '+esc(m.t)+' <span class="vac-ref">('+esc(m.ref)+')</span></li>').join('')+'</ul>'
     + '<div class="vac-esq"><b>Esquema</b><ul>'+f.esquema.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>'
+    + '<div class="vac-esq"><b>Por qué</b><ul class="vac-mot">'+f.motivos.map(m=>'<li><span class="vac-mc vac-t-'+CAT[m.cat].tono+'">'+esc(CAT[m.cat].l)+'</span> '+esc(m.t)+' <span class="vac-ref">('+esc(m.ref)+')</span></li>').join('')+'</ul></div>'
     + (f.notas.length ? '<div class="vac-esq vac-nota"><b>Notas</b><ul>'+f.notas.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>' : '')
-    + '<div class="vac-pai"><b>PAI</b> '+esc(f.pai)+'</div>'
-    + '<div class="vac-est"><div class="field"><label>Estado</label><select data-vac="est" data-id="'+f.id+'">'
-    + ESTADOS.map(o=>'<option value="'+o.v+'"'+(o.v===e.s?' selected':'')+'>'+esc(o.l)+'</option>').join('')+'</select></div>'
-    + (def.x ? '<div class="field"><label>'+esc(def.x)+'</label><input type="text" autocomplete="off" data-vac="estx" data-id="'+f.id+'" value="'+esc(e.x||'')+'" placeholder="Opcional"></div>' : '')
-    + '</div></article>';
+    + '</div></details>';
 }
 
-function resultadoHTML(){
-  const R = evaluar(VAC);
-  if(R.estado==='sinedad') return '<div class="vacio">Ingrese la edad para ver las vacunas que corresponden a su grupo.</div>';
-  if(R.estado==='menor') return '<div class="vacio">Esta sección aplica a personas de 60 años o más, la definición colombiana de adulto mayor. Para menores de 60 años, consulte la Parte 1 del consenso.</div>';
-  const rec = R.filas.filter(f=>f.cat==='rec' || f.cat==='completo');
-  const otras = R.filas.filter(f=>!(f.cat==='rec' || f.cat==='completo'));
-  return '<div class="vac-grupo-edad">Grupo de edad: <b>'+esc(R.grupo)+'</b></div>'
-    + (R.especial.length ? '<div class="vac-esp"><b>Esquema especial.</b> '+esc(R.especial.map(k=>NOMBRE_COND[k]).join('; '))+': consulte la Parte 2 del consenso y al especialista tratante. Las filas siguientes no reemplazan ese esquema.</div>' : '')
-    + '<div class="grp">Recomendadas para este paciente</div>'
-    + rec.map(filaHTML).join('')
-    + '<div class="grp">Según riesgo, exposición o contraindicación</div>'
-    + otras.map(filaHTML).join('')
+function menuHTML(R){
+  const grupo = (titulo, ayuda, fs) => fs.length
+    ? '<div class="vac-bloque"><div class="grp">'+esc(titulo)+'</div>'+(ayuda?'<p class="vac-ayuda">'+esc(ayuda)+'</p>':'')+fs.map(vacunaHTML).join('')+'</div>' : '';
+  const ind = R.filas.filter(f=>f.cat==='rec' || f.cat==='completo');
+  const con = R.filas.filter(f=>f.cat==='con' || f.cat==='ind');
+  const contra = R.filas.filter(f=>f.cat==='contra');
+  const noind = R.filas.filter(f=>f.cat==='noind');
+  return '<div class="vac-grupo-edad">Grupo de edad: <b>'+esc(R.grupo)+'</b>. Toque cada vacuna para ver su esquema y el motivo.</div>'
+    + (R.especial.length ? '<div class="vac-esp"><b>Esquema especial.</b> '+esc(R.especial.map(k=>NOMBRE_COND[k]).join('; '))+': consulte la Parte 2 del consenso y al especialista tratante. Estas recomendaciones no reemplazan ese esquema.</div>' : '')
+    + grupo('Indicadas', '', ind)
+    + grupo('A considerar según el caso', 'Dependen del riesgo, la exposición o una decisión compartida con el paciente.', con)
+    + grupo('Contraindicadas', '', contra)
+    + (noind.length ? '<p class="vac-noind">No indicadas por ahora: '+esc(noind.map(f=>f.nombre+' ('+minus(f.motivos[0].t)+')').join('; '))+'.</p>' : '')
     + '<ul class="vac-generales">'+R.generales.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
 }
 
-function renderVac(){
+/* Paso 3: registro simple de lo que el paciente ya tiene. */
+function registroHTML(R){
+  const fs = R.filas.filter(f=>f.cat!=='noind' && f.cat!=='contra');
+  return '<p class="hint">Marque las que el paciente ya tiene. El año o las dosis son opcionales.</p>'
+    + fs.map(f=>{
+      const t = VAC.tiene[f.id] || {};
+      const extra = t.v==='si'
+        ? (f.id==='neumococo'
+            ? '<div class="vac-reg-x"><div class="field"><label>Cuál recibió</label><select data-vac="neumo">'
+              + NEUMO_PREVIA.filter(o=>o.v!=='ninguna').map(o=>'<option value="'+o.v+'"'+(VAC.neumo===o.v?' selected':'')+'>'+esc(o.l)+'</option>').join('')
+              + '</select></div><div class="field"><label>Año (opcional)</label><input type="text" autocomplete="off" data-vac="tienex" data-id="neumococo" value="'+esc(t.x||'')+'" placeholder="Ej.: 2024"></div></div>'
+            : '<div class="vac-reg-x"><div class="field"><label>Año o dosis (opcional)</label><input type="text" autocomplete="off" data-vac="tienex" data-id="'+f.id+'" value="'+esc(t.x||'')+'" placeholder="Ej.: 2026, o 1 de 2 dosis"></div></div>')
+        : '';
+      return '<div class="vac-reg" id="reg-'+f.id+'"><div class="vac-reg-fila"><span class="vac-reg-nom">'+esc(f.nombre)+'</span>'
+        + '<span class="vac-reg-b"><button class="chip" data-vac="tiene" data-id="'+f.id+'" data-v="si" aria-pressed="'+(t.v==='si')+'">La tiene</button>'
+        + '<button class="chip" data-vac="tiene" data-id="'+f.id+'" data-v="no" aria-pressed="'+(t.v==='no')+'">No la tiene</button></span></div>'
+        + extra + '</div>';
+    }).join('');
+}
+
+function resultadoHTML(){
+  const R = evaluar(entrada());
+  if(R.estado==='sinedad') return '<div class="vacio">Ingrese la edad para ver las vacunas indicadas para este paciente.</div>';
+  if(R.estado==='menor') return '<div class="vacio">Esta sección aplica a personas de 60 años o más, la definición colombiana de adulto mayor. Para menores de 60 años, consulte la Parte 1 del consenso.</div>';
   const enVGI = !!(typeof VGI==='object' && VGI && VGI.vacunas);
+  return '<section class="vac-paso"><h3 class="vac-paso-t"><span>2</span>Vacunas recomendadas</h3>'+menuHTML(R)+'</section>'
+    + '<section class="vac-paso item"><h3 class="vac-paso-t"><span>3</span>¿Cuáles tiene?</h3>'+registroHTML(R)
+    + '<div class="actions" style="margin-top:16px">'
+    + '<button class="btn" data-vac="vaciar">Vaciar</button>'
+    + '<button class="btn'+(enVGI?'':' btn-primary')+'" data-vac="addvgi">'+(enVGI?'Actualizada en la VGI':'Añadir a la valoración')+'</button>'
+    + '<button class="btn btn-primary" data-vac="copiar">Copiar</button></div>'
+    + '<p class="toast" id="toast"></p>'
+    + '<textarea class="copybox" id="copybox" style="display:none" readonly></textarea></section>';
+}
+
+function renderVac(){
   $('#view').innerHTML =
     '<div class="scale-head">'
     + '<span class="eyebrow" style="font-family:\'IBM Plex Mono\',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--eje)">Promoción y prevención</span>'
     + '<h2>Vacunación del adulto mayor</h2>'
-    + '<p>Vacunas indicadas según la edad y las condiciones del paciente, con lista de chequeo para la historia clínica. Basada en el Consenso Colombiano de Vacunación en el Adulto 2026 (ACMI).</p></div>'
-    + '<section class="item vac-form"><div class="q">Paciente</div>'
+    + '<p>Según la edad y el contexto del paciente, las vacunas indicadas con su esquema. Luego registre cuáles tiene y copie el resultado para la historia clínica. Basada en el Consenso Colombiano de Vacunación en el Adulto 2026 (ACMI).</p></div>'
+    + '<section class="item vac-form"><h3 class="vac-paso-t"><span>1</span>Contexto del paciente</h3>'
     + '<div class="calc">'+campo('edad','Edad (años)', null, 'Ej.: 78')+'</div>'
     + chipsHTML()
-    + '</section>'
-    + '<section class="item vac-form"><div class="q">Fragilidad, función y nutrición</div>'
+    + '<details class="vac-vgi"'+(['fried','cfs','barthel','mnasf'].some(k=>!vacio(VAC[k]))?' open':'')+'><summary>Fragilidad, función y nutrición</summary>'
     + '<p class="hint">Si el resumen de la VGI ya tiene el fenotipo de Fried, la CFS, el Barthel o el MNA-SF, se toman de allí. Si no, regístrelos aquí.</p>'
     + '<div class="calc vac-calc">'
     + campo('fried','Fenotipo de Fried (criterios)', [0,1,2,3,4,5].map(v=>({v, l:String(v)})))
     + campo('cfs','Clinical Frailty Scale', [1,2,3,4,5,6,7,8,9].map(v=>({v, l:String(v)})))
     + campo('barthel','Índice de Barthel (0 a 100)', null, '0 a 100')
     + campo('mnasf','MNA-SF (0 a 14)', null, '0 a 14')
-    + '</div><div class="vac-ders" id="vacders">'+derivadosHTML()+'</div></section>'
-    + '<section class="item vac-form"><div class="q">Neumococo: vacuna previa</div><div class="calc">'
-    + '<div class="field"><label>Antecedente</label><select data-vac="neumo">'
-    + NEUMO_PREVIA.map(o=>'<option value="'+o.v+'"'+(VAC.neumo===o.v?' selected':'')+'>'+esc(o.l)+'</option>').join('')
-    + '</select></div></div></section>'
+    + '</div><div class="vac-ders" id="vacders">'+derivadosHTML()+'</div></details>'
+    + '</section>'
     + '<div id="vacres">'+resultadoHTML()+'</div>'
-    + '<div class="vac-corte"><b>Columna PAI.</b> '+esc(PAI_CORTE)+'. '+esc(REVISION)+'</div>'
-    + '<div class="actions" style="margin-top:18px">'
-    + '<button class="btn" data-vac="vaciar">Vaciar</button>'
-    + '<button class="btn'+(enVGI?'':' btn-primary')+'" data-vac="addvgi">'+(enVGI?'Actualizada en la VGI':'Añadir a la valoración')+'</button>'
-    + '<button class="btn btn-primary" data-vac="copiar">Copiar</button></div>'
-    + '<p class="toast" id="toast"></p>'
-    + '<textarea class="copybox" id="copybox" style="display:none" readonly></textarea>'
     + '<details class="tr-umb vac-fuentes"><summary>Fuentes y criterios</summary>'
     + FUENTES.map(x=>'<div class="tr-umb-r"><a href="'+x.url+'" target="_blank" rel="noopener noreferrer">'+esc(x.t)+'</a></div>').join('')
     + '<div class="tr-umb-r"><strong>Criterios del autor</strong> · Fragilidad: fenotipo de Fried de 3 o más criterios, o CFS de 6 ("Vive con fragilidad moderada") o más. Dependencia funcional: Barthel de 60 o menos; de 65 a 95, individualizar. Malnutrición: MNA-SF de 7 o menos. COVID-19 en inmunosupresión (malnutrición, VIH o cáncer): pauta de la OMS. Factores de riesgo de la diabetes para el VSR: definición del CDC.</div>'
@@ -489,9 +506,14 @@ function renderVac(){
     + '<div class="ref"><b>Alcance</b>Apoyo educativo para revisar el esquema de vacunación; no reemplaza el juicio clínico, la ficha técnica de cada vacuna ni los lineamientos vigentes del Ministerio de Salud.</div>';
 }
 
+/* Conserva qué vacunas estaban desplegadas al volver a pintar el resultado. */
 function refrescar(){
+  const abiertas = [...document.querySelectorAll('#vacres details[open]')].map(d=>d.id);
   const r = document.getElementById('vacres'); if(r) r.innerHTML = resultadoHTML();
+  abiertas.forEach(id=>{ const d = document.getElementById(id); if(d) d.open = true; });
   const d = document.getElementById('vacders'); if(d) d.innerHTML = derivadosHTML();
+  /* Si ya se añadió a la valoración, el bloque del resumen sigue los cambios. */
+  if(typeof VGI==='object' && VGI && VGI.vacunas) agregarVGI();
 }
 
 function abrir(){
@@ -503,14 +525,14 @@ function abrir(){
 }
 
 function agregarVGI(){
-  const R = evaluar(VAC);
+  const R = evaluar(entrada());
   if(R.estado!=='ok') return false;
-  const rec = R.filas.filter(f=>f.cat==='rec');
-  const pend = rec.filter(f=>{ const s=(VAC.est[f.id]||{}).s; return s!=='aplicada'; }).length;
+  const ind = R.filas.filter(f=>f.cat==='rec');
+  const tienen = ind.filter(f=>(VAC.tiene[f.id]||{}).v==='si').length;
   VGI.vacunas = {id:'vacunas', eje:'clinico', dom:'Promoción y prevención', nombre:'Vacunación',
-    valor: (rec.length-pend)+' de '+rec.length+' recomendadas aplicadas',
-    t: pend ? pend+' recomendada'+(pend===1?'':'s')+' sin aplicar o sin dato' : 'Recomendadas al día',
-    tone: pend ? 'warn' : 'ok', ts: Date.now(), texto: texto()};
+    valor: tienen+' de '+ind.length+' indicadas aplicadas',
+    t: tienen===ind.length ? 'Indicadas al día' : (ind.length-tienen)+' indicada'+(ind.length-tienen===1?'':'s')+' pendiente'+(ind.length-tienen===1?'':'s')+' o sin dato',
+    tone: tienen===ind.length ? 'ok' : 'warn', ts: Date.now(), texto: texto()};
   return true;
 }
 
@@ -561,8 +583,8 @@ function tarjetaHTML(){
   return '<button class="card v5-card vac-card" data-vac="abrir" style="--eje:var(--clinico)">'
     + '<span class="v5-card-top"><span class="dom">Promoción y prevención</span></span>'
     + '<h2>Vacunación del adulto mayor</h2>'
-    + '<p>Vacunas indicadas según la edad y las condiciones crónicas, con lista de chequeo para la VGI. Consenso Colombiano de Vacunación en el Adulto 2026.</p>'
-    + '<span class="v5-card-pie"><span class="v5-meta">Lista de chequeo</span><span class="v5-meta v5-meta-ext">Herramienta complementaria</span></span></button>';
+    + '<p>Vacunas indicadas según la edad y el contexto del paciente, con registro de las que ya tiene para la VGI. Consenso Colombiano de Vacunación en el Adulto 2026.</p>'
+    + '<span class="v5-card-pie"><span class="v5-meta">Recomendaciones por edad y contexto</span><span class="v5-meta v5-meta-ext">Herramienta complementaria</span></span></button>';
 }
 const listInnerVac = listInner;
 listInner = function(){
@@ -592,7 +614,7 @@ vgiTexto = function(){
 /* ---------------------------- Eventos ---------------------------- */
 document.addEventListener('click', e=>{
   const b = e.target.closest && e.target.closest('[data-vac]');
-  if(!b || b.tagName==='SELECT' || b.tagName==='INPUT') return;
+  if(!b || b.tagName==='SELECT' || b.tagName==='INPUT' || b.tagName==='SUMMARY') return;
   const a = b.dataset.vac;
   if(a==='abrir'){ abrir(); return; }
   if(a==='cond'){
@@ -602,6 +624,15 @@ document.addEventListener('click', e=>{
     if(!VAC.c[k]) CONDICIONES.forEach(g=>g.items.forEach(c=>{ if(c.sub===k) VAC.c[c.k] = false; }));
     const y = window.scrollY;
     renderVac(); window.scrollTo({top:y, left:0, behavior:'instant'});
+    return;
+  }
+  if(a==='tiene'){
+    const id = b.dataset.id, v = b.dataset.v;
+    const prev = VAC.tiene[id] || {};
+    /* Un segundo toque sobre la opción marcada la desmarca. */
+    VAC.tiene[id] = prev.v===v ? {v:'', x:prev.x||''} : {v, x:prev.x||''};
+    const y = window.scrollY;
+    refrescar(); window.scrollTo({top:y, left:0, behavior:'instant'});
     return;
   }
   if(a==='vaciar'){ VAC = nuevo(); if(typeof VGI==='object' && VGI) delete VGI.vacunas; render(); return; }
@@ -614,20 +645,16 @@ document.addEventListener('change', e=>{
   const a = el.dataset.vac;
   if(a==='campo'){ VAC[el.dataset.k] = el.value; VAC.origen[el.dataset.k] = false; refrescar(); }
   if(a==='neumo'){ VAC.neumo = el.value; refrescar(); }
-  if(a==='est'){
-    VAC.est[el.dataset.id] = {s: el.value, x: (VAC.est[el.dataset.id]||{}).x || ''};
-    refrescar();
-  }
 });
 document.addEventListener('input', e=>{
   const el = e.target.closest && e.target.closest('input[data-vac]');
   if(!el) return;
   if(el.dataset.vac==='campo'){ VAC[el.dataset.k] = el.value; VAC.origen[el.dataset.k] = false; refrescar(); }
-  if(el.dataset.vac==='estx'){ const id = el.dataset.id; VAC.est[id] = {s:(VAC.est[id]||{}).s||'sindato', x: el.value}; }
+  if(el.dataset.vac==='tienex'){ const id = el.dataset.id; VAC.tiene[id] = {v:(VAC.tiene[id]||{}).v||'si', x: el.value}; }
 });
 
 /* Interfaz para las pruebas automáticas (verificacion/verificar-vacunacion.mjs). */
-window.VACUNAS = {evaluar, texto, derivados, leerVGI, abrir, CONDICIONES, NEUMO_PREVIA, ESTADOS, CAT,
+window.VACUNAS = {evaluar, texto, derivados, leerVGI, abrir, CONDICIONES, NEUMO_PREVIA, CAT,
   get estado(){ return VAC; }, set estado(v){ VAC = v; }, nuevo};
 
 /* ui-v5.js pinta la barra antes de que cargue este archivo: se vuelve a pintar
