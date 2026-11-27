@@ -389,8 +389,6 @@ function texto(E, R){
 }
 
 /* ---------------------------- Vista ---------------------------- */
-const ICO_VAC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3a2.4 2.4 0 0 1-3.4 0l-.6-.6a2.4 2.4 0 0 1 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>';
-
 function chipsHTML(){
   return CONDICIONES.map(g=>{
     const items = g.items.filter(c=>!c.sub || VAC.c[c.sub]);
@@ -539,10 +537,12 @@ renderTop = function(){
     + '<button class="glyph" data-act="about" aria-label="Acerca de esta aplicación">i</button>';
 };
 
-/* Destino propio en la barra de navegación (decisión del autor, 27-nov-2026):
-   "Vacunas", debajo de Resumen en escritorio y como quinto botón en el
-   celular, para que la función no quede escondida dentro de un eje. */
-const ICO_TAB = '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17.5 3.5 3 3"/><path d="m19 5-3.5 3.5"/><path d="M16.5 7.5 7.8 16.2a1.8 1.8 0 0 1-2.5 0l-1-1a1.8 1.8 0 0 1 0-2.5L13 4"/><path d="m11 6 7 7"/><path d="m8.5 10.5 2 2M6.5 12.5l2 2"/><path d="m4.8 19.2-1.3 1.3"/></svg>';
+/* Destino propio en la barra de navegación (decisión del autor, 27-nov-2026).
+   Ícono: jeringa dibujada con el mismo trazo de los demás íconos de la barra,
+   a partir de la referencia que aportó el autor.
+   Va debajo de Resumen en escritorio y como quinto botón en el celular, para
+   que la función no quede escondida dentro de un eje. */
+const ICO_TAB = '<svg class="tabicon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="rotate(-45 12 12)"><path d="M1 12h3.8"/><path d="M4.8 12 7.6 8.3h10v7.4h-10Z"/><path d="M9.8 8.3v2.9M12.6 8.3v2.9M15.4 8.3v2.9"/><path d="M17.6 5.6v12.8"/><path d="M17.6 10.6h3.2M17.6 13.4h3.2"/><path d="M20.8 8.2v7.6"/></g></svg>';
 const renderTabsVac = renderTabs;
 renderTabs = function(){
   renderTabsVac();

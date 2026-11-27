@@ -1,9 +1,9 @@
 {
   "archivo": "index.html",
   "sha256": "db777c81f191a5f950ee2153bc3ac4ce5cdfce44bca41cbab53d530c3bd5ff7d",
-  "modulo": "8668a202c38b707eb4ec664ca68d28c738e20cdd8a475b5b87d9c8d8cae8fc71",
+  "modulo": "6793bd0e5c2d38484355da44cadea6e862f3356ba139a81b5971b87aba148d9c",
   "version": "2.18.0",
-  "fecha": "2026-11-27T16:53:36.833Z",
+  "fecha": "2026-11-27T17:00:57.799Z",
   "casos": 74,
   "fallos": [],
   "erroresJS": [],

@@ -55,6 +55,8 @@ las mismas: la vacunación es una herramienta, no una escala.
 - Ubicación: por decisión del autor, la función no está dentro de un eje sino
   en la barra, para que se vea como función propia; en la biblioteca aparece
   solo en los resultados de búsqueda ("vacuna", "influenza", "neumococo"...).
+  Ícono propio: una jeringa dibujada con el mismo trazo de los demás íconos de
+  la barra, a partir de una referencia aportada por el autor.
 - Archivos nuevos: vacunacion.js y vacunacion.css, y la prueba
   verificacion/verificar-vacunacion.mjs, que comprueba los 20 casos aprobados
   por el autor, los bordes de cada punto de corte, las reglas de precedencia, el
