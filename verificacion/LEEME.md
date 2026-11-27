@@ -74,6 +74,38 @@ del conversor); los recuentos no cambian y la lista de fallos sigue vacía.
 `resultado-2.17.0.json` corresponde a la 2.17.0 (navegación simplificada: solo
 cambia la capa de presentación); los recuentos y los resultados de las cinco
 pruebas son idénticos a los de la 2.16.0 salvo la huella, la fecha y la versión.
+`resultado-2.18.0.json` corresponde a la 2.18.0 (sección de vacunación del
+adulto mayor, en archivos aparte); las 48 fichas y los recuentos de escalas no
+cambian y la lista de fallos sigue vacía.
+
+## Prueba de la sección de vacunación
+
+Desde la 2.18.0, `verificar-vacunacion.mjs` comprueba la sección de promoción y
+prevención contra el Consenso Colombiano de Vacunación en el Adulto 2026 (ACMI,
+Partes 1 y 2) y las decisiones clínicas del autor:
+
+```
+node verificacion/verificar-vacunacion.mjs index.html > resultado-vacunacion.json
+```
+
+1. **Casos aprobados.** Los 20 casos con resultado esperado que el autor
+   aprobó el 27-nov-2026 antes de programar (por ejemplo, 68 años con EPOC: VSR
+   "Se recomienda" por la afirmación 6 de la Parte 2; biológico en zona de
+   fiebre amarilla: "Contraindicada").
+2. **Bordes.** Edad 59, 60, 74 y 75; Fried 2 y 3; CFS 5 y 6; Barthel 60, 65 y
+   100; MNA-SF 7 y 8; la advertencia de revacunación del VSR en cardiopatía; las
+   reglas de precedencia; la columna del PAI.
+3. **Texto para la historia.** Siempre las recomendadas y las contraindicadas,
+   el resto solo con estado marcado; sin rayas ni comillas tipográficas.
+4. **Recorrido.** El botón Vacunas en la barra, justo debajo de Resumen y
+   visible en el celular; la búsqueda; que no quede como grupo del eje clínico; los datos
+   tomados del resumen de la VGI, la lista de chequeo, el bloque en el resumen y
+   ningún dato escrito en el almacenamiento del dispositivo.
+5. **Inventario.** Las 48 fichas de escalas no cambian.
+
+Los resultados esperados los redactó el asistente a partir del consenso y los
+validó el autor; la prueba verifica que la aplicación los cumpla, no que el
+consenso sea correcto.
 
 ## Prueba del puntaje global del CDR
 

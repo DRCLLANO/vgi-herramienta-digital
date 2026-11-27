@@ -1,0 +1,70 @@
+/* VGI Digital · vacunacion.css: Promoción y prevención, vacunación del adulto
+   mayor (desde la 2.18.0). Solo presentación; usa los tokens de color de la
+   aplicación, de modo que respeta el tema oscuro. */
+
+.vac-form .chips{margin-top:8px;}
+.vac-grupo{margin-top:14px;}
+.vac-gt{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.vac-form .chip{text-align:left;line-height:1.3;padding:9px 12px;}
+.vac-form .chip.vac-sub{border-style:dashed;}
+.vac-calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+.vac-origen{display:block;margin-top:4px;font-size:11.5px;color:var(--ok);}
+.vac-ders{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.vac-der{font-size:12.5px;padding:6px 10px;border-radius:9px;background:var(--tint-2);color:var(--ink-2);}
+.vac-der.si{background:color-mix(in srgb,var(--warn) 14%,var(--card));color:var(--ink);}
+
+.vac-grupo-edad{margin:6px 0 4px;font-size:14px;color:var(--ink-2);}
+.vac-esp{margin:12px 0;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--alert) 40%,var(--line));background:color-mix(in srgb,var(--alert) 7%,var(--card));font-size:13.5px;line-height:1.45;}
+
+.vac-fila{position:relative;border:1px solid var(--line);border-radius:16px;padding:16px 18px 14px;margin-bottom:12px;background:var(--card);box-shadow:0 3px 12px rgba(16,34,56,.045);}
+.vac-fila::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--muted);}
+.vac-fila.vac-rec::before{background:var(--ok);}
+.vac-fila.vac-con::before,.vac-fila.vac-ind::before{background:var(--warn);}
+.vac-fila.vac-contra::before{background:var(--alert);}
+.vac-fila.vac-noind,.vac-fila.vac-completo{opacity:.92;}
+.vac-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.vac-cab h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;}
+.vac-cat{flex:none;font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:8px;white-space:nowrap;}
+.vac-t-ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--card));}
+.vac-t-warn{color:color-mix(in srgb,var(--warn) 75%,var(--ink));background:color-mix(in srgb,var(--warn) 14%,var(--card));}
+.vac-t-alert{color:var(--alert);background:color-mix(in srgb,var(--alert) 12%,var(--card));}
+.vac-t-neutro{color:var(--muted);background:var(--tint-2);}
+.vac-dest{margin:10px 0 0;padding:9px 11px;border-radius:10px;font-size:13.5px;font-weight:600;background:color-mix(in srgb,var(--clinico) 9%,var(--card));color:var(--ink);}
+.vac-adv{margin:10px 0 0;padding:9px 11px;border-radius:10px;font-size:13px;line-height:1.45;background:color-mix(in srgb,var(--warn) 12%,var(--card));}
+.vac-mot,.vac-notas,.vac-esq ul,.vac-generales{margin:10px 0 0;padding-left:18px;font-size:13.5px;line-height:1.45;}
+.vac-mot{list-style:none;padding-left:0;}
+.vac-mot li{margin:5px 0;}
+.vac-mc{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 6px;border-radius:6px;margin-right:4px;}
+.vac-ref{color:var(--muted);font-size:12px;}
+.vac-esq{margin-top:10px;font-size:13.5px;}
+.vac-esq b,.vac-pai b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.vac-esq ul{margin-top:4px;}
+.vac-nota ul{color:var(--ink-2);}
+.vac-pai{margin-top:10px;font-size:13px;color:var(--ink-2);}
+.vac-est{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+.vac-generales{color:var(--ink-2);margin:6px 0 4px;}
+.vac-corte{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.45;}
+.vac-fuentes a{color:inherit;}
+.vac-card{text-align:left;}
+@media (max-width:420px){
+  .vac-cab{flex-direction:column;}
+  .vac-fila{padding:14px 14px 12px;}
+}
+
+/* Quinto destino de la barra en pantallas medianas y pequeñas. */
+@media (max-width:959px){
+  nav.tabs{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+  nav.tabs .v6-tab .tabtext{font-size:10.5px;}
+}
+/* Cabecera y ancho como las demás vistas de la barra (Resumen, Trayectoria). */
+body[data-view="vac"] main{max-width:1040px;}
+@media (max-width:959px){
+  body[data-view="vac"] header.top::before{
+    content:"";flex:none;align-self:center;width:30px;height:30px;
+    background:url("icon-192.png") center/contain no-repeat;
+  }
+}
+@media (max-width:365px){
+  body[data-view="vac"] header.top::before{width:25px;height:25px;}
+}
+.vac-form > .calc .field{max-width:240px;}
