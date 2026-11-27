@@ -3,6 +3,31 @@
 Transcrito del historial que la propia aplicación muestra en su sección
 "Acerca de".
 
+## 2.18.1
+
+Vacunas, rediseño a petición del autor: de una lista para llenar a un menú de
+recomendaciones. Las reglas, los puntos de corte y las recomendaciones de la
+2.18.0 no cambian; ninguna escala, puntaje, punto de corte ni interpretación
+cambia; el conversor y la Trayectoria no cambian.
+
+- Paso 1, contexto del paciente: edad y condiciones; el fenotipo de Fried, la
+  CFS, el Barthel y el MNA-SF quedan en un apartado plegable y se siguen
+  tomando del resumen de la VGI cuando ya están registrados.
+- Paso 2, vacunas recomendadas: menú desplegable agrupado en "Indicadas", "A
+  considerar según el caso" y "Contraindicadas"; cada vacuna se abre para ver
+  su esquema, el motivo con la afirmación del consenso y sus notas. Las que no
+  están indicadas por ahora (fiebre amarilla y dengue sin exposición) se
+  resumen en una línea.
+- Paso 3, cuáles tiene: un toque en "La tiene" o "No la tiene" por vacuna; el
+  año o las dosis son opcionales. En el neumococo, al marcar que la tiene se
+  elige cuál recibió y el menú da el paso siguiente.
+- Texto para copiar: empieza por las vacunas aplicadas (con año o dosis si se
+  registraron) y sigue con las indicadas pendientes o sin dato, las que pueden
+  considerarse y las contraindicadas. En el resumen de la VGI, el bloque dice
+  cuántas de las indicadas están aplicadas.
+- Se retiran la columna y las menciones al PAI, por decisión del autor, y la
+  lista de siete estados por vacuna.
+
 ## 2.18.0
 
 Función nueva: Vacunas (promoción y prevención), vacunación del adulto mayor,

@@ -77,6 +77,9 @@ pruebas son idénticos a los de la 2.16.0 salvo la huella, la fecha y la versió
 `resultado-2.18.0.json` corresponde a la 2.18.0 (sección de vacunación del
 adulto mayor, en archivos aparte); las 48 fichas y los recuentos de escalas no
 cambian y la lista de fallos sigue vacía.
+`resultado-2.18.1.json` corresponde a la 2.18.1 (rediseño de la sección de
+vacunación: menú de vacunas indicadas y registro de las que tiene); las 48
+fichas y los recuentos de escalas no cambian y la lista de fallos sigue vacía.
 
 ## Prueba de la sección de vacunación
 
@@ -94,13 +97,21 @@ node verificacion/verificar-vacunacion.mjs index.html > resultado-vacunacion.jso
    fiebre amarilla: "Contraindicada").
 2. **Bordes.** Edad 59, 60, 74 y 75; Fried 2 y 3; CFS 5 y 6; Barthel 60, 65 y
    100; MNA-SF 7 y 8; la advertencia de revacunación del VSR en cardiopatía; las
-   reglas de precedencia; la columna del PAI.
-3. **Texto para la historia.** Siempre las recomendadas y las contraindicadas,
-   el resto solo con estado marcado; sin rayas ni comillas tipográficas.
+   reglas de precedencia; desde la 2.18.1, que ninguna vacuna traiga datos del
+   PAI.
+3. **Texto para la historia.** Desde la 2.18.1, empieza por las vacunas que el
+   paciente tiene (con año o dosis y, en el neumococo, cuál recibió), sigue con
+   las indicadas pendientes o sin dato, el esquema de neumococo por completar,
+   las que pueden considerarse y las contraindicadas; sin rayas ni comillas
+   tipográficas.
 4. **Recorrido.** El botón Vacunas en la barra, justo debajo de Resumen y
    visible en el celular; la búsqueda; que no quede como grupo del eje clínico; los datos
-   tomados del resumen de la VGI, la lista de chequeo, el bloque en el resumen y
-   ningún dato escrito en el almacenamiento del dispositivo.
+   tomados del resumen de la VGI; el menú desplegable (cerrado de entrada, se abre
+   al tocar y se conserva abierto al registrar); el registro "La tiene / No la
+   tiene"; el bloque en el resumen; que la vista no mencione el PAI, y ningún
+   dato escrito en el almacenamiento del dispositivo. Corrida sobre la 2.18.0,
+   la prueba de la 2.18.1 da 16 fallos, lo que confirma que detecta el diseño
+   anterior.
 5. **Inventario.** Las 48 fichas de escalas no cambian.
 
 Los resultados esperados los redactó el asistente a partir del consenso y los

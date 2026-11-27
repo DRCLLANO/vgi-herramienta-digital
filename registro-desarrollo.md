@@ -637,6 +637,16 @@ resolvió cuatro inconsistencias internas del consenso y aprobó tres reglas de
 precedencia. Los 20 casos con resultado esperado se escribieron y se aprobaron
 antes del código, y la prueba automática se construyó sobre ellos.
 
+**Rediseño de la vacunación (2.18.1).** Tras ver la 2.18.0 publicada, el autor
+pidió que la sección dejara de ser una lista para llenar: primero, un menú
+desplegable con las vacunas indicadas según la edad y el contexto; después, el
+registro de cuáles tiene, y un texto para copiar centrado en las ya aplicadas.
+También pidió retirar las menciones al PAI. El motor de reglas y los 20 casos
+aprobados no cambiaron. Al revisar las capturas, el asistente notó que un
+neumococo registrado como "solo PCV13" se copiaba como aplicado sin decir que
+faltaba una dosis, y añadió la marca "Por completar" con el paso siguiente.
+La prueba nueva se corrió también sobre la 2.18.0, donde da 16 fallos.
+
 ## 10. Limitaciones del proceso
 
 El modelo redactó los textos de interpretación de todos los instrumentos.
